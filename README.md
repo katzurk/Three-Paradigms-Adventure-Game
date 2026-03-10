@@ -30,6 +30,13 @@ But one question remained:
 
 ## Task:
 write adventure, text based game in:
-* prolog
-* huskel
-* smalltalk
+* prolog (W)
+* huskel (K)
+* smalltalk (H)
+
+## Prolog launch
+```
+swipl
+[adventure].
+start.
+```
