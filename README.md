@@ -37,6 +37,6 @@ write adventure, text based game in:
 ## Prolog launch
 ```
 swipl
-[adventure].
+[lostPaws].
 start.
 ```
