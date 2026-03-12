@@ -40,3 +40,49 @@ swipl
 [lostPaws].
 start.
 ```
+
+## Prolog - win sequence
+```
+e.
+take(small_stick)
+w.
+s.
+search(white_rock).
+take(hat).
+n.
+n.
+search(cardborad_box).
+take(fish1).
+eat(fish1).
+take(big_stick).
+
+show_mouth.  #you should have: hat, big_stick and small_stick
+
+w.
+n.
+search(hay).
+attach(big_stick, hay).
+attach(small_stick, frame).
+attach(hat, frame2).
+take(brown_mouse).
+eat(brown_mouse).
+
+s.
+e.
+search(cardboard_box).
+take(fish2).
+w.
+
+# optional - if u missed brown_mouse
+search(brick).
+take(tiny_mouse).
+eat(tiny_mouse).
+
+n.
+w.
+w.
+w.
+drop(fish2).
+s.
+halt.
+```

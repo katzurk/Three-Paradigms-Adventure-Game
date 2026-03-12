@@ -68,17 +68,19 @@ path(town, s, home).
 
 
 /*TIREDNESS*/
+max_tiredness(12).
+
 increase_tiredness :-
         tiredness(T),
         T1 is T + 1,
         retract(tiredness(T)),
         assert(tiredness(T1)),
-        # write('You feel more tired. (Tiredness: '), write(T1), write('/10)'), nl,
         check_tiredness.
 
 check_tiredness :-
         tiredness(T),
-        T >= 10,
+        max_tiredness(Max),
+        T >= Max,
         write('Muffin collapses from exhaustion...'), nl,
         lose, !.
 
@@ -208,11 +210,12 @@ eat(X) :-
         (X = fish1 ; X = fish2),
         retract(holding(X)),
         tiredness(T),
-        T1 is max(0, T - 3.),
+        T1 is max(0, T - 3),
         retract(tiredness(T)),
         assert(tiredness(T1)),
+        max_tiredness(Max),
         write('Muffin happily eats the fish.'), nl,
-        write('She feels a bit less tired. (Tiredness: '), write(T1), write('/10)'), nl,
+        write('She feels a bit less tired. (Tiredness: '), write(T1), write(' /'), write(Max), write(')'), nl,
         !.
 
 eat(X) :-
@@ -220,11 +223,12 @@ eat(X) :-
         (X = tiny_mouse ; X = brown_mouse),
         retract(holding(X)),
         tiredness(T),
-        T1 is max(0, T - 2.),
+        T1 is max(0, T - 2),
         retract(tiredness(T)),
         assert(tiredness(T1)),
+        max_tiredness(Max),
         write('Muffin happily eats the mouse.'), nl,
-        write('She feels a bit less tired. (Tiredness: '), write(T1), write('/10)'), nl,
+        write('She feels a bit less tired. (Tiredness: '), write(T1), write(' /'), write(Max), write(')'), nl,
         !.
 
 eat(_) :-
@@ -336,8 +340,9 @@ go(Direction) :-
         path(Here, Direction, There),
         retract(i_am_at(Here)),
         assert(i_am_at(There)),
+        check_win,
         increase_tiredness,
-        !, look, check_win.
+        !, look.
 
 go(_) :-
         write('Muffin cannot go that way.'), nl.
@@ -347,11 +352,27 @@ go(_) :-
 look :-
         i_am_at(Place),
         tiredness(T),
-        write('[Tiredness: '), write(T), write('/10]'), nl,
+        max_tiredness(Max),
+        write('[Tiredness: '), write(T), write(' /'), write(Max), write(')'), nl,
         describe(Place),
         nl,
         notice_objects_at(Place),
         nl.
+
+/* SHOW INVENTORY */
+
+show_mouth :-
+        write('Muffin is carrying:'), nl,
+        holding(X),
+        write('- '), write(X), nl,
+        fail.
+
+show_mouth :-
+        \+ holding(_),
+        write('Nothing. Her mouth is empty.'), nl, !.
+
+show_mouth :-
+        write('That is everything in her mouth.'), nl.
 
 /* OBJECTS AROUND */
 
@@ -378,7 +399,7 @@ check_win.
 lose :-
         nl,
         write('YOU LOSE.'), nl,
-        finish, !.
+        finish, !, fail.
 
 /* GAME END */
 
@@ -411,8 +432,9 @@ Before you could complain, you were placed inside a metal cage and loaded into t
         write('drop(item).    -- drop item'), nl,
         write('search(object).  -- search container'), nl,
         write('eat(item).       -- eat something'), nl,
-        write('attach(a,b).     -- attach objects'), nl,
+        write('attach(a,b).     -- attach object a to object b'), nl,
         write('look.            -- look around'), nl,
+        write('show_mouth.      -- show everything Muffin is carring in her mouth'), nl,
         write('instructions.    -- help'), nl,
         write('halt.            -- quit'), nl,
         nl.
