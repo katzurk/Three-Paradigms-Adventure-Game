@@ -1,6 +1,7 @@
 /* lostPaws - interactive fiction */
 
-:- dynamic i_am_at/1, at/2, holding/1, hidden/2, dog_distracted/0, tiredness/1, scarecrow_built/0.
+:- dynamic i_am_at/1, at/2, holding/1, hidden/2, dog_distracted/0, tiredness/1.
+:- dynamic stairs_built/0, scarecrow_built/0.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(holding(_)).
 
 
@@ -35,6 +36,7 @@ path(infinite_forest, w, infinite_forest).
 
 path(road, n, barn).
 path(road, e, start_cage).
+path(road, w, waterfall).
 path(road, s, rocky_road).
 
 path(rocky_road, n, road).
@@ -47,7 +49,12 @@ path(meadow, w, rocky_road).
 path(meadow, e, infinite_forest).
 path(meadow, s, shelter).
 
+path(waterfall, e, road).
+path(waterfall, s, river).
+
+path(river, n, waterfall).
 path(river, e, rocky_road).
+path(river, s, shelter).
 
 path(wheat_field, w, cabbage_field).
 path(wheat_field, s, barn).
@@ -91,6 +98,11 @@ check_tiredness.
 at(catnip, barn).
 at(brick, barn).
 at(cardboard_box, forest).
+at(cage, start_cage).
+at(broken_stool, road).
+at(branch, low_forest).
+at(chocolate, road).
+at(roach, rocky_road).
 at(dog, town).
 at(river, river).
 at(white_rock, meadow).
@@ -99,12 +111,15 @@ at(big_stick, forest).
 at(small_stick, low_forest).
 
 /* HIDDEN */
-hidden(fish1, cardboard_box).
-hidden(fish2, cardboard_box).
+hidden(cod, cardboard_box).
+hidden(mackerel, cardboard_box).
+hidden(herring, cardboard_box).
 hidden(cool_rock, river).
 hidden(hat, white_rock).
 hidden(brown_mouse, hay).
 hidden(tiny_mouse, brick).
+hidden(hamster, cage).
+hidden(gerbil, hat).
 
 /* TAKE OBJECT */
 take(dog) :-
@@ -149,7 +164,7 @@ take(_) :-
 drop(X) :-
         i_am_at(town),
         at(dog, town),
-        (X = fish1 ; X = fish2),
+        (X = cod ; X = mackerel; X = herring; X = roach),
         holding(X),
         retract(holding(X)),
         assert(dog_distracted),
@@ -205,9 +220,17 @@ eat(catnip) :-
         write('Muffin has been shot.'), nl,
         lose, !.
 
+eat(chocolate) :-
+        holding(chocolate),
+        retract(holding(chocolate)),
+        write('Muffin eats the chocolate...'), nl,
+        write('But chocolate is poisonous for cats!'), nl,
+        write('She feels very sick...'), nl,
+        lose, !.
+
 eat(X) :-
         holding(X),
-        (X = fish1 ; X = fish2),
+        (X = cod ; X = mackerel; X = herring; X = roach),
         retract(holding(X)),
         tiredness(T),
         T1 is max(0, T - 3),
@@ -220,14 +243,14 @@ eat(X) :-
 
 eat(X) :-
         holding(X),
-        (X = tiny_mouse ; X = brown_mouse),
+        (X = tiny_mouse ; X = brown_mouse; X = hamster; X = gerbil),
         retract(holding(X)),
         tiredness(T),
         T1 is max(0, T - 2),
         retract(tiredness(T)),
         assert(tiredness(T1)),
         max_tiredness(Max),
-        write('Muffin happily eats the mouse.'), nl,
+        write('Muffin happily eats the rodent.'), nl,
         write('She feels a bit less tired. (Tiredness: '), write(T1), write(' /'), write(Max), write(')'), nl,
         !.
 
@@ -235,6 +258,16 @@ eat(_) :-
         write('You cannot eat that.'), nl.
 
 /*ATTACH*/
+/*build scarecrow*/
+build_step(big_stick, hay, frame).
+build_step(small_stick, frame, headless_man).
+build_step(hat, headless_man, scarecrow).
+
+/*build stairs*/
+build_step(branch, broken_stool, stool).
+build_step(cardboard_box, cage, tower).
+build_step(stool, tower, stairs).
+
 attach(Item, Base) :-
         build_step(Item, Base, Result),
         check_attach(Item, Base),
@@ -243,34 +276,58 @@ attach(Item, Base) :-
 attach(_, _) :-
         write('Those things cannot be attached together.'), nl.
 
-build_step(big_stick, hay, frame).
-build_step(small_stick, frame, frame2).
-build_step(hat, frame2, scarecrow).
-
+/*CHECK ATTACH*/
 check_attach(Item, _) :-
         \+ holding(Item),
         write('You do not have that item.'), nl,
         !, fail.
 
 check_attach(_, Base) :-
-        \+ at(Base, wheat_field),
-        write('The base structure is not built yet.'), nl,
+        i_am_at(Place),
+        \+ at(Base, Place),
+        write('The second item is not here.'), nl,
+        !, fail.
+
+
+check_attach(big_stick, hay) :-
+        \+ at(hay, wheat_field),
+        write('You need to build the scarecrow in the wheat field.'), nl,
+        !, fail.
+
+check_attach(small_stick, frame) :-
+        \+ at(frame, wheat_field),
+        write('You need to build the scarecrow in the wheat field.'), nl,
+        !, fail.
+
+check_attach(hat, headless_man) :-
+        \+ at(headless_man, wheat_field),
+        write('You need to build the scarecrow in the wheat field.'), nl,
+        !, fail.
+
+check_attach(cardboard_box, cage) :-
+        \+ i_am_at(bridge),
+        write('You need to build the tower near the bridge.'), nl,
+        !, fail.
+
+check_attach(stool, tower) :-
+        \+ i_am_at(bridge),
+        write('You need to build the stairs near the bridge.'), nl,
         !, fail.
 
 check_attach(_, _).
 
 perform_attach(Item, Base, Result) :-
         retract(holding(Item)),
-        retract(at(Base, wheat_field)),
-        assert(at(Result, wheat_field)),
+        i_am_at(Place),
+        retract(at(Base, Place)),
+        assert(at(Result, Place)),
         describe_build(Result).
 
-
 describe_build(frame) :-
-        write('You attach a stick into the hay bundle.'), nl.
+        write('You attach a stick into the hay bundle. It is a frame.'), nl.
 
-describe_build(frame2) :-
-        write('The scarecrow now has two arms.'), nl.
+describe_build(headless_man) :-
+        write('The scarecrow now has two arms, making a headless_man'), nl.
 
 describe_build(scarecrow) :-
         retract(at(scarecrow, wheat_field)),
@@ -279,6 +336,17 @@ describe_build(scarecrow) :-
         write('A scary scarecrow stands between the fields!'), nl,
         write('The crows fly away.'), nl.
 
+describe_build(stool) :-
+        write('You fix the broken stool using the branch.'), nl.
+
+describe_build(tower) :-
+        write('You place the cardboard box on top of the cage.'), nl,
+        write('It forms a small tower.'), nl.
+
+describe_build(stairs) :-
+        write('You add the stool to the tower.'), nl,
+        write('Now Muffin can climb it like stairs!'), nl,
+        assert(stairs_built).
 
 /* MOVEMENT SHORTCUTS */
 
@@ -318,10 +386,37 @@ go(w) :-
         increase_tiredness,
         look, !.
 
+go(w) :-
+        i_am_at(bridge),
+        \+ stairs_built,
+        write('A tall stone gate, flanked by two castle towers, blocks the entrance to the town.'), nl,
+        write('Muffin could jump over... if she was taller.'), nl,
+        write('Maybe she could build something to climb on.'), nl,
+        !.
+
+go(w) :-
+        i_am_at(bridge),
+        stairs_built,
+        retract(i_am_at(bridge)),
+        assert(i_am_at(town)),
+        write('Muffin climbs the tower of objects...'), nl,
+        write('She hops over the stone gate!'), nl,
+        increase_tiredness,
+        look, !.
+
 go(Direction) :-
         i_am_at(river),
-        (Direction = n ; Direction = s ; Direction = w),
+        (Direction = w),
         write('Muffin tries to step into the river.'), nl,
+        write('The current pulls her away!'), nl,
+        write('She cannot swim...'), nl,
+        write('Muffin drowns.'), nl,
+        lose, !.
+
+go(Direction) :-
+        i_am_at(waterfall),
+        (Direction = n ; Direction = w),
+        write('Muffin tries to step into the water.'), nl,
         write('The current pulls her away!'), nl,
         write('She cannot swim...'), nl,
         write('Muffin drowns.'), nl,
@@ -405,7 +500,9 @@ lose :-
 
 finish :-
         nl,
-        write('The game is over. Type halt. to exit.'), nl.
+        write('---- The game is over. To exit type: halt.'),
+        nl,
+        nl.
 
 /* INSTRUCTIONS */
 
@@ -466,7 +563,8 @@ describe(infinite_forest) :-
 
 describe(road) :-
         write('A dusty road where the truck drove away.'), nl,
-        write('You see tire tracks leading north.'), nl.
+        write('You see tire tracks leading north.'), nl,
+        write('Some trash is laying on the side of the road.'), nl.
 
 describe(rocky_road) :-
         write('A rough rocky road full of stones.'), nl,
@@ -481,9 +579,15 @@ describe(car) :-
         write('The engine suddenly rumbles to life...'), nl.
 
 describe(river) :-
-        write('A fast flowing river blocks your path.'), nl,
+        write('A fast flowing river blocks your path on the west.'), nl,
         write('You can see fish swimming in the water.'), nl,
         write('The current looks very strong.'), nl.
+
+describe(waterfall) :-
+        write('A beutifull waterfall blocks your path on the west-north.'), nl,
+        write('You can see fish swimming in the water.'), nl,
+        write('You feel at peace here.'), nl.
+
 
 describe(barn) :-
         write('An old wooden barn. It smells like mice.'), nl,

@@ -44,16 +44,21 @@ start.
 ## Prolog - win sequence
 ```
 e.
-take(small_stick)
+take(small_stick).
+take(branch).
 w.
 s.
 search(white_rock).
+search(hat).
+take(gerbil).
+eat(gerbil).
 take(hat).
 n.
 n.
 search(cardborad_box).
-take(fish1).
-eat(fish1).
+drop(branch).
+take(cod).
+eat(cod).
 take(big_stick).
 
 show_mouth.  #you should have: hat, big_stick and small_stick
@@ -63,26 +68,42 @@ n.
 search(hay).
 attach(big_stick, hay).
 attach(small_stick, frame).
-attach(hat, frame2).
+attach(hat, headless_man).
 take(brown_mouse).
 eat(brown_mouse).
 
 s.
-e.
-search(cardboard_box).
-take(fish2).
-w.
-
 # optional - if u missed brown_mouse
 search(brick).
 take(tiny_mouse).
 eat(tiny_mouse).
 
+e.
+take(cardboard_box).
+take(branch).
+s.
+take(cage).
+w.
+attach(branch, broken_stool).
+take(stool).
+
+n.
 n.
 w.
 w.
+drop(cage).
+drop(cardboard_box).
+search(cardboard_box).
+take(makerel).
+eat(makerel).
+search(cardboard_box).
+take(herring).
+take(cardboard_box).
+attach(cardboard_box, cage).
+attach(stool, tower).
+
 w.
-drop(fish2).
+drop(herring).
 s.
 halt.
 ```
