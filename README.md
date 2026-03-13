@@ -103,6 +103,11 @@ attach(cardboard_box, cage).
 attach(stool, tower).
 
 w.
+w.
+take(bone).
+
+e.
+drop(bone).
 drop(herring).
 s.
 halt.

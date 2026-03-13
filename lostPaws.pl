@@ -1,7 +1,7 @@
 /* lostPaws - interactive fiction */
 
-:- dynamic i_am_at/1, at/2, holding/1, hidden/2, dog_distracted/0, tiredness/1.
-:- dynamic stairs_built/0, scarecrow_built/0.
+:- dynamic i_am_at/1, at/2, holding/1, hidden/2, tiredness/1.
+:- dynamic stairs_built/0, scarecrow_built/0, eagle_distracted/0, dog_distracted/0.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(holding(_)).
 
 
@@ -21,6 +21,7 @@ path(start_cage, w, road).
 path(start_cage, e, low_forest).
 path(start_cage, s, meadow).
 
+path(forest, n, lake).
 path(forest, w, barn).
 path(forest, e, infinite_forest).
 path(forest, s, start_cage).
@@ -57,10 +58,12 @@ path(river, e, rocky_road).
 path(river, s, shelter).
 
 path(wheat_field, w, cabbage_field).
+path(wheat_field, e, lake).
 path(wheat_field, s, barn).
 
 path(cabbage_field, e, wheat_field).
 path(cabbage_field, w, bridge).
+path(cabbage_field, s, car).
 
 path(bridge, e, wheat_field).
 path(bridge, w, town).
@@ -70,7 +73,10 @@ path(barn, w, car).
 path(barn, e, forest).
 path(barn, s, road).
 
+path(graveyard, e, town).
+
 path(town, e, bridge).
+path(town, w, graveyard).
 path(town, s, home).
 
 
@@ -109,6 +115,7 @@ at(white_rock, meadow).
 at(hay, wheat_field).
 at(big_stick, forest).
 at(small_stick, low_forest).
+at(bone, graveyard).
 
 /* HIDDEN */
 hidden(cod, cardboard_box).
@@ -161,14 +168,23 @@ take(_) :-
         write('You do not see that here.'), nl.
 
 /* DROP OBJECT */
-drop(X) :-
+drop(bone) :-
         i_am_at(town),
         at(dog, town),
-        (X = cod ; X = mackerel; X = herring; X = roach),
         holding(X),
         retract(holding(X)),
         assert(dog_distracted),
-        write('The dog grabs the fish and runs away happily!'), nl,
+        write('The dog grabs the bone and runs away happily!'), nl,
+        !.
+
+drop(X) :-
+        i_am_at(town),
+        (X = cod ; X = mackerel ; X = herring ; X = roach),
+        holding(X),
+        retract(holding(X)),
+        assert(eagle_distracted),
+        write('An eagle swoops down and grabs the fish!'), nl,
+        write('It flies away with its meal.'), nl,
         !.
 
 drop(X) :-
@@ -206,7 +222,7 @@ search(Object) :-
         write('Nothing else inside.'), nl, !.
 
 search(_) :-
-        write('You cannot search that.'), nl.
+        write('You find nothing here.'), nl.
 
 /*EAT*/
 eat(catnip) :-
@@ -364,6 +380,16 @@ go(Direction) :-
         write('A big dog blocks your way and growls.'), nl,
         write('Maybe you could give him something to eat...'), nl, !.
 
+go(Direction) :-
+        i_am_at(town),
+        Direction = s,
+        \+ eagle_distracted,
+        write('As Muffin walks forward...'), nl,
+        write('A huge eagle swoops down from above!'), nl,
+        write('Its talons grab Muffin before she can react.'), nl,
+        write('The ground fades away...'), nl,
+        lose, !.
+
 go(n) :-
         (i_am_at(wheat_field); i_am_at(cabbage_field); i_am_at(town)),
         write('There is a highway up ahead.'), nl,
@@ -422,19 +448,20 @@ go(Direction) :-
         write('Muffin drowns.'), nl,
         lose, !.
 
-go(w) :-
-        i_am_at(barn),
-        write('Muffin sneaks behind the barn into a parking lot.'), nl,
-        write('Suddenly a car starts moving!'), nl,
-        write('She is disoriented and runs directly under the wheels...'), nl,
-        write('CRUNCH.'), nl,
-        lose, !.
+go(Direction) :-
+        i_am_at(graveyard),
+        (Direction = n ; Direction = w; Direction = s),
+        write('The graveyard is surrounded by tall stone walls.'), nl,
+        write('There is no exit that way.'), nl,
+        !.
 
 go(Direction) :-
         i_am_at(Here),
         path(Here, Direction, There),
         retract(i_am_at(Here)),
         assert(i_am_at(There)),
+        check_car,
+        check_lake,
         check_win,
         increase_tiredness,
         !, look.
@@ -442,8 +469,28 @@ go(Direction) :-
 go(_) :-
         write('Muffin cannot go that way.'), nl.
 
-/* LOOK */
+/*CHECK CAR*/
+check_car :-
+        i_am_at(car),
+        write('Muffin sneaks behind the barn into a parking lot.'), nl,
+        write('Suddenly a car starts moving!'), nl,
+        write('She is disoriented and runs directly under the wheels...'), nl,
+        write('CRUNCH.'), nl,
+        lose, !.
 
+check_car.
+
+/*CHECK LAKE*/
+check_lake :-
+        i_am_at(lake),
+        write('Muffin visits the lake.'), nl,
+        write('But the ground is slippery here!'), nl,
+        write("She falls into the water. Muffin can't swim and drowns."), nl,
+        lose, !.
+
+check_lake.
+
+/* LOOK */
 look :-
         i_am_at(Place),
         tiredness(T),
@@ -609,6 +656,12 @@ describe(cabbage_field) :-
 describe(bridge) :-
         write('A wooden bridge crosses a small stream.'), nl,
         write('The town is just beyond it.'), nl.
+
+describe(graveyard) :-
+        write('An old graveyard full of crooked tombstones.'), nl,
+        write('Cold wind rustles the dead leaves.'), nl,
+        write('Tall stone walls surround the graveyard on all sides.'), nl,
+        write('The only exit is back east toward the town.'), nl.
 
 describe(home) :-
         write('Your house!'), nl,
