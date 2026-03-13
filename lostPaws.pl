@@ -2,6 +2,7 @@
 
 :- dynamic i_am_at/1, at/2, holding/1, hidden/2, tiredness/1.
 :- dynamic stairs_built/0, scarecrow_built/0, eagle_distracted/0, dog_distracted/0.
+:- dynamic shelter_clue_found/0, stone_order/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(holding(_)).
 
 
@@ -13,6 +14,13 @@ tiredness(0).
 inventory_count(N) :-
         findall(X, holding(X), L),
         length(L, N).
+
+/*randomize stones at the beggining of the game*/
+init_stones :-
+        retractall(shelter_clue_found),
+        retractall(stone_order(_)),
+        random_permutation([s,h,e,l,t,e,r], Order),
+        assert(stone_order(Order)).
 
 /* MAP */
 
@@ -116,6 +124,7 @@ at(hay, wheat_field).
 at(big_stick, forest).
 at(small_stick, low_forest).
 at(bone, graveyard).
+at(shell, nowhere).
 
 /* HIDDEN */
 hidden(cod, cardboard_box).
@@ -364,6 +373,32 @@ describe_build(stairs) :-
         write('Now Muffin can climb it like stairs!'), nl,
         assert(stairs_built).
 
+/*ARRANGE*/
+arrange(L1,L2,L3,L4,L5,L6,L7) :-
+    i_am_at(rocky_road),
+    Attempt = [L1,L2,L3,L4,L5,L6,L7],
+    check_stones(Attempt).
+
+check_stones([s,h,e,l,t,e,r]) :-
+        \+ shelter_clue_found,
+        assert(shelter_clue_found),
+        retract(at(shell, nowhere)),
+        assert(at(shell, rocky_road)),
+        write('The stones glow faintly...'), nl,
+        write('SHELTER.'), nl,
+        write('Muffin suddenly understands!'), nl,
+        write('The animal shelter must be south of here!'), nl,
+        write('Something shiny appears between the stones... a shell!'), nl,
+        !.
+
+check_stones([s,h,e,l,t,e,r]) :-
+        shelter_clue_found,
+        write('You already solved this puzzle.'), nl,
+        !.
+
+check_stones(_) :-
+        write('The stones do not seem to form a meaningful word.'), nl.
+
 /* MOVEMENT SHORTCUTS */
 
 n :- go(n).
@@ -586,6 +621,7 @@ Before you could complain, you were placed inside a metal cage and loaded into t
 /* START GAME */
 
 start :-
+        init_stones,
         instructions,
         look.
 
@@ -614,8 +650,12 @@ describe(road) :-
         write('Some trash is laying on the side of the road.'), nl.
 
 describe(rocky_road) :-
-        write('A rough rocky road full of stones.'), nl,
-        write('It hurts Muffins paws to walk here.'), nl.
+    write('A rough rocky road full of stones.'), nl,
+    write('Seven carved stones lie on the ground.'), nl,
+    write('Letters on them read: '),
+    stone_order(L),
+    write(L), nl,
+    write('Maybe they form a word...'), nl.
 
 describe(meadow) :-
         write('A quiet meadow full of pretty flowers.'), nl,
