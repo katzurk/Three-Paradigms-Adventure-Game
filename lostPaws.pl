@@ -256,7 +256,7 @@ eat(catnip) :-
         retract(holding(catnip)),
         write('Muffin eats the catnip.'), nl,
         write('Everything spins...'), nl,
-        write('She runs around the barn knocking thinkgs over.'), nl,
+        write('She runs around the barn knocking things over.'), nl,
         write('The barn owner hears the noise and thinks there is an intruder.'), nl,
         write('BANG!'), nl,
         write('Muffin has been shot.'), nl,
@@ -633,9 +633,28 @@ finish :-
         nl.
 
 /* INSTRUCTIONS */
+title :-
+    write('============================================================'), nl,
+    write('  _                 _  _____                         '), nl,
+    write(' | |               | | |  __ \\                        '), nl,
+    write(' | |      ___  ___ | |_| |__) |__ __      __ ___     '), nl,
+    write(' | |     / _ \\/ __|| __|  ___/ _ `\\ \\ /\\ / // __|    '), nl,
+    write(' | |____| (_) \\__ \\| |_| |  | (_| |\\ V  V / \\__ \\    '), nl,
+    write(' |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    '), nl,
+    write('============================================================'), nl,
+    write('         THE JOURNEY BEGINS - find your way home           '), nl,
+    write('============================================================'), nl,
+    write('                       |\__/,|   (`\\'),nl,
+    write('                     _.|o o  |_   ) )'),nl,
+    write('                   -(((---(((--------'),nl,
+    write('        [to start the game write: start.]'),nl,
+    write('============================================================'), nl.
+
+
 
 instructions :-
         nl,
+        write('============================================================'), nl,
         write('You are Muffin, a fat and very lazy house cat.'), nl,
         write('You were lying in the warm sun, happily baking like a loaf of bread.'), nl,
         nl,
@@ -663,6 +682,7 @@ Before you could complain, you were placed inside a metal cage and loaded into t
         write('show_mouth.      -- show everything Muffin is carring in her mouth'), nl,
         write('instructions.    -- help'), nl,
         write('halt.            -- quit'), nl,
+        write('============================================================'), nl,
         nl.
 
 /* START GAME */
@@ -675,85 +695,166 @@ start :-
 /* DESCRIPTIONS */
 
 describe(start_cage) :-
+        write('       ___      '), nl,
+        write('      |[_]|_  "  '), nl,
+        write('  vvVvVvVvVvVvv'), nl,
         write('Tall grass waves around you.'), nl,
         write('Your metal cage lies behind you.'), nl.
 
 describe(forest) :-
+        write('      /\\       /\\      '), nl,
+        write('     /  \\     /  \\     '), nl,
+        write('    /____\\   /____\\    '), nl,
+        write('  /\\ ||   /\\  ||  /\\  '), nl,
+        write(' /__\\||  /__\\ || /__\\ '), nl,
+        write('  ||  ||   ||   ||  ||  '), nl,
         write('A shady forest. Birds chirp in the trees.'), nl,
         write('It smells like adventure... and maybe snacks.'), nl.
 
 describe(low_forest) :-
+        write('  /\\                  '), nl,
+        write(' /__\\      /\\         '), nl,
+        write('  ||       /__\\        '), nl,
+        write('vvVvVvv   vv||vvVvVvv     '), nl,
         write('The forest here is thinner.'), nl,
         write('You can still see the tall grass where the cage fell.'), nl.
 
 describe(infinite_forest) :-
+        write('  /\\  /\\  /\\  /\\  /\\'), nl,
+        write(' /__\\/__\\/__\\/__\\/__\\ '), nl,
+        write('  ||   ||   ||   ||   ||  '), nl,
         write('Trees stretch endlessly in every direction.'), nl,
         write('The forest looks exactly the same everywhere.'), nl,
         write('Muffin is completely lost.'), nl.
 
 describe(road) :-
+        write('   __________   '), nl,
+        write('               '), nl,
+        write(' ===  ===  === '), nl,
+        write('             '), nl,
         write('A dusty road where the truck drove away.'), nl,
         write('You see tire tracks leading north.'), nl,
         write('Some trash is laying on the side of the road.'), nl.
 
 describe(rocky_road) :-
-    write('A rough rocky road full of stones.'), nl,
-    write('Seven carved stones lie on the ground.'), nl,
-    write('Letters on them read: '),
-    stone_order(L),
-    write(L), nl,
-    write('Maybe they form a word...'), nl.
+        write('  __________   '), nl,
+        write(' .o .  o .  o   '), nl,
+        write(' ===  ===  === '), nl,
+        write(' o .  .  o . .  '), nl,
+        write('A rough rocky road full of stones.'), nl,
+        write('Seven carved stones lie on the ground.'), nl,
+        write('Letters on them read: '),
+        stone_order(L),
+        write(L), nl,
+        write('Maybe they form a word...'), nl.
 
 describe(meadow) :-
+        write('    _     _     _      '), nl,
+        write('   ( )   ( )   ( )  __ '), nl,
+        write('    |     |     |  (  )'), nl,
+        write('  \\|/   \\|/   \\|/  (__)'), nl,
         write('A quiet meadow full of pretty flowers.'), nl,
         write('Something shiny lies under a white_rock.'), nl.
 
 describe(car) :-
+        write('      _______      '), nl,
+        write('    _/_|     \\_    '), nl,
+        write('   |_|_______|_|   '), nl,
+        write(' ----(o)---(o)----  '), nl,
         write('A parked farm car stands behind the barn.'), nl,
         write('The engine suddenly rumbles to life...'), nl.
 
 describe(river) :-
+        write('  ~ ~ ~ ~ ~ ~ ~ ~  '), nl,
+        write('   <><    <><      '), nl,
+        write('   ~ ~ ~ ~ ~ ~ ~   '), nl,
+        write('  ~ ~ ~ ~ ~ ~ ~ ~  '), nl,
         write('A fast flowing river blocks your path on the west.'), nl,
         write('You can see fish swimming in the water.'), nl,
         write('The current looks very strong.'), nl.
 
 describe(waterfall) :-
+        write('     | | | |       '), nl,
+        write('     | | | |       '), nl,
+        write('     | | | |       '), nl,
+        write('  _~~_~~_~~_~~_    '), nl,
+        write(' (_____________)   '), nl,
         write('A beutifull waterfall blocks your path on the west-north.'), nl,
         write('Smooth stones lie scattered near the shore.'), nl,
         write("This might be a peaceful place to build and arrange something and rest in it's shade."), nl.
 
 describe(barn) :-
+        write('      _______      '), nl,
+        write('     / _____ \\     '), nl,
+        write('    / /|_|_|\\ \\    '), nl,
+        write('    |_|  _  |_|    '), nl,
+        write('vVvV|_| | | |_|vVvVv '), nl,
         write('An old wooden barn. It smells like mice.'), nl,
         write('Sadly, they are all hiding.'), nl.
 
 describe(town) :-
+        write('  |  |_______|  |  '), nl,
+        write('  |   _     _   |  '), nl,
+        write('  |  |_| ^ |_|  |  '), nl,
+        write('  |     |V|     |  '), nl,
+        write('  |    / m \\    |  '), nl,
         write('You arrive at a small town street.'), nl,
-        write('A big dog sits in the road and barks at you. He doesnt like cats, esspecialy ones that look a bit familiar.'), nl.
+        write('A big dog sits at the south of the road and barks at you. He doesnt like cats, esspecialy ones that look a bit familiar.'), nl.
 
 describe(wheat_field) :-
+        write(' \\/  \\/  \\/  \\/  '), nl,
+        write('  \\/  \\/  \\/  \\/  '), nl,
+        write('  _|   |  _|   |   '), nl,
+        write(' (_)     (_)           '), nl,
         write('A huge wheat field sways in the wind.'), nl,
         write('You see a bundle of hay here.'), nl,
         write('To the west lies a cabbage field.'), nl.
 
 describe(cabbage_field) :-
+        write('  \\(w)/  \\(w)/  \\(w)/ '), nl,
+        write('   ""     ""     ""   '), nl,
+        write('\\(w)/  \\(w)/  \\(w)/ '), nl,
+        write(' ""     ""     ""   '), nl,
         write('Rows of cabbage stretch across the field.'), nl,
         write('Crows sit everywhere watching suspiciously.'), nl.
 
 describe(bridge) :-
+        write('   __________      '), nl,
+        write('  |__________|     '), nl,
+        write('  | |      | |     '), nl,
+        write('  | |  ~~  | |     '), nl,
+        write('     ~~~~ ~~     '), nl,
         write('A wooden bridge crosses a small stream.'), nl,
         write('The town is just beyond it.'), nl.
 
 describe(graveyard) :-
+        write('  _|_   ___   _|_  '), nl,
+        write(' |   | | o | |   | '), nl,
+        write(' |___| |___| |___| '), nl,
+        write(' , ` , ` , ` , ` , '), nl,
         write('An old graveyard full of crooked tombstones.'), nl,
         write('Cold wind rustles the dead leaves.'), nl,
         write('Tall stone walls surround the graveyard on all sides.'), nl,
         write('The only exit is back east toward the town.'), nl.
 
 describe(home) :-
+        write('          ( (        '), nl,
+        write('           ) )        '), nl,
+        write('      ____|_|____     '), nl,
+        write('     /-  -  -  - \\    '), nl,
+        write('    /__-___-__-__-\\   '), nl,
+        write('   |   _  _   _    |  '), nl,
+        write('   |  |_||_| | |   |  '), nl,
+        write(' __|_________|_|___|__'), nl,
+        write('  vvVvVVvVvvvVvvVvVvv '), nl,
         write('Your house!'), nl,
         write('The warm sofa awaits.'), nl.
 
 describe(shelter) :-
+        write('   _________       '), nl,
+        write('  |_|_|_|_|_|      '), nl,
+        write('  |_|_|_|_|_|      '), nl,
+        write('  |_|_|_|_|_|      '), nl,
         write('You find an animal shelter.'), nl,
         write('Some people grab you and put in a cage.'), nl,
         write('Muffin curls up and is very sad.'), nl,
