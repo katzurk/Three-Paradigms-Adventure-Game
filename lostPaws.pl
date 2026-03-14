@@ -178,6 +178,7 @@ take(white_rock) :-
         hidden(hat, white_rock),
         retract(hidden(hat, white_rock)),
         assert(at(hat, meadow)),
+        retract(at(white_rock, meadow)),
         assert(holding(white_rock)),
         write('Something was underneath... a hat!'), nl,
         !.
