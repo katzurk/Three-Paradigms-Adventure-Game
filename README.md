@@ -43,20 +43,49 @@ start.
 
 ## Prolog - win sequence
 ```
-e.
-take(small_stick).
-take(branch).
-w.
 s.
-search(white_rock).
+take(white_rock).
+w.
+arrange(s,h,e,l,t,e,r).
+take(shell).
+w.
+search(river).
+take(cool_pebble).
+n.
+drop(cool_pebble).
+drop(shell).
+drop(white_rock).
+e.
+n.
+
+search(brick).
+take(tiny_mouse).
+eat(tiny_mouse).
+take(brick).
+s.
+w.
+drop(brick).
+arrange(b,w,c,s).
+search(pipe).
+take(herring).
+eat(herring).
+take(pipe).
+
+e.
+attach(pipe, broken_stool).
+e.
+s.
+
 search(hat).
 take(gerbil).
 eat(gerbil).
 take(hat).
 n.
+e.
+take(small_stick).
+w.
 n.
-search(cardborad_box).
-drop(branch).
+search(cardboard_box)
 take(cod).
 eat(cod).
 take(big_stick).
@@ -73,18 +102,11 @@ take(brown_mouse).
 eat(brown_mouse).
 
 s.
-# optional - if u missed brown_mouse
-search(brick).
-take(tiny_mouse).
-eat(tiny_mouse).
-
 e.
 take(cardboard_box).
-take(branch).
 s.
 take(cage).
 w.
-attach(branch, broken_stool).
 take(stool).
 
 n.
@@ -94,10 +116,10 @@ w.
 drop(cage).
 drop(cardboard_box).
 search(cardboard_box).
-take(makerel).
-eat(makerel).
+take(mackerel).
+eat(mackerel).
 search(cardboard_box).
-take(herring).
+take(rauch).
 take(cardboard_box).
 attach(cardboard_box, cage).
 attach(stool, tower).
@@ -108,7 +130,7 @@ take(bone).
 
 e.
 drop(bone).
-drop(herring).
+drop(rauch).
 s.
 halt.
 ```

@@ -1,6 +1,6 @@
 /* lostPaws - interactive fiction */
 
-:- dynamic i_am_at/1, at/2, holding/1, hidden/2, tiredness/1.
+:- dynamic i_am_at/1, at/2, holding/1, hidden/2, hunger/1.
 :- dynamic stairs_built/0, scarecrow_built/0, eagle_distracted/0, dog_distracted/0.
 :- dynamic shelter_clue_found/0, stone_order/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(holding(_)).
@@ -9,7 +9,7 @@
 /* START LOCATION */
 
 i_am_at(start_cage).
-tiredness(0).
+hunger(0).
 
 inventory_count(N) :-
         findall(X, holding(X), L),
@@ -88,24 +88,31 @@ path(town, w, graveyard).
 path(town, s, home).
 
 
-/*TIREDNESS*/
-max_tiredness(12).
+/*HUNGER*/
+max_hunger(12).
 
-increase_tiredness :-
-        tiredness(T),
-        T1 is T + 1,
-        retract(tiredness(T)),
-        assert(tiredness(T1)),
-        check_tiredness.
+increase_hunger :-
+        hunger(H),
+        H1 is H + 1,
+        retract(hunger(H)),
+        assert(hunger(H1)),
+        check_hunger.
 
-check_tiredness :-
-        tiredness(T),
-        max_tiredness(Max),
-        T >= Max,
+check_hunger :-
+        hunger(H),
+        max_hunger(Max),
+        H >= Max,
+        i_am_at(home),
+        !, check_win.
+
+check_hunger :-
+        hunger(H),
+        max_hunger(Max),
+        H >= Max,
         write('Muffin collapses from exhaustion...'), nl,
         lose, !.
 
-check_tiredness.
+check_hunger.
 
 /* OBJECTS */
 
@@ -116,8 +123,8 @@ at(cage, start_cage).
 at(broken_stool, road).
 at(branch, low_forest).
 at(chocolate, road).
-at(roach, rocky_road).
 at(dog, town).
+at(rat, town).
 at(river, river).
 at(white_rock, meadow).
 at(hay, wheat_field).
@@ -125,17 +132,21 @@ at(big_stick, forest).
 at(small_stick, low_forest).
 at(bone, graveyard).
 at(shell, nowhere).
+at(pipe, nowhere).
+at(sofa, road).
 
 /* HIDDEN */
 hidden(cod, cardboard_box).
 hidden(mackerel, cardboard_box).
-hidden(herring, cardboard_box).
-hidden(cool_rock, river).
+hidden(roach, cardboard_box).
+hidden(herring, pipe).
+hidden(cool_pebble, river).
 hidden(hat, white_rock).
 hidden(brown_mouse, hay).
 hidden(tiny_mouse, brick).
 hidden(hamster, cage).
 hidden(gerbil, hat).
+hidden(squirrel, branch).
 
 /* TAKE OBJECT */
 take(dog) :-
@@ -144,6 +155,10 @@ take(dog) :-
 
 take(river) :-
         write('The river is way too big for Muffin to pick up.'), nl,
+        !.
+
+take(sofa) :-
+        write('The sofa is too heavy for Muffin to move.'), nl,
         !.
 
 take(X) :-
@@ -159,10 +174,11 @@ take(X) :-
 
 take(white_rock) :-
         i_am_at(meadow),
-        write('Muffin pushes the rock aside.'), nl,
-        hidden(hat, rock),
-        retract(hidden(hat, rock)),
+        write('You pick up the white_rock.'), nl,
+        hidden(hat, white_rock),
+        retract(hidden(hat, white_rock)),
         assert(at(hat, meadow)),
+        assert(holding(white_rock)),
         write('Something was underneath... a hat!'), nl,
         !.
 
@@ -180,8 +196,8 @@ take(_) :-
 drop(bone) :-
         i_am_at(town),
         at(dog, town),
-        holding(X),
-        retract(holding(X)),
+        holding(bone),
+        retract(holding(bone)),
         assert(dog_distracted),
         write('The dog grabs the bone and runs away happily!'), nl,
         !.
@@ -210,11 +226,11 @@ drop(_) :-
 /* SEARCH */
 search(river) :-
         i_am_at(river),
-        hidden(cool_rock, river),
-        retract(hidden(cool_rock, river)),
-        assert(at(cool_rock, river)),
+        hidden(cool_pebble, river),
+        retract(hidden(cool_pebble, river)),
+        assert(at(cool_pebble, river)),
         write('Muffin splashes the water with her paw.'), nl,
-        write('She finds a shiny cool_rock!'), nl, !.
+        write('She finds a shiny cool_pebble!'), nl, !.
 
 search(Object) :-
         i_am_at(Place),
@@ -257,26 +273,26 @@ eat(X) :-
         holding(X),
         (X = cod ; X = mackerel; X = herring; X = roach),
         retract(holding(X)),
-        tiredness(T),
-        T1 is max(0, T - 3),
-        retract(tiredness(T)),
-        assert(tiredness(T1)),
-        max_tiredness(Max),
+        hunger(H),
+        H1 is max(0, H - 3),
+        retract(hunger(H)),
+        assert(hunger(H1)),
+        max_hunger(Max),
         write('Muffin happily eats the fish.'), nl,
-        write('She feels a bit less tired. (Tiredness: '), write(T1), write(' /'), write(Max), write(')'), nl,
+        write('She feels a bit less tired. (hunger: '), write(H1), write(' /'), write(Max), write(')'), nl,
         !.
 
 eat(X) :-
         holding(X),
-        (X = tiny_mouse ; X = brown_mouse; X = hamster; X = gerbil),
+        (X = tiny_mouse ; X = brown_mouse; X = hamster; X = gerbil, X = rat, X = squirrel),
         retract(holding(X)),
-        tiredness(T),
-        T1 is max(0, T - 2),
-        retract(tiredness(T)),
-        assert(tiredness(T1)),
-        max_tiredness(Max),
+        hunger(H),
+        H1 is max(0, H - 2),
+        retract(hunger(H)),
+        assert(hunger(H1)),
+        max_hunger(Max),
         write('Muffin happily eats the rodent.'), nl,
-        write('She feels a bit less tired. (Tiredness: '), write(T1), write(' /'), write(Max), write(')'), nl,
+        write('She feels a bit less tired. (hunger: '), write(H1), write(' /'), write(Max), write(')'), nl,
         !.
 
 eat(_) :-
@@ -289,7 +305,7 @@ build_step(small_stick, frame, headless_man).
 build_step(hat, headless_man, scarecrow).
 
 /*build stairs*/
-build_step(branch, broken_stool, stool).
+build_step(pipe, broken_stool, stool).
 build_step(cardboard_box, cage, tower).
 build_step(stool, tower, stairs).
 
@@ -362,7 +378,7 @@ describe_build(scarecrow) :-
         write('The crows fly away.'), nl.
 
 describe_build(stool) :-
-        write('You fix the broken stool using the branch.'), nl.
+        write('You fix the broken stool using the pipe.'), nl.
 
 describe_build(tower) :-
         write('You place the cardboard box on top of the cage.'), nl,
@@ -379,6 +395,20 @@ arrange(L1,L2,L3,L4,L5,L6,L7) :-
     Attempt = [L1,L2,L3,L4,L5,L6,L7],
     check_stones(Attempt).
 
+arrange(b,w,c,s) :-
+        i_am_at(waterfall),
+        at(brick, waterfall),
+        at(white_rock, waterfall),
+        at(cool_pebble, waterfall),
+        at(shell, waterfall),
+        build_totem, !.
+
+arrange(_) :-
+        i_am_at(waterfall),
+        write('You do not have all the stones needed to build the totem.'), nl,
+        !.
+
+/*CHECK STONES*/
 check_stones([s,h,e,l,t,e,r]) :-
         \+ shelter_clue_found,
         assert(shelter_clue_found),
@@ -399,6 +429,21 @@ check_stones([s,h,e,l,t,e,r]) :-
 check_stones(_) :-
         write('The stones do not seem to form a meaningful word.'), nl.
 
+/*BUILD TOTEM*/
+build_totem :-
+        write('Muffin carefully stacks the stones into a small totem.'), nl,
+        write('Brick at the bottom, then white rock, cool pebble and shell.'), nl,
+        write('The rushing waterfall sounds pleasant and she feels safe with the totem around.'), nl,
+        write('Muffin curls up beside the totem and rests.'), nl,
+        spawn_pipe.
+
+spawn_pipe :-
+        \+ at(pipe, waterfall),
+        assert(at(pipe, waterfall)),
+        write('Something floats toward the shore...'), nl,
+        write('A metal pipe washes up from the water!'), nl,
+        write('Next to it, something is moving too.'), nl.
+
 /* MOVEMENT SHORTCUTS */
 
 n :- go(n).
@@ -412,7 +457,7 @@ go(Direction) :-
         i_am_at(town),
         Direction = s,
         \+ dog_distracted,
-        write('A big dog blocks your way and growls.'), nl,
+        write('A big dog blocks your way to the south and growls.'), nl,
         write('Maybe you could give him something to eat...'), nl, !.
 
 go(Direction) :-
@@ -444,7 +489,7 @@ go(w) :-
         scarecrow_built,
         retract(i_am_at(wheat_field)),
         assert(i_am_at(cabbage_field)),
-        increase_tiredness,
+        increase_hunger,
         look, !.
 
 go(w) :-
@@ -462,7 +507,7 @@ go(w) :-
         assert(i_am_at(town)),
         write('Muffin climbs the tower of objects...'), nl,
         write('She hops over the stone gate!'), nl,
-        increase_tiredness,
+        increase_hunger,
         look, !.
 
 go(Direction) :-
@@ -498,7 +543,7 @@ go(Direction) :-
         check_car,
         check_lake,
         check_win,
-        increase_tiredness,
+        increase_hunger,
         !, look.
 
 go(_) :-
@@ -528,9 +573,9 @@ check_lake.
 /* LOOK */
 look :-
         i_am_at(Place),
-        tiredness(T),
-        max_tiredness(Max),
-        write('[Tiredness: '), write(T), write(' /'), write(Max), write(')'), nl,
+        hunger(T),
+        max_hunger(Max),
+        write('[hunger: '), write(T), write(' /'), write(Max), write(')'), nl,
         describe(Place),
         nl,
         notice_objects_at(Place),
@@ -612,6 +657,7 @@ Before you could complain, you were placed inside a metal cage and loaded into t
         write('search(object).  -- search container'), nl,
         write('eat(item).       -- eat something'), nl,
         write('attach(a,b).     -- attach object a to object b'), nl,
+        write('arrange(a,b,c,...).     -- arrange objects a, b, c, ... in order'), nl,
         write('look.            -- look around'), nl,
         write('show_mouth.      -- show everything Muffin is carring in her mouth'), nl,
         write('instructions.    -- help'), nl,
@@ -672,9 +718,8 @@ describe(river) :-
 
 describe(waterfall) :-
         write('A beutifull waterfall blocks your path on the west-north.'), nl,
-        write('You can see fish swimming in the water.'), nl,
-        write('You feel at peace here.'), nl.
-
+        write('Smooth stones lie scattered near the shore.'), nl,
+        write("This might be a peaceful place to build and arrange something and rest in it's shade."), nl.
 
 describe(barn) :-
         write('An old wooden barn. It smells like mice.'), nl,
