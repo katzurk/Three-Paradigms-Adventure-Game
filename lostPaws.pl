@@ -444,7 +444,7 @@ spawn_pipe :-
         assert(at(pipe, waterfall)),
         write('Something floats toward the shore...'), nl,
         write('A metal pipe washes up from the water!'), nl,
-        write('Next to it, something is moving too.'), nl.
+        write('Next to it, something else is moving too.'), nl.
 
 /* MOVEMENT SHORTCUTS */
 
@@ -660,11 +660,11 @@ instructions :-
         write('You were lying in the warm sun, happily baking like a loaf of bread.'), nl,
         nl,
         write('Suddenly, someone picked you up.
-Before you could complain, you were placed inside a metal cage and loaded into the back of a truck. Around you were many other cages filled with nervous animals.'), nl,
+Before you could even complain, you were placed inside a metal cage and loaded into the back of a truck. Around you were many other cages filled with nervous animals.'), nl,
         write('After many long hours, the truck turned onto a rough, bumpy road. The cages rattled and slid across the floor.'), nl,
         write('Then — **BANG!**'), nl,
-        write("The truck's back door swung open and yours cage rolled out of the truck and into the tall start_cage by the road."), nl,
-        write('The truck disappeared into the distance at the south.'), nl,
+        write("The truck's back door swung open and your cage rolled out of the truck and into the tall start_cage by the road."), nl,
+        write('The truck disappeared into the distance to the south.'), nl,
         write('You open the bend cage door and step outside'), nl,
         write('You are free, but can you find your way home?'), nl,
         nl,
@@ -748,7 +748,7 @@ describe(rocky_road) :-
         write('Letters on them read: '),
         stone_order(L),
         write(L), nl,
-        write('Maybe they form a word...'), nl.
+        write('Maybe they can form a word...'), nl.
 
 describe(meadow) :-
         write('    _     _     _      '), nl,
@@ -781,7 +781,7 @@ describe(waterfall) :-
         write('     | | | |       '), nl,
         write('  _~~_~~_~~_~~_    '), nl,
         write(' (_____________)   '), nl,
-        write('A beutifull waterfall blocks your path to the west-north.'), nl,
+        write('A beautifull waterfall blocks your path to the west-north.'), nl,
         write('This might be a peaceful place to arrange something and rest in its shade.'), nl,
         write('The smooth stones by the water look perfect for stacking.'), nl,
         write('Muffin notices that some are large and heavy, while others are small and light.'), nl,
@@ -841,7 +841,7 @@ describe(graveyard) :-
         write('An old graveyard full of crooked tombstones.'), nl,
         write('Cold wind rustles the dead leaves.'), nl,
         write('Tall stone walls surround the graveyard on all sides.'), nl,
-        write('The only exit is back east toward the town.'), nl.
+        write('The only exit is back east towards the town.'), nl.
 
 describe(home) :-
         write('          ( (        '), nl,
