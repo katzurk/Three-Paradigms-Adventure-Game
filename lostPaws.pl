@@ -272,7 +272,7 @@ eat(chocolate) :-
 
 eat(X) :-
         holding(X),
-        (X = cod ; X = mackerel; X = herring; X = roach),
+        (X = cod; X = mackerel; X = herring; X = roach),
         retract(holding(X)),
         hunger(H),
         H1 is max(0, H - 3),
@@ -285,7 +285,7 @@ eat(X) :-
 
 eat(X) :-
         holding(X),
-        (X = tiny_mouse ; X = brown_mouse; X = hamster; X = gerbil, X = rat, X = squirrel),
+        (X = tiny_mouse ; X = brown_mouse; X = hamster; X = gerbil; X = rat; X = squirrel),
         retract(holding(X)),
         hunger(H),
         H1 is max(0, H - 2),
@@ -419,6 +419,7 @@ check_stones([s,h,e,l,t,e,r]) :-
         write('SHELTER.'), nl,
         write('Muffin suddenly understands!'), nl,
         write('The animal shelter must be south of here!'), nl,
+        write("I don't want to live in a cage!"), nl,
         write('Something shiny appears between the stones... a shell!'), nl,
         !.
 
@@ -644,7 +645,7 @@ title :-
     write('============================================================'), nl,
     write('         THE JOURNEY BEGINS - find your way home           '), nl,
     write('============================================================'), nl,
-    write('                       |\__/,|   (`\\'),nl,
+    write('                       |\\__/,|   (`\\'),nl,
     write('                     _.|o o  |_   ) )'),nl,
     write('                   -(((---(((--------'),nl,
     write('        [to start the game write: start.]'),nl,
@@ -689,6 +690,7 @@ Before you could complain, you were placed inside a metal cage and loaded into t
 
 start :-
         init_stones,
+        title,
         instructions,
         look.
 
@@ -702,11 +704,11 @@ describe(start_cage) :-
         write('Your metal cage lies behind you.'), nl.
 
 describe(forest) :-
-        write('      /\\       /\\      '), nl,
-        write('     /  \\     /  \\     '), nl,
-        write('    /____\\   /____\\    '), nl,
-        write('  /\\ ||   /\\  ||  /\\  '), nl,
-        write(' /__\\||  /__\\ || /__\\ '), nl,
+        write('      /\\        /\\      '), nl,
+        write('     /  \\      /  \\     '), nl,
+        write('    /____\\    /____\\    '), nl,
+        write('  /\\  ||   /\\   ||  /\\  '), nl,
+        write(' /__\\ ||  /__\\  || /__\\ '), nl,
         write('  ||  ||   ||   ||  ||  '), nl,
         write('A shady forest. Birds chirp in the trees.'), nl,
         write('It smells like adventure... and maybe snacks.'), nl.
@@ -722,7 +724,7 @@ describe(low_forest) :-
 describe(infinite_forest) :-
         write('  /\\  /\\  /\\  /\\  /\\'), nl,
         write(' /__\\/__\\/__\\/__\\/__\\ '), nl,
-        write('  ||   ||   ||   ||   ||  '), nl,
+        write('  ||  ||  ||  ||  ||  '), nl,
         write('Trees stretch endlessly in every direction.'), nl,
         write('The forest looks exactly the same everywhere.'), nl,
         write('Muffin is completely lost.'), nl.
@@ -750,9 +752,9 @@ describe(rocky_road) :-
 
 describe(meadow) :-
         write('    _     _     _      '), nl,
-        write('   ( )   ( )   ( )  __ '), nl,
-        write('    |     |     |  (  )'), nl,
-        write('  \\|/   \\|/   \\|/  (__)'), nl,
+        write('   ( )   ( )   ( )   __ '), nl,
+        write('    |     |     |   (  )'), nl,
+        write('   \\|/   \\|/   \\|/  (__)'), nl,
         write('A quiet meadow full of pretty flowers.'), nl,
         write('Something shiny lies under a white_rock.'), nl.
 
@@ -769,7 +771,7 @@ describe(river) :-
         write('   <><    <><      '), nl,
         write('   ~ ~ ~ ~ ~ ~ ~   '), nl,
         write('  ~ ~ ~ ~ ~ ~ ~ ~  '), nl,
-        write('A fast flowing river blocks your path on the west.'), nl,
+        write('A fast flowing river blocks your path to the west.'), nl,
         write('You can see fish swimming in the water.'), nl,
         write('The current looks very strong.'), nl.
 
@@ -779,9 +781,13 @@ describe(waterfall) :-
         write('     | | | |       '), nl,
         write('  _~~_~~_~~_~~_    '), nl,
         write(' (_____________)   '), nl,
-        write('A beutifull waterfall blocks your path on the west-north.'), nl,
-        write('Smooth stones lie scattered near the shore.'), nl,
-        write("This might be a peaceful place to build and arrange something and rest in it's shade."), nl.
+        write('A beutifull waterfall blocks your path to the west-north.'), nl,
+        write('This might be a peaceful place to arrange something and rest in its shade.'), nl,
+        write('The smooth stones by the water look perfect for stacking.'), nl,
+        write('Muffin notices that some are large and heavy, while others are small and light.'), nl,
+        write('Three stones and a shell together could make a small totem if placed carefully.'), nl,
+        write('Perhaps they should stand from the strongest base to the lightest top.'), nl,
+        write('If only she could remember the first sounds of their names...'), nl.
 
 describe(barn) :-
         write('      _______      '), nl,
@@ -802,8 +808,8 @@ describe(town) :-
         write('A big dog sits at the south of the road and barks at you. He doesnt like cats, esspecialy ones that look a bit familiar.'), nl.
 
 describe(wheat_field) :-
-        write(' \\/  \\/  \\/  \\/  '), nl,
-        write('  \\/  \\/  \\/  \\/  '), nl,
+        write('   \\/  \\/  \\/  \\/  '), nl,
+        write('   \\/  \\/  \\/  \\/  '), nl,
         write('  _|   |  _|   |   '), nl,
         write(' (_)     (_)           '), nl,
         write('A huge wheat field sways in the wind.'), nl,

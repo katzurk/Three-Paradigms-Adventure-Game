@@ -1,26 +1,6 @@
 # PARP-LostPaws
-```
-============================================================
-      _                     _   _____
-     | |                   | | |  __ \
-     | |      ___   ___   _| |_| |__) |_ ___      _____
-     | |     / _ \ / __| /_` __|  ___/ _` \ \ /\ / / __|
-     | |____| (_) |\__ \___| |_| |  | (_| |\ V  V /\__ \
-     |______\___/ |___/\__,____|_|   \__,_| \_/\_/ |___/
 
-============================================================
-              THE JOURNEY BEGINS IN THE WILD
-============================================================
-
-                       |\__/,|   (`\
-                     _.|o o  |_   ) )
-                   -(((---(((--------
-
-                [ FIND YOUR WAY HOME ]
-
-============================================================
-```
-
+![poster](images/poster.png)
 
 ## Authors
 Weronika Maślana
@@ -63,81 +43,132 @@ swipl
 [lostPaws].
 start.
 ```
-
+---
 # === SPOILERS BELOW! ===
 
-## Map of terrain
-![Game Map basic](images/map-basic.png)
-<!-- ![Game Map pretty](images/map_pretty.png) -->
+## Map
+![Game Map pretty](images/map-pretty.png)
 
 
-##  Walkthrough in prolog
+##  Walkthrough
+**A Short Guide on How to Finish the Game and Bring Muffin Back Home**
 
-Krótki poradnik jak ukończyć grę i wrócić Muffinem do domu.
+---
 
-### 1. Ucieczka z okolicy klatki
-- Idź na **południe do meadow**.
-- `take(white_rock).` – pod kamieniem znajdziesz **hat**.
-- Idź **na zachód do rocky_road**.
+### 1. Escape from the Cage Area
 
-### 2. Rozwiązanie zagadki z kamieniami
-- Na rocky_road ułóż litery w słowo:
+* Go **south to meadow**.
+* `take(white_rock).` – under the rock you will find a **hat**.
+* Go **west to rocky_road**.
+
+---
+
+### 2. Solve the Stone Puzzle
+
+* On **rocky_road**, arrange the letters into the word:
+
+```
 shelter
-- Otrzymasz **shell** i wskazówkę o **shelter** (nie idź tam - to złe zakończenie).
+```
 
-### 3. Zbudowanie totemu przy wodospadzie
-- Idź:
-  - `w` → river
-  - `n` → waterfall
-- Musisz mieć:
-  - `brick`
-  - `white_rock`
-  - `cool_pebble` (`search(river).`)
-  - `shell`
-- Zanieś kamienie do waterfall i ułóż od najcięższego do najlżejszego (przy pomocy arrange i używając tylko pierszych liter powyższych przedmiotów):
+* You will receive a **shell** and a clue about the **shelter**
+  *(do not go there — it is a bad ending).*
+
+---
+
+### 3. Build the Totem at the Waterfall
+
+Go:
+
+* `w` → river
+* `n` → waterfall
+
+You must have:
+
+* `brick`
+* `white_rock`
+* `cool_pebble` (`search(river).`)
+* `shell`
+
+Bring the stones to the **waterfall** and arrange them **from the heaviest to the lightest** using `arrange` and only the **first letters** of the items:
+
+```
 b,w,c,s
-- Z wody wypłynie **pipe**.
+```
 
-### 4. Przepłoszenie wron na cabbage_field
-Potrzebne:
-- `big_stick`
-- `small_stick`
-- `hay`
-- `hat`
+A **pipe** will wash up from the water.
 
-W **wheat_field** zbuduj stracha:
-big_stick z hay -> frame
-small_stick z frame -> headless_man
-hat z headless_man
-Powstanie **scarecrow** i wrony odlecą.
+---
 
-### 5. Zbudowanie schodów na moście by przeskoczyć bramę
-Zbierz przedmioty:
-- `pipe`
-- `broken_stool`
-- `cardboard_box`
-- `cage`
+### 4. Scare Away the Crows on the Cabbage Field
 
-Budowanie:
-pipe z broken_stool -> stool
-cardboard_box z cage -> tower
-tower z stool
-Powstaną **stairs** które pozwolą przejść do miasta.
+You need:
 
-### 6. Pozbycie się psa
-- W **graveyard** znajdziesz:
+* `big_stick`
+* `small_stick`
+* `hay`
+* `hat`
+
+In **wheat_field**, build a scarecrow:
+
+* `big_stick` with `hay` → `frame`
+* `small_stick` with `frame` → `headless_man`
+* `hat` with `headless_man`
+
+This creates a **scarecrow**, and the crows will fly away.
+
+---
+
+### 5. Build Stairs at the Bridge to Jump Over the Gate
+
+Collect the items:
+
+* `pipe`
+* `broken_stool`
+* `cardboard_box`
+* `cage`
+
+Build them:
+
+* `pipe` with `broken_stool` → `stool`
+* `cardboard_box` with `cage` → `tower`
+* `tower` with `stool`
+
+This creates **stairs**, allowing you to enter the town.
+
+---
+
+### 6. Get Rid of the Dog
+
+* In the **graveyard** you will find:
+
+```
 bone
-- będąc w **town** rzuć ją psu (drop).
+```
 
-### 7. Odwrócenie uwagi orła
-- przynieś do town rybę (np. z pudełka w lesie)
-- rzuć rybę w town
+* While in **town**, throw it to the dog (`drop(bone).`).
 
-### 8. zchodzimy na południe do domu i wygrywamy
-- pamiętaj by po drodze zbierać i jeść ryby i gryzonie by nie umrzeć z wyczerpania
+---
 
+### 7. Distract the Eagle
 
-## Prolog - win sequence
+* Bring a **fish** to the town (for example from the box in the forest).
+* Drop the fish in **town**.
+
+---
+
+### 8. Go South to Your Home and Win
+
+---
+
+💡 **Tip:**
+Remember to **collect and eat fish or rodents along the way** so Muffin doesn’t collapse from exhaustion.
+
+---
+
+## Prolog - win sequence (87 steps)
+![Game Map basic](images/map-basic.png)
+
 ```
 s.
 take(white_rock).
@@ -218,7 +249,7 @@ search(cardboard_box).
 take(mackerel).
 eat(mackerel).
 search(cardboard_box).
-take(rauch).
+take(roach).
 take(cardboard_box).
 attach(cardboard_box, cage).
 attach(stool, tower).
@@ -231,7 +262,7 @@ take(bone).
 
 e.
 drop(bone).
-drop(rauch).
+drop(roach).
 s.
 halt.
 ```
