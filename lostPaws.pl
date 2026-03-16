@@ -1,6 +1,6 @@
 /* lostPaws - interactive fiction */
 
-:- dynamic i_am_at/1, at/2, holding/1, hidden/2, hunger/1, game_over/0.
+:- dynamic i_am_at/1, at/2, holding/1, hidden/2, hunger/1.
 :- dynamic stairs_built/0, scarecrow_built/0, eagle_distracted/0, dog_distracted/0.
 :- dynamic shelter_clue_found/0, stone_order/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(holding(_)).
@@ -149,10 +149,6 @@ hidden(gerbil, hat).
 hidden(squirrel, branch).
 
 /* TAKE OBJECT */
-take(_) :-
-    game_over,
-    write('The game is over. Muffin cannot pick up anything.'), nl, !.
-
 take(dog) :-
         write('The dog is far too big and angry for Muffin to pick up.'), nl,
         !.
@@ -198,10 +194,6 @@ take(_) :-
         write('You do not see that here.'), nl.
 
 /* DROP OBJECT */
-drop(_) :-
-    game_over,
-    write('The game is over. Muffin cannot drop anything.'), nl, !.
-
 drop(bone) :-
         i_am_at(town),
         at(dog, town),
@@ -233,10 +225,6 @@ drop(_) :-
         write('You are not holding it.'), nl.
 
 /* SEARCH */
-search(_) :-
-        game_over,
-        write('The game is over. Muffin cannot search anything.'), nl, !.
-
 search(river) :-
         i_am_at(river),
         hidden(cool_pebble, river),
@@ -263,10 +251,6 @@ search(_) :-
         write('You find nothing here.'), nl.
 
 /*EAT*/
-eat(_) :-
-    game_over,
-    write('The game is over. Muffin cannot eat anything.'), nl, !.
-
 eat(catnip) :-
         holding(catnip),
         retract(holding(catnip)),
@@ -276,7 +260,8 @@ eat(catnip) :-
         write('The barn owner hears the noise and thinks there is an intruder.'), nl,
         write('BANG!'), nl,
         write('Muffin has been shot.'), nl,
-        lose, !.
+        lose,
+        !.
 
 eat(chocolate) :-
         holding(chocolate),
@@ -284,7 +269,8 @@ eat(chocolate) :-
         write('Muffin eats the chocolate...'), nl,
         write('But chocolate is poisonous for cats!'), nl,
         write('She feels very sick...'), nl,
-        lose, !.
+        lose,
+        !.
 
 eat(X) :-
         holding(X),
@@ -325,10 +311,6 @@ build_step(hat, headless_man, scarecrow).
 build_step(pipe, broken_stool, stool).
 build_step(cardboard_box, cage, tower).
 build_step(stool, tower, stairs).
-
-attach(_, _) :-
-        game_over,
-        write('The game is over. Muffin cannot attach anything.'), nl, !.
 
 attach(Item, Base) :-
         build_step(Item, Base, Result),
@@ -411,15 +393,6 @@ describe_build(stairs) :-
         assert(stairs_built).
 
 /*ARRANGE*/
-
-/* Suppress warnings about scattered clauses */
-:- discontiguous arrange/1.
-:- discontiguous arrange/4.
-
-arrange(_) :-
-    game_over,
-    write('The game is over. Muffin cannot arrange anything.'), nl, !.
-
 arrange(L1,L2,L3,L4,L5,L6,L7) :-
     i_am_at(rocky_road),
     Attempt = [L1,L2,L3,L4,L5,L6,L7],
@@ -487,11 +460,6 @@ e :- go(e).
 w :- go(w).
 
 /* MOVEMENT */
-/* Prevent moving if game is over */
-go(_) :-
-    game_over,
-    write('The game is over. Muffin cannot move anywhere.'), nl, !.
-
 go(Direction) :-
         i_am_at(town),
         Direction = s,
@@ -611,10 +579,6 @@ check_lake.
 
 /* LOOK */
 look :-
-    game_over,
-    write('The game is over. Muffin cannot look at anything.'), nl, !.
-
-look :-
         i_am_at(Place),
         hunger(T),
         max_hunger(Max),
@@ -625,10 +589,6 @@ look :-
         nl.
 
 /* SHOW INVENTORY */
-show_mouth :-
-    game_over,
-    write('The game is over. Muffin cannot show anything.'), nl, !.
-
 show_mouth :-
         write('Muffin is carrying:'), nl,
         holding(X),
@@ -655,29 +615,26 @@ notice_objects_at(_).
 
 check_win :-
         i_am_at(home),
-        assert(game_over),
         write('Muffin recognizes the smell of her house!'), nl,
         write('She waddles inside and jumps onto the sofa.'), nl,
         write('Home at last.'), nl,
         write('YOU WIN!'), nl,
-        finish, !.
+        finish, !, halt.
 
 check_win.
 
 /*LOSE*/
 lose :-
-    \+ game_over,
-    assert(game_over),
     nl,
     write('YOU LOSE.'), nl,
-    finish, !, fail.
+    finish, !, halt.
 
 
 /* GAME END */
 
 finish :-
         nl,
-        write('---- The game is over. To exit type: halt.'),
+        write('The game is over.'),
         nl,
         nl.
 
@@ -692,11 +649,10 @@ title :-
     write(' |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    '), nl,
     write('============================================================'), nl,
     write('         THE JOURNEY BEGINS - find your way home           '), nl,
-    write('============================================================'), nl,
+    write('============================================================'), nl,nl,
     write('                       |\\__/,|   (`\\'),nl,
     write('                     _.|o o  |_   ) )'),nl,
     write('                   -(((---(((--------'),nl,
-    write('        [to start the game write: start.]'),nl,
     write('============================================================'), nl.
 
 
@@ -763,7 +719,7 @@ describe(forest) :-
 
 describe(low_forest) :-
         write('  /\\                  '), nl,
-        write(' /__\\      /\\         '), nl,
+        write(' /__\\       /\\         '), nl,
         write('  ||       /__\\        '), nl,
         write('vvVvVvv   vv||vvVvVvv     '), nl,
         write('The forest here is thinner.'), nl,
