@@ -260,7 +260,8 @@ eat(catnip) :-
         write('The barn owner hears the noise and thinks there is an intruder.'), nl,
         write('BANG!'), nl,
         write('Muffin has been shot.'), nl,
-        lose, !.
+        lose,
+        !.
 
 eat(chocolate) :-
         holding(chocolate),
@@ -268,7 +269,8 @@ eat(chocolate) :-
         write('Muffin eats the chocolate...'), nl,
         write('But chocolate is poisonous for cats!'), nl,
         write('She feels very sick...'), nl,
-        lose, !.
+        lose,
+        !.
 
 eat(X) :-
         holding(X),
@@ -409,6 +411,10 @@ arrange(_) :-
         write('You do not have all the stones needed to build the totem.'), nl,
         !.
 
+arrange(_) :-
+    write('That arrangement makes no sense here.'), nl,
+    !.
+
 /*CHECK STONES*/
 check_stones([s,h,e,l,t,e,r]) :-
         \+ shelter_clue_found,
@@ -454,7 +460,6 @@ e :- go(e).
 w :- go(w).
 
 /* MOVEMENT */
-
 go(Direction) :-
         i_am_at(town),
         Direction = s,
@@ -584,7 +589,6 @@ look :-
         nl.
 
 /* SHOW INVENTORY */
-
 show_mouth :-
         write('Muffin is carrying:'), nl,
         holding(X),
@@ -615,21 +619,22 @@ check_win :-
         write('She waddles inside and jumps onto the sofa.'), nl,
         write('Home at last.'), nl,
         write('YOU WIN!'), nl,
-        finish, !.
+        finish, !, halt.
 
 check_win.
 
 /*LOSE*/
 lose :-
-        nl,
-        write('YOU LOSE.'), nl,
-        finish, !, fail.
+    nl,
+    write('YOU LOSE.'), nl,
+    finish, !, halt.
+
 
 /* GAME END */
 
 finish :-
         nl,
-        write('---- The game is over. To exit type: halt.'),
+        write('The game is over.'),
         nl,
         nl.
 
@@ -644,11 +649,10 @@ title :-
     write(' |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    '), nl,
     write('============================================================'), nl,
     write('         THE JOURNEY BEGINS - find your way home           '), nl,
-    write('============================================================'), nl,
+    write('============================================================'), nl,nl,
     write('                       |\\__/,|   (`\\'),nl,
     write('                     _.|o o  |_   ) )'),nl,
     write('                   -(((---(((--------'),nl,
-    write('        [to start the game write: start.]'),nl,
     write('============================================================'), nl.
 
 
@@ -715,7 +719,7 @@ describe(forest) :-
 
 describe(low_forest) :-
         write('  /\\                  '), nl,
-        write(' /__\\      /\\         '), nl,
+        write(' /__\\       /\\         '), nl,
         write('  ||       /__\\        '), nl,
         write('vvVvVvv   vv||vvVvVvv     '), nl,
         write('The forest here is thinner.'), nl,
