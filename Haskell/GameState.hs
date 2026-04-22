@@ -14,10 +14,15 @@ data GameState = GameState
         world :: M.Map String Location,
         gameOver :: Bool,
         scarecrowBuilt :: Bool,
-        stairsBuilt :: Bool
+        stairsBuilt :: Bool,
+        dogDistracted :: Bool,
+        eagleDistracted :: Bool
     }
 
+maxHunger :: Int
 maxHunger = 12
+
+maxInventory :: Int
 maxInventory = 3
 
 initialGame :: GameState
@@ -29,7 +34,9 @@ initialGame = GameState
         world = allLocationsMap,
         gameOver = False,
         scarecrowBuilt = False,
-        stairsBuilt = False
+        stairsBuilt = False,
+        dogDistracted = False,
+        eagleDistracted = False
     }
 
 
@@ -67,9 +74,18 @@ getLocation locName =
         Just loc -> loc
         Nothing  -> error $ "Location not found: " ++ locName
 
--- addObjectToLocation :: String -> GameState -> GameState
+addObjectToLocation :: String -> Object -> GameState -> GameState
+addObjectToLocation locName obj gs =
+    let loc = (world gs) M.! locName
+        newLoc = loc { objects = obj : (objects loc) }
+    in gs { world = M.insert locName newLoc (world gs) }
 
--- removeObjectFromLocation :: String -> GameState -> GameState
+removeObjectFromLocation :: String -> Object -> GameState -> GameState
+removeObjectFromLocation locName obj gs =
+    let loc = (world gs) M.! locName
+        newLoc = loc { objects = filter (/= obj) (objects loc) }
+    in gs { world = M.insert locName newLoc (world gs) }
+
 
 showHunger :: GameState -> IO ()
 showHunger gs =
@@ -82,3 +98,44 @@ increaseHunger gs =
     in gs { hunger = newHunger, gameOver = isMax }
 
 
+checkEvent :: GameState -> Direction -> Maybe (EventResult, String)
+checkEvent gs dir
+    | currentLocation gs == "town" && dir == South && not (eagleDistracted gs) =
+        Just (Death, "eagle_death")
+    | currentLocation gs == "town" && dir == South && not (dogDistracted gs) =
+        Just (Blocked, "dog_blocked")
+    | currentLocation gs == "bridge" && dir == West && not (stairsBuilt gs) =
+        Just (Blocked, "gate_blocked")
+    | currentLocation gs == "bridge" && dir == West && stairsBuilt gs =
+        Just (Success, "gate_unlocked")
+    | currentLocation gs == "wheat_field" && dir == West && not (scarecrowBuilt gs) =
+        Just (Blocked, "crows_blocked")
+    | currentLocation gs == "car" =
+        Just (Death, "car_death")
+    | currentLocation gs == "forest" && dir == North =
+        Just (Death, "lake_death")
+    | currentLocation gs == "meadow" && dir == South =
+        Just (Death, "shelter_gameover")
+    | otherwise = Nothing
+
+
+getOutOfBoundsMessage :: GameState -> Maybe [String]
+getOutOfBoundsMessage gs =
+    M.lookup (currentLocation gs) outOfBoundsMessages
+
+
+tryMove :: Direction -> Location -> GameState -> IO GameState
+tryMove dir location gs =
+    case lookup dir (exits location) of
+        Nothing -> do
+            case getOutOfBoundsMessage gs of
+                Just msg -> printLines msg
+                Nothing  -> putStrLn "\nMuffin cannot go that way.\n"
+            return gs
+
+        Just newLocation -> do
+            showHunger gs
+            describeLocation newLocation
+            noticeObjects (getLocation newLocation)
+
+            return gs { currentLocation = newLocation }

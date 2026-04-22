@@ -11,6 +11,8 @@ data Location = Location
         exits :: [(Direction, String)]
     } deriving (Eq, Show)
 
+data EventResult = Blocked | Death | Success
+
 data Object = Object
     {
         objName :: String,
@@ -32,6 +34,7 @@ hay = Object "hay" [Object "brown_mouse" []]
 branch = Object "branch" [Object "squirell" []]
 brick = Object "brick" [Object "tiny_mouse" []]
 catnip = Object "catnip" []
+coolPebble = Object "coolPebble" []
 bigStick = Object "big_stick" []
 brokenStool = Object "broken_stool" []
 chocolate = Object "chocolate" []
@@ -69,7 +72,7 @@ rockyRoad = Location "rocky_road" []
 
 meadow :: Location
 meadow = Location "meadow" [whiteRock]
-    [(North,"start_cage"), (West,"rocky_road"), (East,"infinite_forest"), (South,"shelter")]
+    [(North,"start_cage"), (West,"rocky_road"), (East,"infinite_forest")]
 
 waterfall :: Location
 waterfall = Location "waterfall" []
@@ -80,7 +83,7 @@ riverLoc = Location "river" [riverObj]
     [(North,"waterfall"), (East,"rocky_road"), (South,"shelter")]
 
 wheatField :: Location
-wheatField = Location "Wheat_field" [hay]
+wheatField = Location "wheat_field" [hay]
     [(West,"cabbage_field"), (East,"lake"), (South,"barn")]
 
 cabbageField :: Location
@@ -94,6 +97,12 @@ bridge = Location "bridge" []
 barn :: Location
 barn = Location "barn" [catnip, brick]
     [(North,"wheat_field"), (West,"car"), (East,"forest"), (South,"road")]
+
+car :: Location
+car = Location "car" [] []
+
+lake :: Location
+lake = Location "lake" [] []
 
 graveyard :: Location
 graveyard = Location "graveyard" [bone]
@@ -125,5 +134,7 @@ allLocationsMap = M.fromList
         (name barn, barn),
         (name graveyard, graveyard),
         (name town, town),
-        (name home, home)
+        (name home, home),
+        (name car, car),
+        (name lake, lake)
     ]

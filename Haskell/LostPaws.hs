@@ -15,51 +15,62 @@ findObject name = find (\o -> objName o == name)
 
 move :: Direction -> GameState -> IO GameState
 move dir gs =
-    let location = getCurrentLocation gs
-    in
-    case lookup dir (exits location) of
-        Nothing -> do
-            putStrLn "\nMuffin cannot go that way.\n"
-            return gs
+    let gsHungry = increaseHunger gs
 
-        Just newLocation -> do
-            let newGs = increaseHunger gs
-            showHunger newGs
+    in if gameOver gsHungry
+        then do
+            putStrLn "Muffin is too weak to take another step..."
+            return gsHungry
+        else do
+            let location = getCurrentLocation gsHungry
+            case checkEvent gsHungry dir of
+                Just (Death, key) -> do
+                    case M.lookup key conditionMessages of
+                        Just msg -> printLines msg
+                        Nothing  -> putStrLn "Game Over."
+                    return gsHungry { gameOver = True }
 
-            describeLocation newLocation
-            noticeObjects (getLocation newLocation)
-            return newGs { currentLocation = newLocation }
+                Just (Blocked, key) -> do
+                    case M.lookup key conditionMessages of
+                        Just msg -> printLines msg
+                        Nothing  -> putStrLn "You can't go that way."
+                    return gsHungry
+
+                _ -> tryMove dir location gsHungry
+
 
 takeObject :: String -> GameState -> IO GameState
 takeObject objName gs =
     let loc = getCurrentLocation gs
-    in
-    case findObject objName (objects loc) of
+    in case findObject objName (objects loc) of
         Nothing -> do
             putStrLn $ "There is no " ++ objName ++ " here."
             return gs
-        Just obj -> do
-            let newLocObjects = filter (/= obj) (objects loc)
-                newLoc = loc { objects = newLocObjects }
-                newWorld = M.insert (currentLocation gs) newLoc (world gs)
-                newInv = obj : inventory gs
-            putStrLn $ "You picked up " ++ objName ++ "."
-            return gs { world = newWorld, inventory = newInv }
+        Just obj ->
+            if length (inventory gs) >= maxInventory
+                    then do
+                        putStrLn "Muffin's mouth is full! She can't carry anything else."
+                        return gs
+                    else do
+                        putStrLn $ "You picked up " ++ objName ++ "."
+                        let gsWithRemovedItem = removeObjectFromLocation (currentLocation gs) obj gs
+                        return gsWithRemovedItem { inventory = obj : inventory gs }
 
 dropObject :: String -> GameState -> IO GameState
+dropObject "bone" gs | currentLocation gs == "town" = do
+    putStrLn "The dog grabs the bone and runs away happily!"
+    return gs { dogDistracted = True, inventory = filter (\o -> objName o /= "bone") (inventory gs) }
+
 dropObject objName gs =
     case findObject objName (inventory gs) of
         Nothing -> do
-            putStrLn $ "You are not holding it."
+            putStrLn "You are not holding it."
             return gs
         Just obj -> do
+            putStrLn "Dropped."
+            let gsWithAddedItem = addObjectToLocation (currentLocation gs) obj gs
             let newInv = filter (/= obj) (inventory gs)
-                loc = getCurrentLocation gs
-                newLocObjects = obj : objects loc
-                newLoc = loc { objects = newLocObjects }
-                newWorld = M.insert (currentLocation gs) newLoc (world gs)
-            putStrLn $ "Dropped."
-            return gs { world = newWorld, inventory = newInv }
+            return gsWithAddedItem { inventory = newInv }
 
 showMouth :: GameState -> IO ()
 showMouth gs =
@@ -71,41 +82,54 @@ look gs = do
     describeLocation (currentLocation gs)
     noticeObjects (getCurrentLocation gs)
 
--- searchObject :: String -> GameState -> IO GameState
--- searchObject objName gs = do
---     let loc = getCurrentLocation gs
---     case findObject objName (objects loc) of
---         Nothing -> do
---             putStrLn "You find nothing here."
+searchObject :: String -> GameState -> IO GameState
+searchObject "river" gs =
+    if currentLocation gs == "river"
+    then do
+        putStrLn "Muffin splashes the water with her paw."
+        putStrLn "She finds a shiny cool_pebble!"
+        return (addObjectToLocation "river" coolPebble gs)
+    else do
+        putStrLn "There is no river here."
+        return gs
+
+searchObject name gs = do
+    let loc = getCurrentLocation gs
+    let locName = currentLocation gs
+
+    case findObject name (objects loc) of
+        Nothing -> do
+            putStrLn "You find nothing here."
+            return gs
+
+        Just obj -> case contains obj of
+            [] -> do
+                putStrLn "Nothing else inside."
+                return gs
+
+            foundItems -> do
+                putStrLn $ "Muffin searches the " ++ name ++ " and finds:"
+                mapM_ (\i -> putStrLn $ "- " ++ objName i) foundItems
+
+                let gs1 = removeObjectFromLocation locName obj gs
+                let emptyObj = obj { contains = [] }
+                let gs2 = addObjectToLocation locName emptyObj gs1
+
+                let finalGs = foldl (\state item -> addObjectToLocation locName item state) gs2 foundItems
+
+                return finalGs
+
+-- buildScarecrow :: GameState -> IO GameState
+-- buildScarecrow gs = do
+--     let invNames = map objName (inventory gs)
+--     if "hat" `elem` invNames && "headless_man" `elem` map objName (objects (getCurrentLocation gs))
+--         then do
+--             putStrLn "You place the hat on top. The crows fly away!"
+--             let gs1 = removeObjectFromLocation "wheat_field" (Object "headless_man" []) gs
+--             return gs1 { scarecrowBuilt = True, inventory = filter (\o -> objName o /= "hat") (inventory gs) }
+--         else do
+--             putStrLn "Muffin doesn't have the right items or is in the wrong place."
 --             return gs
---         Just obj -> do
---             case contains obj of
---                 [] -> do
---                     putStrLn $ "Nothing else inside the " ++ objName ++ "."
---                     return gs
---                 items -> do
---                     -- Move all contained items to the location
---                     let newLocObjects = objects loc ++ items
---                         newLoc = loc { objects = newLocObjects }
---                         newWorld = M.insert (currentLocation gs) newLoc (world gs)
---                         -- Remove items from obj's contains (optional, to simulate emptying)
---                         emptiedObj = obj { contains = [] }
---                         finalLocObjects = emptiedObj : filter (/= obj) newLocObjects
---                         finalLoc = newLoc { objects = finalLocObjects }
---                         finalWorld = M.insert (currentLocation gs) finalLoc newWorld
-
---                     -- Print messages for each found item
---                     mapM_ (\item -> putStrLn $ "Muffin searches the " ++ objName ++ " and finds a " ++ objName item ++ "!") items
-
---                     return gs { world = finalWorld }
-
--- eatObject :: Object -> GameState -> IO GameState
-
--- attachObjects :: Object -> Object -> GameState -> IO GameState
-
--- arrangeLetters :: [Char] -> GameState -> IO GameState
-
--- arrangeObjects :: [Object] -> GameState -> IO GameState
 
 readCommand :: IO String
 readCommand = do
@@ -124,17 +148,20 @@ parseCommand cmd gs =
         ["inventory"] -> showMouth gs >> return gs
         ["take", item] -> takeObject item gs
         ["drop", item] -> dropObject item gs
-        -- ["search", obj] -> searchObject obj gs
+        ["search", obj] -> searchObject obj gs
         ["instructions"] -> printInstructions >> return gs
         ["quit"] -> putStrLn "Goodbye!" >> return gs { gameOver = True }
         _ -> putStrLn "Unknown command." >> return gs
 
 gameLoop :: GameState -> IO ()
 gameLoop gs = do
-    when (not $ gameOver gs) $ do
-        cmd <- readCommand
-        gs' <- parseCommand cmd gs
-        gameLoop gs'
+    if gameOver gs
+        then do
+            putStrLn "YOU LOSE"
+        else do
+            cmd <- readCommand
+            gs' <- parseCommand cmd gs
+            gameLoop gs'
 
 main :: IO ()
 main = do

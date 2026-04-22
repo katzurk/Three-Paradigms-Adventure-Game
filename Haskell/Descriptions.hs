@@ -215,7 +215,60 @@ locDescriptions = M.fromList
         , "Your house!"
         , "The warm sofa awaits."
         ])
-    , ("shelter",
+    ]
+
+type ConditionMessages = M.Map String [String]
+conditionMessages :: ConditionMessages
+conditionMessages = M.fromList
+    [ ("dog_blocked",
+        [ "A big dog blocks your way to the south and growls."
+        , "Maybe you could give him something to eat..."
+        ])
+    , ("eagle_death",
+        [ "As Muffin walks forward..."
+        , "A huge eagle swoops down from above!"
+        , "Its talons grab Muffin before she can react."
+        , "The ground fades away..."
+        ])
+    , ("crows_blocked",
+        [ "As Muffin enters the cabbage field..."
+        , "A flock of angry crows attacks!"
+        , "CAW! CAW!"
+        , "They chase Muffin back to the wheat field."
+        ])
+    , ("gate_blocked",
+        [ "A tall stone gate, flanked by two castle towers, blocks the entrance to the town."
+        , "Muffin could jump over... if she was taller."
+        , "Maybe she could build something to climb on."
+        ])
+    , ("gate_unlocked",
+        [ "Muffin climbs the tower of objects..."
+        , "She hops over the stone gate!"
+        ])
+    , ("waterfall_death",
+        [ "Muffin tries to step into the water."
+        , "The current pulls her away!"
+        , "She cannot swim..."
+        , "Muffin drowns."
+        ])
+    , ("river_death",
+        [ "Muffin tries to step into the river."
+        , "The current pulls her away!"
+        , "She cannot swim..."
+        , "Muffin drowns."
+        ])
+    , ("car_death",
+        [ "Muffin sneaks behind the barn into a parking lot."
+        , "Suddenly a car starts moving!"
+        , "She is disoriented and runs directly under the wheels..."
+        , "CRUNCH."
+        ])
+    , ("lake_death",
+        [ "Muffin visits the lake."
+        , "But the ground is slippery here!"
+        , "She falls into the water. Muffin can't swim and drowns."
+        ])
+    , ("shelter_gameover",
         [ "   _________       "
         , "  |_|_|_|_|_|      "
         , "  |_|_|_|_|_|      "
@@ -227,61 +280,23 @@ locDescriptions = M.fromList
         ])
     ]
 
-type BlockedMessages = M.Map (String, Direction) [String]
-blockedMessages :: BlockedMessages
-blockedMessages = M.fromList
-    [ (("town", South),
-        [ "A big dog blocks your way to the south and growls."
-        , "Maybe you could give him something to eat..."
-        ])
-    , (("town", South),
-        [ "As Muffin walks forward..."
-        , "A huge eagle swoops down from above!"
-        , "Its talons grab Muffin before she can react."
-        , "The ground fades away..."
-        ])
-    , (("wheat_field", North),
+
+type OutOfBoundsMessages = M.Map String [String]
+outOfBoundsMessages :: OutOfBoundsMessages
+outOfBoundsMessages = M.fromList
+    [ ("wheat_field",
         [ "There is a highway up ahead."
         , "Muffin is too scared to go this way."
         ])
-    , (("wheat_field", West),
-        [ "As Muffin enters the cabbage field..."
-        , "A flock of angry crows attacks!"
-        , "CAW! CAW!"
-        , "They chase Muffin back to the wheat field."
+    , ("cabbage_field",
+        [ "There is a highway up ahead."
+        , "Muffin is too scared to go this way."
         ])
-    , (("bridge", West),
-        [ "A tall stone gate, flanked by two castle towers, blocks the entrance to the town."
-        , "Muffin could jump over... if she was taller."
-        , "Maybe she could build something to climb on."
+    , ("town",
+        [ "There is a highway up ahead."
+        , "Muffin is too scared to go this way."
         ])
-    , (("river", West),
-        [ "Muffin tries to step into the river."
-        , "The current pulls her away!"
-        , "She cannot swim..."
-        , "Muffin drowns."
-        ])
-    , (("waterfall", North),
-        [ "Muffin tries to step into the water."
-        , "The current pulls her away!"
-        , "She cannot swim..."
-        , "Muffin drowns."
-        ])
-    , (("waterfall", West),
-        [ "Muffin tries to step into the water."
-        , "The current pulls her away!"
-        , "She cannot swim..."
-        , "Muffin drowns."
-        ])
-    , (("graveyard", North),
-        [ "The graveyard is surrounded by tall stone walls."
-        , "There is no exit that way."
-        ])
-    , (("graveyard", West),
-        [ "The graveyard is surrounded by tall stone walls."
-        , "There is no exit that way."
-        ])
-    , (("graveyard", South),
+    , ("graveyard",
         [ "The graveyard is surrounded by tall stone walls."
         , "There is no exit that way."
         ])
