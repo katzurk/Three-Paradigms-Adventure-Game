@@ -118,6 +118,15 @@ increaseHunger gs =
 
 tryTake :: Object -> GameState -> IO GameState
 tryTake obj gs
+    | objName obj == "dog" = do
+        putStrLn "The dog is far too big and angry for Muffin to pick up."
+        return gs
+    | objName obj == "river" = do
+        putStrLn "The river is way too big for Muffin to pick up."
+        return gs
+    | objName obj == "sofa" = do
+        putStrLn "The sofa is too heavy for Muffin to move."
+        return gs
     | objName obj == "white_rock" = do
         putStrLn "You pick up the white_rock."
         putStrLn "Something was underneath... a hat!"

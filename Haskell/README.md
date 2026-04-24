@@ -2,10 +2,15 @@
 
 ## Instrukcja uruchomienia
 
-Kompilacja i uruchomienie trybu interaktywnego
+Instalacja pakietów
 
-`ghci LostPaws.hs`
+`sudo apt install ghc`
+`sudo apt install cabal-install`
+
+Kompilacja gry
+
+`cabal build`
 
 Uruchomienie gry
 
-`main`
+`cabal run`

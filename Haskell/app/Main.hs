@@ -1,10 +1,11 @@
-module LostPaws where
+module Main where
 import World
 import Descriptions
 import GameState
 import Commands
 import Utils
 import qualified Data.Map as M
+import System.IO (hSetBuffering, stdout, BufferMode(NoBuffering), hFlush)
 
 printIntroduction = printLines introductionText
 printInstructions = printLines instructionsText
@@ -13,8 +14,8 @@ printTitle = printLines titleText
 readCommand :: IO String
 readCommand = do
     putStr "> "
-    xs <- getLine
-    return xs
+    hFlush stdout
+    getLine
 
 parseCommand :: String -> GameState -> IO GameState
 parseCommand cmd gs =
