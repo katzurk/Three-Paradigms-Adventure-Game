@@ -14,6 +14,7 @@ data GameState = GameState
         hunger :: Int,
         world :: M.Map String Location,
         gameOver :: Bool,
+        shelterClueFound :: Bool,
         scarecrowBuilt :: Bool,
         stairsBuilt :: Bool,
         dogDistracted :: Bool,
@@ -34,6 +35,7 @@ initialGame = GameState
         hunger = 0,
         world = allLocationsMap,
         gameOver = False,
+        shelterClueFound = False,
         scarecrowBuilt = False,
         stairsBuilt = False,
         dogDistracted = False,
@@ -192,3 +194,27 @@ performAttach item baseName result gs = do
                     _           -> gsInv
 
             return finalGs
+
+solveShelterPuzzle :: GameState -> IO GameState
+solveShelterPuzzle gs =
+    if shelterClueFound gs
+    then do
+        putStrLn "You already solved this puzzle."
+        return gs
+    else do
+        printLines
+            [ "The stones glow faintly...", "SHELTER.", "Muffin suddenly understands!",
+              "The animal shelter must be south of here!", "I don't want to live in a cage!",
+              "Something shiny appears between the stones... a shell!" ]
+        let newWorld = addObjectToLocation "rocky_road" shell gs
+        return newWorld { shelterClueFound = True }
+
+buildTotem :: GameState -> IO GameState
+buildTotem gs = do
+    printLines
+        [ "Muffin carefully stacks the stones into a small totem.",
+          "Brick at the bottom, then white rock, cool pebble and shell.",
+          "The rushing waterfall sounds pleasant and she feels safe.",
+          "Something floats toward the shore... a metal pipe washes up!" ]
+    let newWorld = addObjectToLocation "waterfall" pipe gs
+    return newWorld

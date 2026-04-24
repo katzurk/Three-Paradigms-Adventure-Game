@@ -175,6 +175,30 @@ attachObject item base gs = do
             else do
                 performAttach item base result gs
 
+arrange :: [String] -> GameState -> IO GameState
+arrange input gs
+    | currentLocation gs == "rocky_road" && length input == 7 =
+        if input == ["s","h","e","l","t","e","r"]
+        then solveShelterPuzzle gs
+        else do
+            putStrLn "The stones do not seem to form a meaningful word."
+            return gs
+    | currentLocation gs == "waterfall" && length input == 4 = do
+        let required = ["brick", "white_rock", "cool_pebble", "shell"]
+        let locItems = objects (getCurrentLocation gs)
+        let allPresent = all (\reqName -> any (\obj -> objName obj == reqName) locItems) required
+
+        if not allPresent then do
+            putStrLn "You do not have all the stones needed to build the totem."
+            return gs
+        else if input == ["b", "w", "c", "s"] then
+            buildTotem gs
+        else do
+            putStrLn "That's not the right order or items for the totem."
+            return gs
+    | otherwise = do
+        putStrLn "That arrangement makes no sense here."
+        return gs
 
 readCommand :: IO String
 readCommand = do
@@ -195,7 +219,7 @@ parseCommand cmd gs =
         ["drop", item] -> dropObject item gs
         ["attach", a, b] -> attachObject a b gs
         ["eat", item] -> eat item gs
-        -- ["arrange", a, b, c] -> arrangeObjects a b gs
+        ("arrange" : args) -> arrange args gs
         ["search", obj] -> searchObject obj gs
         ["instructions"] -> printInstructions >> return gs
         ["quit"] -> putStrLn "Goodbye!" >> return gs { gameOver = True }

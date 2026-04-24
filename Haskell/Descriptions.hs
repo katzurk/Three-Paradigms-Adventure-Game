@@ -106,7 +106,7 @@ locDescriptions = M.fromList
         , " o .  .  o . .  "
         , "A rough rocky road full of stones."
         , "Seven carved stones lie on the ground."
-        , "Letters on them read: [stone letters here]"
+        , "Letters on them read: h, l, e, t, s, r, e"
         , "Maybe they can form a word..."
         ])
     , ("meadow",

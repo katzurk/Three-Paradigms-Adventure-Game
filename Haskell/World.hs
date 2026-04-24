@@ -34,13 +34,12 @@ hay = Object "hay" [Object "brown_mouse" []]
 branch = Object "branch" [Object "squirell" []]
 brick = Object "brick" [Object "tiny_mouse" []]
 catnip = Object "catnip" []
-coolPebble = Object "coolPebble" []
+coolPebble = Object "cool_pebble" []
 bigStick = Object "big_stick" []
 brokenStool = Object "broken_stool" []
 chocolate = Object "chocolate" []
 dog = Object "dog" []
 rat = Object "rat" []
-riverObj = Object "river" [Object "cool_pebble" []]
 sofa = Object "sofa" []
 bone = Object "bone" []
 shell = Object "shell" []
@@ -90,7 +89,7 @@ waterfall = Location "waterfall" []
     [(East,"road"), (South,"river")]
 
 riverLoc :: Location
-riverLoc = Location "river" [riverObj]
+riverLoc = Location "river" []
     [(North,"waterfall"), (East,"rocky_road"), (South,"shelter")]
 
 wheatField :: Location
