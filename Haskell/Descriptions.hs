@@ -2,56 +2,53 @@ module Descriptions where
 import World
 import qualified Data.Map as M
 
-titleText = [
-    "============================================================",
-    "  _                 _  _____                         ",
-    " | |               | | |  __ \\                        ",
-    " | |      ___  ___ | |_| |__) |__ __      __ ___     ",
-    " | |     / _ \\/ __|| __|  ___/ _ `\\ \\ /\\ / // __|    ",
-    " | |____| (_) \\__ \\| |_| |  | (_| |\\ V  V / \\__ \\    ",
-    " |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    ",
-    "============================================================",
-    "         THE JOURNEY BEGINS - find your way home          ",
-    "============================================================",
-    "                       |\\__/,|   (`\\",
-    "                     _.|o o  |_   ) )",
-    "                   -(((---(((--------",
-    "============================================================",
-    ""
+titleText =
+    [ "============================================================"
+    , "  _                 _  _____                         "
+    , " | |               | | |  __ \\                        "
+    , " | |      ___  ___ | |_| |__) |__ __      __ ___     "
+    , " | |     / _ \\/ __|| __|  ___/ _ `\\ \\ /\\ / // __|    "
+    , " | |____| (_) \\__ \\| |_| |  | (_| |\\ V  V / \\__ \\    "
+    , " |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    "
+    , "============================================================"
+    , "         THE JOURNEY BEGINS - find your way home          "
+    , "============================================================"
+    , "                       |\\__/,|   (`\\"
+    , "                     _.|o o  |_   ) )"
+    , "                   -(((---(((--------"
+    , "============================================================"
+    , ""
     ]
 
-introductionText = [
-    "============================================================",
-    "You are Muffin, a fat and very lazy house cat.",
-    "You were lying in the warm sun, happily baking like a loaf of bread.",
-    "",
-    "Suddenly, someone picked you up.",
-    "Before you could even complain, you were placed inside a metal cage and loaded into the back of a truck. Around you were many other cages filled with nervous animals.",
-    "After many long hours, the truck turned onto a rough, bumpy road. The cages rattled and slid across the floor.",
-    "Then — **BANG!**",
-    "The truck's back door swung open and your cage rolled out of the truck and into the tall start_cage by the road.",
-    "The truck disappeared into the distance to the south.",
-    "You open the bend cage door and step outside",
-    "You are free, but can you find your way home?",
-    "",
-    "==== QUEST: Return back home",
-    ""
+introductionText =
+    [ "============================================================"
+    , "You are Muffin, a fat and very lazy house cat."
+    , "You were lying in the warm sun, happily baking like a loaf of bread."
+    , ""
+    , "Suddenly, someone picked you up."
+    , "Before you could even complain, you were placed inside a metal cage."
+    , "After many hours, the truck door swung open..."
+    , "Your cage rolled out into the tall grass by the road."
+    , "The truck disappeared. You are free, but can you find your way home?"
+    , ""
+    , "==== QUEST: Return back home"
+    , ""
     ]
 
-instructionsText = [
-    "---- Commands:",
-    "move [n, s, e, w]    -- move",
-    "take item            -- pick up item",
-    "drop item            -- drop item",
-    "search object        -- search container",
-    "eat item             -- eat something",
-    "attach a b           -- attach object a to object b",
-    "arrange a b c ...    -- arrange objects a, b, c, ... in order",
-    "look                 -- look around",
-    "show mouth           -- show everything Muffin is carring in her mouth",
-    "instructions         -- to see these instructions.",
-    "quit                 -- to end the game and quit.",
-    ""
+instructionsText =
+    [ "---- Commands:"
+    , "move [n, s, e, w]    -- move"
+    , "take item            -- pick up item"
+    , "drop item            -- drop item"
+    , "search object        -- search container"
+    , "eat item             -- eat something"
+    , "attach a b           -- attach object a to object b"
+    , "arrange a b c ...    -- arrange objects in order"
+    , "look                 -- look around"
+    , "show mouth           -- show everything Muffin is carrying"
+    , "instructions         -- see these instructions"
+    , "quit                 -- end the game"
+    , ""
     ]
 
 type LocationDescriptions = M.Map String [String]
@@ -305,6 +302,7 @@ buildRecipes =
     [ ("big_stick",    "hay",          "frame",        "wheat_field")
     , ("small_stick",  "frame",        "headless_man", "wheat_field")
     , ("hat",          "headless_man", "scarecrow",    "wheat_field")
+    , ("pipe",         "broken_stool", "stool",        "")
     , ("cardboard_box","cage",         "tower",        "bridge")
     , ("stool",        "tower",        "stairs",       "bridge")
     ]
@@ -314,6 +312,7 @@ buildMessages = M.fromList
     [ ("frame",        ["You attach a stick into the hay bundle.", "It starts to look like a frame."])
     , ("headless_man", ["The scarecrow now has two arms.", "It looks like a headless man!"])
     , ("scarecrow",    ["You place the hat on top.", "A scary scarecrow stands between the fields!", "The crows fly away."])
+    , ("stool",        ["You fix the broken stool using the pipe."])
     , ("tower",        ["You place the cardboard box on top of the cage.", "It forms a small tower."])
     , ("stairs",       ["You add the stool to the tower.", "Now Muffin can climb it like stairs!"])
     ]

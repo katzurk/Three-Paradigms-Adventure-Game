@@ -3,11 +3,13 @@
 ![poster](images/poster.png)
 
 ## Authors
+
 Weronika Maślana
 Katarzyna Kanicka
 Hanna Zarzycka
 
 ## Topic of the story:
+
 Muffin, a fat and very lazy house cat, was lying in the warm sun, happily baking like a loaf of bread.
 
 Suddenly, someone picked her up.
@@ -29,50 +31,54 @@ But one question remained:
 
 **How will she find her way home?**
 
-
 ## Task:
-write adventure, text based game in:
-* prolog (W)
-* huskel (K)
-* smalltalk (H)
 
+write adventure, text based game in:
+
+- prolog (W)
+- huskel (K)
+- smalltalk (H)
 
 ## Prolog launch
+
 ```
 swipl
 [lostPaws].
 start.
 ```
+
 ---
+
 # === SPOILERS BELOW! ===
 
 ## Map
+
 ![Game Map pretty](images/map-pretty.png)
 
+## Walkthrough
 
-##  Walkthrough
 **A Short Guide on How to Finish the Game and Bring Muffin Back Home**
 
 ---
 
 ### 1. Escape from the Cage Area
 
-* Go **south to meadow**.
-* `take(white_rock).` – under the rock you will find a **hat**.
-* Go **west to rocky_road**.
+- Go **south to meadow**.
+- `take(white_rock).` – under the rock you will find a **hat**.
+- Go **west to rocky_road**.
 
 ---
 
 ### 2. Solve the Stone Puzzle
 
-* On **rocky_road**, arrange the letters into the word:
+- On **rocky_road**, arrange the letters into the word:
 
 ```
 shelter
 ```
 
-* You will receive a **shell** and a clue about the **shelter**
-  *(do not go there — it is a bad ending).*
+- You will receive a **shell** and a clue about the **shelter**
+  _(do not go there — it is a bad ending)._
 
 ---
 
@@ -80,15 +86,15 @@ shelter
 
 Go:
 
-* `w` → river
-* `n` → waterfall
+- `w` → river
+- `n` → waterfall
 
 You must have:
 
-* `brick`
-* `white_rock`
-* `cool_pebble` (`search(river).`)
-* `shell`
+- `brick`
+- `white_rock`
+- `cool_pebble` (`search(river).`)
+- `shell`
 
 Bring the stones to the **waterfall** and arrange them **from the heaviest to the lightest** using `arrange` and only the **first letters** of the items:
 
@@ -104,16 +110,16 @@ A **pipe** will wash up from the water.
 
 You need:
 
-* `big_stick`
-* `small_stick`
-* `hay`
-* `hat`
+- `big_stick`
+- `small_stick`
+- `hay`
+- `hat`
 
 In **wheat_field**, build a scarecrow:
 
-* `big_stick` with `hay` → `frame`
-* `small_stick` with `frame` → `headless_man`
-* `hat` with `headless_man`
+- `big_stick` with `hay` → `frame`
+- `small_stick` with `frame` → `headless_man`
+- `hat` with `headless_man`
 
 This creates a **scarecrow**, and the crows will fly away.
 
@@ -123,16 +129,16 @@ This creates a **scarecrow**, and the crows will fly away.
 
 Collect the items:
 
-* `pipe`
-* `broken_stool`
-* `cardboard_box`
-* `cage`
+- `pipe`
+- `broken_stool`
+- `cardboard_box`
+- `cage`
 
 Build them:
 
-* `pipe` with `broken_stool` → `stool`
-* `cardboard_box` with `cage` → `tower`
-* `tower` with `stool`
+- `pipe` with `broken_stool` → `stool`
+- `cardboard_box` with `cage` → `tower`
+- `tower` with `stool`
 
 This creates **stairs**, allowing you to enter the town.
 
@@ -140,20 +146,20 @@ This creates **stairs**, allowing you to enter the town.
 
 ### 6. Get Rid of the Dog
 
-* In the **graveyard** you will find:
+- In the **graveyard** you will find:
 
 ```
 bone
 ```
 
-* While in **town**, throw it to the dog (`drop(bone).`).
+- While in **town**, throw it to the dog (`drop(bone).`).
 
 ---
 
 ### 7. Distract the Eagle
 
-* Bring a **fish** to the town (for example from the box in the forest).
-* Drop the fish in **town**.
+- Bring a **fish** to the town (for example from the box in the forest).
+- Drop the fish in **town**.
 
 ---
 
@@ -167,6 +173,7 @@ Remember to **collect and eat fish or rodents along the way** so Muffin doesn’
 ---
 
 ## Prolog - win sequence (87 steps)
+
 ![Game Map basic](images/map-basic.png)
 
 ```
