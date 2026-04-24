@@ -45,6 +45,17 @@ sofa = Object "sofa" []
 bone = Object "bone" []
 shell = Object "shell" []
 
+fish :: [String]
+fish = ["cod", "mackerel", "roach", "herring"]
+
+rodents :: [String]
+rodents = ["hamster", "berbil", "brown_mouse", "tiny_mouse", "rat", "squirell"]
+
+special :: [String]
+special = ["chocolate", "catnip"]
+
+allFood :: [String]
+allFood = fish ++ rodents ++ special
 
 startCage :: Location
 startCage = Location "start_cage" [cage]

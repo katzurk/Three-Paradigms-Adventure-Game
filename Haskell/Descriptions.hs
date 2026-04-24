@@ -40,7 +40,7 @@ introductionText = [
 
 instructionsText = [
     "---- Commands:",
-    "n s e w              -- move",
+    "move [n, s, e, w]    -- move",
     "take item            -- pick up item",
     "drop item            -- drop item",
     "search object        -- search container",
@@ -48,7 +48,7 @@ instructionsText = [
     "attach a b           -- attach object a to object b",
     "arrange a b c ...    -- arrange objects a, b, c, ... in order",
     "look                 -- look around",
-    "show_mouth           -- show everything Muffin is carring in her mouth",
+    "show mouth           -- show everything Muffin is carring in her mouth",
     "instructions         -- to see these instructions.",
     "quit                 -- to end the game and quit.",
     ""
@@ -280,6 +280,43 @@ conditionMessages = M.fromList
         ])
     ]
 
+eatDescriptions :: M.Map String [String]
+eatDescriptions = M.fromList
+    [ ("catnip",
+        [ "Muffin eats the catnip.",
+          "Everything spins...",
+          "She runs around the barn knocking things over.",
+          "The barn owner hears the noise and thinks there is an intruder.",
+          "BANG!",
+          "Muffin has been shot."
+        ])
+    , ("chocolate",
+        [ "Muffin eats the chocolate...",
+          "But chocolate is poisonous for cats!",
+          "She feels very sick..."
+        ])
+    , ("fish", ["Muffin happily eats the fish."])
+    , ("rodent", ["Muffin happily eats the rodent."])
+    , ("default", ["You cannot eat that."])
+    ]
+
+buildRecipes :: [(String, String, String, String)]
+buildRecipes =
+    [ ("big_stick",    "hay",          "frame",        "wheat_field")
+    , ("small_stick",  "frame",        "headless_man", "wheat_field")
+    , ("hat",          "headless_man", "scarecrow",    "wheat_field")
+    , ("cardboard_box","cage",         "tower",        "bridge")
+    , ("stool",        "tower",        "stairs",       "bridge")
+    ]
+
+buildMessages :: M.Map String [String]
+buildMessages = M.fromList
+    [ ("frame",        ["You attach a stick into the hay bundle.", "It starts to look like a frame."])
+    , ("headless_man", ["The scarecrow now has two arms.", "It looks like a headless man!"])
+    , ("scarecrow",    ["You place the hat on top.", "A scary scarecrow stands between the fields!", "The crows fly away."])
+    , ("tower",        ["You place the cardboard box on top of the cage.", "It forms a small tower."])
+    , ("stairs",       ["You add the stool to the tower.", "Now Muffin can climb it like stairs!"])
+    ]
 
 type OutOfBoundsMessages = M.Map String [String]
 outOfBoundsMessages :: OutOfBoundsMessages

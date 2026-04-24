@@ -2,6 +2,7 @@ module GameState where
 import World
 import Descriptions
 import qualified Data.Map as M
+import Data.List (find)
 
 printLines :: [String] -> IO ()
 printLines xs = putStr (unlines xs)
@@ -74,6 +75,13 @@ getLocation locName =
         Just loc -> loc
         Nothing  -> error $ "Location not found: " ++ locName
 
+findObject :: String -> [Object] -> Maybe Object
+findObject name = find (\o -> objName o == name)
+
+findObjectInLocation :: String -> Location -> Maybe Object
+findObjectInLocation name loc =
+    find (\o -> objName o == name) (objects loc)
+
 addObjectToLocation :: String -> Object -> GameState -> GameState
 addObjectToLocation locName obj gs =
     let loc = (world gs) M.! locName
@@ -97,6 +105,21 @@ increaseHunger gs =
         isMax = newHunger >= maxHunger
     in gs { hunger = newHunger, gameOver = isMax }
 
+getEatMessage :: String -> IO ()
+getEatMessage key =
+    case M.lookup key eatDescriptions of
+        Just msg -> printLines msg
+        Nothing  -> putStrLn ""
+
+tryEat :: String -> GameState -> GameState
+tryEat itemName gs
+    | itemName == "catnip" || itemName == "chocolate" =
+        gs { gameOver = True }
+    | itemName `elem` fish =
+        gs { hunger = max 0 (hunger gs - 3) }
+    | itemName `elem` rodents =
+        gs { hunger = max 0 (hunger gs - 2) }
+    | otherwise = gs
 
 checkEvent :: GameState -> Direction -> Maybe (EventResult, String)
 checkEvent gs dir
@@ -139,3 +162,33 @@ tryMove dir location gs =
             noticeObjects (getLocation newLocation)
 
             return gs { currentLocation = newLocation }
+
+
+performAttach :: String -> String -> String -> GameState -> IO GameState
+performAttach item baseName result gs = do
+    let locName = currentLocation gs
+    let loc = getCurrentLocation gs
+
+    case M.lookup result buildMessages of
+        Just msg -> printLines msg
+        Nothing  -> return ()
+
+    let maybeObj = find (\o -> objName o == baseName) (objects loc)
+
+    case maybeObj of
+        Nothing -> do
+            return gs
+
+        Just obj -> do
+            let gsRemove = removeObjectFromLocation locName obj gs
+            let gsAdd = addObjectToLocation locName (Object result []) gsRemove
+
+            let newInv = filter (\o -> objName o /= item) (inventory gsAdd)
+            let gsInv = gsAdd { inventory = newInv }
+
+            let finalGs = case result of
+                    "scarecrow" -> gsInv { scarecrowBuilt = True }
+                    "stairs"    -> gsInv { stairsBuilt = True }
+                    _           -> gsInv
+
+            return finalGs
