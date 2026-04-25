@@ -1,0 +1,604 @@
+============================================================
+  _                 _  _____
+ | |               | | |  __ \
+ | |      ___  ___ | |_| |__) |__ __      __ ___
+ | |     / _ \/ __|| __|  ___/ _ `\ \ /\ / // __|
+ | |____| (_) \__ \| |_| |  | (_| |\ V  V / \__ \
+ |______|\___/|___/ \__|_|   \__,_| \_/\_/  |___/
+============================================================
+         THE JOURNEY BEGINS - find your way home
+============================================================
+                       |\__/,|   (`\
+                     _.|o o  |_   ) )
+                   -(((---(((--------
+============================================================
+
+============================================================
+You are Muffin, a fat and very lazy house cat.
+You were lying in the warm sun, happily baking like a loaf of bread.
+
+Suddenly, someone picked you up.
+Before you could even complain, you were placed inside a metal cage.
+After many hours, the truck door swung open...
+Your cage rolled out into the tall grass by the road.
+The truck disappeared. You are free, but can you find your way home?
+
+==== QUEST: Return back home
+
+---- Commands:
+move [n, s, e, w]    -- move
+take item            -- pick up item
+drop item            -- drop item
+search object        -- search container
+eat item             -- eat something
+attach a to b        -- attach object a to object b
+arrange a b c ...    -- arrange objects in order
+look                 -- look around
+show mouth           -- show everything Muffin is carrying
+instructions         -- see these instructions
+quit                 -- end the game
+
+[hunger: 0/12]
+       ___
+      |[_]|_  "
+  vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+
+> move s
+[hunger: 1/12]
+    _     _     _
+   ( )   ( )   ( )   __
+    |     |     |   (  )
+   \|/   \|/   \|/  (__)
+A quiet meadow full of pretty flowers.
+Something shiny lies under a white_rock.
+There is a white_rock here.
+
+> take white_rock
+You pick up the white_rock.
+Something was underneath... a hat!
+
+> move w
+[hunger: 2/12]
+  __________
+ .o .  o .  o
+ ===  ===  ===
+ o .  .  o . .
+A rough rocky road full of stones.
+Seven carved stones lie on the ground.
+Letters on them read: h, l, e, t, s, r, e
+Maybe they can form a word...
+There is nothing interesting here.
+
+> arrange s h e l t e r
+The stones glow faintly...
+SHELTER.
+Muffin suddenly understands!
+The animal shelter must be south of here!
+I don't want to live in a cage!
+Something shiny appears between the stones... a shell!
+
+> take shell
+You picked up shell.
+
+> move w
+[hunger: 3/12]
+  ~ ~ ~ ~ ~ ~ ~ ~
+   <><    <><
+   ~ ~ ~ ~ ~ ~ ~
+  ~ ~ ~ ~ ~ ~ ~ ~
+A fast flowing river blocks your path to the west.
+You can see fish swimming in the water.
+The current looks very strong.
+There is nothing interesting here.
+
+> search river
+Muffin splashes the water with her paw.
+She finds a shiny cool_pebble!
+
+> take cool_pebble
+You picked up cool_pebble.
+
+> move n
+[hunger: 4/12]
+     | | | |
+     | | | |
+     | | | |
+  _~~_~~_~~_~~_
+ (_____________)
+A beautiful waterfall blocks your path to the west-north.
+This might be a peaceful place to arrange something and rest in its shade.
+The smooth stones by the water look perfect for stacking.
+Muffin notices that some are large and heavy, while others are small and light.
+Three stones and a shell together could make a small totem if placed carefully.
+Perhaps they should stand from the strongest base to the lightest top.
+If only she could remember the first sounds of their names...
+There is nothing interesting here.
+
+> drop cool_pebble
+Dropped.
+
+> drop shell
+Dropped.
+
+> drop white_rock
+Dropped.
+
+> move e
+[hunger: 5/12]
+   __________
+
+ ===  ===  ===
+
+A dusty road where the truck drove away.
+You see tire tracks leading north.
+Some trash is laying on the side of the road.
+There is a broken_stool here.
+There is a chocolate here.
+There is a sofa here.
+
+> move n
+[hunger: 6/12]
+      _______
+     / _____ \
+    / /|_|_|\ \
+    |_|  _  |_|
+vVvV|_| | | |_|vVvVv
+An old wooden barn. It smells like mice.
+Sadly, they are all hiding.
+There is a catnip here.
+There is a brick here.
+
+> search brick
+Muffin searches the brick and finds a tiny_mouse!
+
+> take tiny_mouse
+You picked up tiny_mouse.
+
+> eat tiny_mouse
+Muffin happily eats the rodent.
+[hunger: 4/12]
+
+> take brick
+You picked up brick.
+
+> move s
+[hunger: 5/12]
+   __________
+
+ ===  ===  ===
+
+A dusty road where the truck drove away.
+You see tire tracks leading north.
+Some trash is laying on the side of the road.
+There is a broken_stool here.
+There is a chocolate here.
+There is a sofa here.
+
+> move w
+[hunger: 6/12]
+     | | | |
+     | | | |
+     | | | |
+  _~~_~~_~~_~~_
+ (_____________)
+A beautiful waterfall blocks your path to the west-north.
+This might be a peaceful place to arrange something and rest in its shade.
+The smooth stones by the water look perfect for stacking.
+Muffin notices that some are large and heavy, while others are small and light.
+Three stones and a shell together could make a small totem if placed carefully.
+Perhaps they should stand from the strongest base to the lightest top.
+If only she could remember the first sounds of their names...
+There is a white_rock here.
+There is a shell here.
+There is a cool_pebble here.
+
+> drop brick
+Dropped.
+
+> arrange b w c s
+Muffin carefully stacks the stones into a small totem.
+Brick at the bottom, then white rock, cool pebble and shell.
+The rushing waterfall sounds pleasant and she feels safe.
+Something floats toward the shore... a metal pipe washes up!
+
+> search pipe
+Muffin searches the pipe and finds a herring!
+
+> take herring
+You picked up herring.
+
+> eat herring
+Muffin happily eats the fish.
+[hunger: 3/12]
+
+> take pipe
+You picked up pipe.
+
+> move e
+[hunger: 4/12]
+   __________
+
+ ===  ===  ===
+
+A dusty road where the truck drove away.
+You see tire tracks leading north.
+Some trash is laying on the side of the road.
+There is a broken_stool here.
+There is a chocolate here.
+There is a sofa here.
+
+> attach pipe to broken_stool
+You fix the broken stool using the pipe.
+
+> move e
+[hunger: 5/12]
+       ___
+      |[_]|_  "
+  vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+There is a cage here.
+
+> move s
+[hunger: 6/12]
+    _     _     _
+   ( )   ( )   ( )   __
+    |     |     |   (  )
+   \|/   \|/   \|/  (__)
+A quiet meadow full of pretty flowers.
+Something shiny lies under a white_rock.
+There is a hat here.
+
+> search hat
+Muffin searches the hat and finds a gerbil!
+
+> take gerbil
+You picked up gerbil.
+
+> eat gerbil
+Muffin happily eats the rodent.
+[hunger: 4/12]
+
+> take hat
+You picked up hat.
+
+> move n
+[hunger: 5/12]
+       ___
+      |[_]|_  "
+  vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+There is a cage here.
+
+> move e
+[hunger: 6/12]
+  /\
+ /__\       /\
+  ||       /__\
+vvVvVvv   vv||vvVvVvv
+The forest here is thinner.
+You can still see the tall grass where the cage fell.
+There is a branch here.
+There is a small_stick here.
+
+> take small_stick
+You picked up small_stick.
+
+> search branch
+Muffin searches the branch and finds a squirell!
+
+> take squirell
+You picked up squirell.
+
+> eat squirell
+Muffin happily eats the rodent.
+[hunger: 4/12]
+
+> move w
+[hunger: 5/12]
+       ___
+      |[_]|_  "
+  vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+There is a cage here.
+
+> move n
+[hunger: 6/12]
+      /\        /\
+     /  \      /  \
+    /____\    /____\
+  /\  ||   /\   ||  /\
+ /__\ ||  /__\  || /__\
+  ||  ||   ||   ||  ||
+A shady forest. Birds chirp in the trees.
+It smells like adventure... and maybe snacks.
+There is a cardboard_box here.
+There is a big_stick here.
+
+> search cardboard_box
+Muffin searches the cardboard_box and finds a cod!
+
+> take cod
+You picked up cod.
+
+> eat cod
+Muffin happily eats the fish.
+[hunger: 3/12]
+
+> take big_stick
+You picked up big_stick.
+
+> show mouth
+Muffin is carrying:
+- big_stick
+- small_stick
+- hat
+That is everything in her mouth.
+
+> move w
+[hunger: 4/12]
+      _______
+     / _____ \
+    / /|_|_|\ \
+    |_|  _  |_|
+vVvV|_| | | |_|vVvVv
+An old wooden barn. It smells like mice.
+Sadly, they are all hiding.
+There is a catnip here.
+
+> move n
+[hunger: 5/12]
+   \/  \/  \/  \/
+   \/  \/  \/  \/
+  _|   |  _|   |
+ (_)     (_)
+A huge wheat field sways in the wind.
+You see a bundle of hay here.
+To the west lies a cabbage field.
+There is a hay here.
+
+> search hay
+Muffin searches the hay and finds a brown_mouse!
+
+> attach big_stick to hay
+You attach a stick into the hay bundle.
+It starts to look like a frame.
+
+> attach small_stick to frame
+The scarecrow now has two arms.
+It looks like a headless man!
+
+> attach hat to headless_man
+You place the hat on top.
+A scary scarecrow stands between the fields!
+The crows fly away.
+
+> take brown_mouse
+You picked up brown_mouse.
+
+> eat brown_mouse
+Muffin happily eats the rodent.
+[hunger: 3/12]
+
+> move s
+[hunger: 4/12]
+      _______
+     / _____ \
+    / /|_|_|\ \
+    |_|  _  |_|
+vVvV|_| | | |_|vVvVv
+An old wooden barn. It smells like mice.
+Sadly, they are all hiding.
+There is a catnip here.
+
+> move e
+[hunger: 5/12]
+      /\        /\
+     /  \      /  \
+    /____\    /____\
+  /\  ||   /\   ||  /\
+ /__\ ||  /__\  || /__\
+  ||  ||   ||   ||  ||
+A shady forest. Birds chirp in the trees.
+It smells like adventure... and maybe snacks.
+There is a cardboard_box here.
+
+> take cardboard_box
+You picked up cardboard_box.
+
+> move s
+[hunger: 6/12]
+       ___
+      |[_]|_  "
+  vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+There is a cage here.
+
+> take cage
+You picked up cage.
+
+> move w
+[hunger: 7/12]
+   __________
+
+ ===  ===  ===
+
+A dusty road where the truck drove away.
+You see tire tracks leading north.
+Some trash is laying on the side of the road.
+There is a stool here.
+There is a chocolate here.
+There is a sofa here.
+
+> take stool
+You picked up stool.
+
+> move n
+[hunger: 8/12]
+      _______
+     / _____ \
+    / /|_|_|\ \
+    |_|  _  |_|
+vVvV|_| | | |_|vVvVv
+An old wooden barn. It smells like mice.
+Sadly, they are all hiding.
+There is a catnip here.
+
+> move n
+[hunger: 9/12]
+   \/  \/  \/  \/
+   \/  \/  \/  \/
+  _|   |  _|   |
+ (_)     (_)
+A huge wheat field sways in the wind.
+You see a bundle of hay here.
+To the west lies a cabbage field.
+There is a scarecrow here.
+
+> move w
+[hunger: 10/12]
+  \(w)/  \(w)/  \(w)/
+   ""     ""     ""
+\(w)/  \(w)/  \(w)/
+ ""     ""     ""
+Rows of cabbage stretch across the field.
+Crows sit everywhere watching suspiciously.
+There is nothing interesting here.
+
+> move w
+[hunger: 11/12]
+   __________
+  |__________|
+  | |      | |
+  | |  ~~  | |
+     ~~~~ ~~
+A wooden bridge crosses a small stream.
+The town is just beyond it.
+There is nothing interesting here.
+
+> drop cage
+Dropped.
+
+> drop cardboard_box
+Dropped.
+
+> search cardboard_box
+Muffin searches the cardboard_box and finds a mackerel!
+
+> take mackerel
+You picked up mackerel.
+
+> eat mackerel
+Muffin happily eats the fish.
+[hunger: 8/12]
+
+> search carboard_box
+You find nothing here.
+
+> search cardboard_box
+Muffin searches the cardboard_box and finds a roach!
+
+> take roach
+You picked up roach.
+
+> take cardboard_box
+You picked up cardboard_box.
+
+> attach cardboard_box to cage
+You place the cardboard box on top of the cage.
+It forms a small tower.
+
+> attach stool to tower
+You add the stool to the tower.
+Now Muffin can climb it like stairs!
+
+> move w
+[hunger: 9/12]
+  |  |_______|  |
+  |   _     _   |
+  |  |_| ^ |_|  |
+  |     |V|     |
+  |    / m \    |
+You arrive at a small town street.
+A big dog sits at the south of the road and barks at you. He doesn't like cats, especially ones that look a bit familiar.
+There is a dog here.
+There is a rat here.
+
+> take rat
+You picked up rat.
+
+> eat rat
+Muffin happily eats the rodent.
+[hunger: 7/12]
+
+> move w
+[hunger: 8/12]
+  _|_   ___   _|_
+ |   | | o | |   |
+ |___| |___| |___|
+ , ` , ` , ` , ` ,
+An old graveyard full of crooked tombstones.
+Cold wind rustles the dead leaves.
+Tall stone walls surround the graveyard on all sides.
+The only exit is back east towards the town.
+There is a bone here.
+
+> take bine
+There is no bine here.
+
+> take bone
+You picked up bone.
+
+> move e
+[hunger: 9/12]
+  |  |_______|  |
+  |   _     _   |
+  |  |_| ^ |_|  |
+  |     |V|     |
+  |    / m \    |
+You arrive at a small town street.
+A big dog sits at the south of the road and barks at you. He doesn't like cats, especially ones that look a bit familiar.
+There is a dog here.
+
+> drop bone
+The dog grabs the bone and runs away happily!
+
+> look
+[hunger: 9/12]
+  |  |_______|  |
+  |   _     _   |
+  |  |_| ^ |_|  |
+  |     |V|     |
+  |    / m \    |
+You arrive at a small town street.
+A big dog sits at the south of the road and barks at you. He doesn't like cats, especially ones that look a bit familiar.
+There is nothing interesting here.
+
+> drop roach
+An eagle swoops down and grabs the fish!
+It flies away with its meal.
+
+> move s
+[hunger: 10/12]
+          ( (
+           ) )
+      ____|_|____
+     /-  -  -  - \
+    /__-___-__-__-\
+   |   _  _   _    |
+   |  |_||_| | |   |
+ __|_________|_|___|__
+  vvVvVVvVvvvVvvVvVvv
+Your house!
+The warm sofa awaits.
+There is nothing interesting here.
+
+Muffin recognizes the smell of her house!
+She waddles inside and jumps onto the sofa.
+Home at last.
+YOU WIN!

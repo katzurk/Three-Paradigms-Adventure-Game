@@ -118,14 +118,8 @@ increaseHunger gs =
 
 tryTake :: Object -> GameState -> IO GameState
 tryTake obj gs
-    | objName obj == "dog" = do
-        putStrLn "The dog is far too big and angry for Muffin to pick up."
-        return gs
-    | objName obj == "river" = do
-        putStrLn "The river is way too big for Muffin to pick up."
-        return gs
-    | objName obj == "sofa" = do
-        putStrLn "The sofa is too heavy for Muffin to move."
+    | objName obj `elem` ["dog", "river", "sofa"] = do
+        getTakeMessage (objName obj)
         return gs
     | objName obj == "white_rock" = do
         putStrLn "You pick up the white_rock."
@@ -205,20 +199,13 @@ solveShelterPuzzle gs =
         putStrLn "You already solved this puzzle."
         return gs
     else do
-        printLines
-            [ "The stones glow faintly...", "SHELTER.", "Muffin suddenly understands!",
-              "The animal shelter must be south of here!", "I don't want to live in a cage!",
-              "Something shiny appears between the stones... a shell!" ]
+        printLines shelterPuzzleText
         let newWorld = addObjectToLocation "rocky_road" shell gs
         return newWorld { shelterClueFound = True }
 
 buildTotem :: GameState -> IO GameState
 buildTotem gs = do
-    printLines
-        [ "Muffin carefully stacks the stones into a small totem.",
-          "Brick at the bottom, then white rock, cool pebble and shell.",
-          "The rushing waterfall sounds pleasant and she feels safe.",
-          "Something floats toward the shore... a metal pipe washes up!" ]
+    printLines buildTotemText
     let newWorld = addObjectToLocation "waterfall" pipe gs
     return newWorld
 
