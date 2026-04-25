@@ -54,19 +54,19 @@ takeObject objName gs =
 
 dropObject :: String -> GameState -> IO GameState
 dropObject name gs =
-    case find (\o -> objName o == name) (inventory gs) of
+    case findObject name (inventory gs) of
         Nothing -> do
             putStrLn "You are not holding it."
             return gs
         Just obj -> do
             if name == "bone" && currentLocation gs == "town" then do
                 putStrLn "The dog grabs the bone and runs away happily!"
-                let newInv = filter (\o -> objName o /= "bone") (inventory gs)
+                let newInv = deleteObject name (inventory gs)
                 return gs { dogDistracted = True, inventory = newInv }
             else if name `elem` fish then do
                 putStrLn "An eagle swoops down and grabs the fish!"
                 putStrLn "It flies away with its meal."
-                let newInv = filter (\o -> objName o /= name) (inventory gs)
+                let newInv = deleteObject name (inventory gs)
                 return gs { eagleDistracted = True, inventory = newInv }
             else do
                 putStrLn "Dropped."
@@ -89,7 +89,7 @@ eat foodName gs = do
                             else if foodName `elem` rodents then "rodent"
                             else "default"
                 getEatMessage msgKey
-                let newInv = filter (\o -> objName o /= foodName) inv
+                let newInv = deleteObject foodName inv
                 let gsRemoved = gs { inventory = newInv }
                 let finalGs = tryEat foodName gsRemoved
                 if not (gameOver finalGs) then do
