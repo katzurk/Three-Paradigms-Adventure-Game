@@ -23,3 +23,9 @@ getEatMessage key =
     case M.lookup key eatDescriptions of
         Just msg -> printLines msg
         Nothing  -> putStrLn ""
+
+getTakeMessage :: String -> IO ()
+getTakeMessage key =
+    case M.lookup key specialTakeText of
+        Just msg -> printLines msg
+        Nothing  -> putStrLn ""

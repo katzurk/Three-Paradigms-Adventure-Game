@@ -42,7 +42,7 @@ instructionsText =
     , "drop item            -- drop item"
     , "search object        -- search container"
     , "eat item             -- eat something"
-    , "attach a b           -- attach object a to object b"
+    , "attach a to b        -- attach object a to object b"
     , "arrange a b c ...    -- arrange objects in order"
     , "look                 -- look around"
     , "show mouth           -- show everything Muffin is carrying"
@@ -50,6 +50,37 @@ instructionsText =
     , "quit                 -- end the game"
     , ""
     ]
+
+winText =
+    [ "Muffin recognizes the smell of her house!"
+    , "She waddles inside and jumps onto the sofa."
+    , "Home at last."
+    , "YOU WIN!"
+    ]
+
+shelterPuzzleText =
+    [ "The stones glow faintly..."
+    , "SHELTER."
+    , "Muffin suddenly understands!"
+    , "The animal shelter must be south of here!"
+    , "I don't want to live in a cage!"
+    , "Something shiny appears between the stones... a shell!"
+    ]
+
+buildTotemText =
+    [ "Muffin carefully stacks the stones into a small totem."
+    , "Brick at the bottom, then white rock, cool pebble and shell."
+    , "The rushing waterfall sounds pleasant and she feels safe."
+    , "Something floats toward the shore... a metal pipe washes up!"
+    ]
+
+specialTakeText :: M.Map String [String]
+specialTakeText = M.fromList
+    [ ("dog",   ["The dog is far too big and angry for Muffin to pick up."])
+    , ("river", ["The river is way too big for Muffin to pick up."])
+    , ("sofa",  ["The sofa is too heavy for Muffin to move."])
+    ]
+
 
 type LocationDescriptions = M.Map String [String]
 locDescriptions :: LocationDescriptions

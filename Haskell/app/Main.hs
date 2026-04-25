@@ -10,6 +10,7 @@ import System.IO (hSetBuffering, stdout, BufferMode(NoBuffering), hFlush)
 printIntroduction = printLines introductionText
 printInstructions = printLines instructionsText
 printTitle = printLines titleText
+printWinText = printLines winText
 
 readCommand :: IO String
 readCommand = do
@@ -28,7 +29,7 @@ parseCommand cmd gs =
         ["show", "mouth"] -> showMouth gs >> return gs
         ["take", item] -> takeObject item gs
         ["drop", item] -> dropObject item gs
-        ["attach", a, b] -> attachObject a b gs
+        ["attach", a, "to", b] -> attachObject a b gs
         ["eat", item] -> eat item gs
         ("arrange" : args) -> arrange args gs
         ["search", obj] -> searchObject obj gs
@@ -43,7 +44,7 @@ gameLoop gs
     | gameOver gs = do
         putStrLn "YOU LOSE."
     | isWin gs = do
-        putStrLn "YOU WIN."
+        printWinText
     | otherwise = do
         cmd <- readCommand
         gs' <- parseCommand cmd gs
