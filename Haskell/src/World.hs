@@ -25,7 +25,7 @@ cardboardBox = Object "cardboard_box" [Object "cod" [], Object "mackerel" [], Ob
 pipe = Object "pipe" [Object "herring" []]
 whiteRock = Object "white_rock" [Object "hat" [Object "berbil" []]]
 hay = Object "hay" [Object "brown_mouse" []]
-branch = Object "branch" [Object "squirell" []]
+branch = Object "branch" [Object "squirrel" []]
 brick = Object "brick" [Object "tiny_mouse" []]
 catnip = Object "catnip" []
 coolPebble = Object "cool_pebble" []
@@ -40,7 +40,7 @@ bone = Object "bone" []
 shell = Object "shell" []
 
 fish = ["cod", "mackerel", "roach", "herring"]
-rodents = ["hamster", "berbil", "brown_mouse", "tiny_mouse", "rat", "squirell", "gerbil"]
+rodents = ["hamster", "berbil", "brown_mouse", "tiny_mouse", "rat", "squirrel", "gerbil"]
 special = ["chocolate", "catnip"]
 allFood = fish ++ rodents ++ special
 
@@ -62,7 +62,7 @@ worldData =
         [(North, "barn"), (East, "start_cage"), (West, "waterfall"), (South, "rocky_road")]
 
     , Location "rocky_road" []
-        [(North, "road"), (West, "river"), (East, "meadow"), (South, "shelter")]
+        [(North, "road"), (West, "river"), (East, "meadow")]
 
     , Location "meadow" [whiteRock]
         [(North, "start_cage"), (West, "rocky_road"), (East, "infinite_forest")]
@@ -71,10 +71,10 @@ worldData =
         [(East, "road"), (South, "river")]
 
     , Location "river" []
-        [(North, "waterfall"), (East, "rocky_road"), (South, "shelter")]
+        [(North, "waterfall"), (East, "rocky_road")]
 
     , Location "wheat_field" [hay]
-        [(West, "cabbage_field"), (East, "lake"), (South, "barn")]
+        [(West, "cabbage_field"), (South, "barn")]
 
     , Location "cabbage_field" []
         [(East, "wheat_field"), (West, "bridge"), (South, "car")]

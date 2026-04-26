@@ -229,7 +229,9 @@ checkEvent gs dir
         Just (Death, "car_death")
     | currentLocation gs == "forest" && dir == North =
         Just (Death, "lake_death")
-    | currentLocation gs == "meadow" && dir == South =
+    | currentLocation gs == "wheat_field" && dir == East =
+        Just (Death, "lake_death")
+    | currentLocation gs `elem` ["meadow", "rocky_road", "river"] && dir == South =
         Just (Death, "shelter_gameover")
     | otherwise = Nothing
 
