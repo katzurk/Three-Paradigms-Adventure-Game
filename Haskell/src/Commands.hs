@@ -64,7 +64,7 @@ dropObject name gs =
                 let gsRemove = removeObjectFromLocation "town" dog gs
                 let newInv = deleteObject name (inventory gsRemove)
                 return gsRemove { dogDistracted = True, inventory = newInv }
-            else if name `elem` fish then do
+            else if name `elem` fish && currentLocation gs == "town" then do
                 putStrLn "An eagle swoops down and grabs the fish!"
                 putStrLn "It flies away with its meal."
                 let newInv = deleteObject name (inventory gs)
