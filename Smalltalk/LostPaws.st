@@ -39,10 +39,12 @@ Object subclass: LostPaws [
         input = 'help'
             ifTrue: [
                 Transcript show: Descriptions instructions; cr.
+                ^self
             ].
         input = 'look'
             ifTrue: [
                 Transcript show: (Descriptions locations at: location); cr.
+                ^self
             ].
 
         Transcript
