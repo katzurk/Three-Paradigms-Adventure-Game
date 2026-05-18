@@ -1,7 +1,7 @@
 FileStream fileIn: 'Descriptions.st'.
 
 Object subclass: LostPaws [
-    | running |
+    | running location |
 
     LostPaws class >> start [
         | game |
@@ -11,6 +11,7 @@ Object subclass: LostPaws [
 
     run [
         running := true.
+        location := #startCage.
         Transcript show: Descriptions title; cr.
         Transcript show: Descriptions instructions; cr.
         Transcript show: Descriptions introduction; cr.
@@ -38,6 +39,10 @@ Object subclass: LostPaws [
         input = 'help'
             ifTrue: [
                 Transcript show: Descriptions instructions; cr.
+            ].
+        input = 'look'
+            ifTrue: [
+                Transcript show: (Descriptions locations at: location); cr.
             ].
 
         Transcript
