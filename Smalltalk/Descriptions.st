@@ -62,6 +62,46 @@ vvVvVvVvVvVvv
 Tall grass waves around you.
 Your metal cage lies behind you.
         '.
+        locations at: #forest put:
+        '      /\\        /\\      
+      /  \\      /  \\     
+     /____\\    /____\\    
+   /\\  ||   /\\   ||  /\\  
+  /__\\ ||  /__\\  || /__\\ 
+   ||  ||   ||   ||  ||  
+ A shady forest. Birds chirp in the trees.
+ It smells like adventure... and maybe snacks.
+ '.
+
+        locations at: #lowForest put:
+        '  /\\                  
+  /__\\       /\\         
+   ||       /__\\        
+ vvVvVvv   vv||vvVvVvv     
+ The forest here is thinner.
+ You can still see the tall grass where the cage fell.
+ '.
+
+        locations at: #infiniteForest put:
+        '  /\\  /\\  /\\  /\\  /\\
+  /__\\/__\\/__\\/__\\/__\\ 
+   ||  ||  ||  ||  ||  
+ Trees stretch endlessly in every direction.
+ The forest looks exactly the same everywhere.
+ Muffin is completely lost.
+ '.
+
+        locations at: #road put:
+        '   __________   
+                
+  ===  ===  === 
+              
+ A dusty road where the truck drove away.
+ You see tire tracks leading north.
+ Some trash is laying on the side of the road.
+ '.
+    
+
         ^ locations.
     ]
 ]
