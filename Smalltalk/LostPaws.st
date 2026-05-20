@@ -1,9 +1,10 @@
 FileStream fileIn: 'Descriptions.st'.
 FileStream fileIn: 'GameObject.st'.
 FileStream fileIn: 'Location.st'.
+FileStream fileIn: 'World.st'.
 
 Object subclass: LostPaws [
-    | isOver location |
+    | isOver location world|
 
     LostPaws class >> new [
         | g |
@@ -14,7 +15,8 @@ Object subclass: LostPaws [
 
     init [
         isOver := false.
-        location := #startCage
+        location := #startCage.
+        world := World build.
     ]
 
     readDescription: target [
