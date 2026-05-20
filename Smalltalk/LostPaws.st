@@ -127,6 +127,12 @@ Object subclass: LostPaws [
                 self take: parts second asSymbol.
                 ^ self
             ].
+        (parts first = 'drop')
+            ifTrue: [
+                self drop: parts second asSymbol.
+                ^ self
+            ].
+        
         cmd = 'quit'
             ifTrue: [
                 isOver := true.
@@ -224,6 +230,24 @@ Object subclass: LostPaws [
         mouth add: obj.
 
         Transcript show: 'Taken: ', objectName; cr.
+    ]
+
+    drop: objectName [
+        | loc objs obj |
+
+        loc := world at: location.
+
+        obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
+
+        obj isNil ifTrue: [
+            Transcript show: 'You are not holding it.'; cr.
+            ^ self
+        ].
+
+        mouth remove: obj.
+        loc addObject: obj.
+
+        Transcript show: 'Dropped.'; cr.        
     ]
 
 ]
