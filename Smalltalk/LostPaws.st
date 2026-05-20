@@ -160,8 +160,21 @@ Object subclass: LostPaws [
 
     search: objectName [
         | loc obj |
-
         loc := world at: location.
+        objectName = #river ifTrue: [
+            location = #river
+                ifTrue: [
+                    Transcript show: 'Muffin splashes the water with her paw.'; cr.
+                    Transcript show: 'She finds a shiny coolPebble!'; cr.
+                    obj := GameObject named: #coolPebble.
+                    loc addObject: obj.
+                ]
+                ifFalse: [
+                    Transcript show: 'There is no river here.'; cr.
+                ].
+
+            ^ self
+        ].
 
         obj := loc objects detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
