@@ -43,9 +43,36 @@ Object subclass: LostPaws [
         Transcript show: '[hunger ', hunger asString, '/12]'; cr.
     ]
 
+    showMouth [
+        Transcript show: 'Muffin is carrying: '; cr.
+        mouth isEmpty
+            ifTrue: [
+                Transcript show: 'Nothing. Her mouth is empty.'; cr.
+            ]
+            ifFalse: [
+                mouth do: [ :obj |
+                    Transcript show: '- ', obj name asString; cr.
+                ].
+                Transcript show: 'That is everything in her mouth.'; cr.
+            ].
+
+    ]
+
     showLocation [
+        | loc |
+
+        loc := world at: location.
+
         Transcript show: location; cr.
         Transcript show: (Descriptions locations at: location); cr.
+
+        loc objects isEmpty
+        ifFalse: [
+
+            loc objects do: [ :obj |
+                Transcript show: 'There is a ', obj name asString, ' here.'; cr.
+            ].
+        ].
     ]
 
     run [
@@ -78,16 +105,26 @@ Object subclass: LostPaws [
                 self showLocation.
                 ^self
             ].
+        cmd = 'show mouth'
+            ifTrue: [
+                self showMouth.
+                ^self
+            ].
         (parts first = 'move')
-                ifTrue: [
-                    dir := parts second asSymbol.
-                self move: dir.
-                ^ self
+            ifTrue: [
+                dir := parts second asSymbol.
+            self move: dir.
+            ^ self
             ].
         (parts first = 'search')
-                ifTrue: [
-                    object := parts second asSymbol.
+            ifTrue: [
+                object := parts second asSymbol.
                 self search: object.
+                ^ self
+            ].
+        (parts first = 'take')
+            ifTrue: [
+                self take: parts second asSymbol.
                 ^ self
             ].
         cmd = 'quit'
@@ -150,6 +187,30 @@ Object subclass: LostPaws [
             ].
 
         obj empty.
+    ]
+
+    take: objectName [
+        | loc objs obj |
+
+        loc := world at: location.
+        objs := loc objects.
+
+        obj := objs detect: [ :o | o name = objectName ] ifNone: [ nil ].
+
+        obj isNil ifTrue: [
+            Transcript show: 'There is no ', objectName, ' here.'; cr.
+            ^ self
+        ].
+
+        mouth size >= 3 ifTrue: [
+            Transcript show: 'Muffin''s mouth is full!'; cr.
+            ^ self
+        ].
+
+        objs remove: obj.
+        mouth add: obj.
+
+        Transcript show: 'Taken: ', objectName; cr.
     ]
 
 ]
