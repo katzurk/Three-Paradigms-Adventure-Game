@@ -4,7 +4,7 @@ FileStream fileIn: 'Location.st'.
 FileStream fileIn: 'World.st'.
 
 Object subclass: LostPaws [
-    | isOver location world|
+    | isOver location world hunger |
 
     LostPaws class >> new [
         | g |
@@ -17,6 +17,7 @@ Object subclass: LostPaws [
         isOver := false.
         location := #startCage.
         world := World build.
+        hunger := 0.
     ]
 
     readDescription: target [
@@ -26,6 +27,19 @@ Object subclass: LostPaws [
     readCommand [
         Transcript show: '> '.
         ^ FileStream stdin nextLine
+    ]
+
+    increaseHunger [
+        hunger := hunger + 1.
+        hunger >= 12
+            ifTrue: [
+                Transcript show: 'Muffin is too weak to take another step...' ; cr.
+                isOver := true.
+            ].
+    ]
+
+    showLocation [
+        Transcript show: (Descriptions locations at: location); cr.
     ]
 
     run [
@@ -43,6 +57,9 @@ Object subclass: LostPaws [
     ]
 
     handleCommand: cmd [
+        | parts dir |
+
+        parts := cmd subStrings: ' '.
 
         cmd = 'help'
             ifTrue: [
@@ -51,8 +68,14 @@ Object subclass: LostPaws [
             ].
         cmd = 'look'
             ifTrue: [
-                Transcript show: (Descriptions locations at: location); cr.
+                self showLocation.
                 ^self
+            ].
+        (parts first = 'move')
+                ifTrue: [
+                    dir := parts second asSymbol.
+                self move: dir.
+                ^ self
             ].
         cmd = 'quit'
             ifTrue: [
@@ -64,6 +87,24 @@ Object subclass: LostPaws [
         Transcript
             show: 'Unknown command.';
             cr.
+    ]
+
+    move: direction [
+        | loc next |
+
+        loc := world at: location.
+
+        next := loc pathAt: direction.
+
+        next isNil
+            ifTrue: [
+                Transcript show: 'You can''t go that way.'; cr.
+                ^ self
+            ].
+
+        self.increaseHunger.
+        location := next.
+        self showLocation.
     ]
 
 ]
