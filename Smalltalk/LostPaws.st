@@ -132,7 +132,11 @@ Object subclass: LostPaws [
                 self drop: parts second asSymbol.
                 ^ self
             ].
-        
+        (parts first = 'eat')
+            ifTrue: [
+                self eat: parts second asSymbol.
+                ^ self
+            ].
         cmd = 'quit'
             ifTrue: [
                 isOver := true.
@@ -233,7 +237,7 @@ Object subclass: LostPaws [
     ]
 
     drop: objectName [
-        | loc objs obj |
+        | loc obj |
 
         loc := world at: location.
 
@@ -248,6 +252,51 @@ Object subclass: LostPaws [
         loc addObject: obj.
 
         Transcript show: 'Dropped.'; cr.        
+    ]
+
+    eat: objectName [
+        | obj |
+
+        obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
+
+        obj isNil ifTrue: [
+            Transcript show: 'You are not holding it.'; cr.
+            ^ self
+        ].
+
+        (World fish includes: objectName) ifTrue: [
+            hunger := hunger - 3.
+            hunger < 0 ifTrue: [ hunger := 0 ].
+            Transcript show: (Descriptions eatDescriptions at: #fish); cr.
+            mouth remove: obj.
+            ^ self
+        ].
+
+        (World rodents includes: objectName) ifTrue: [
+            hunger := hunger - 2.
+            hunger < 0 ifTrue: [ hunger := 0 ].
+            Transcript show: (Descriptions eatDescriptions at: #rodent); cr.
+            mouth remove: obj.
+            ^ self
+        ].
+
+        objectName = #catnip
+            ifTrue: [
+                Transcript show: (Descriptions eatDescriptions at: #catnip); cr.
+                isOver := true.
+                mouth remove: obj.
+                ^ self
+            ].
+
+        objectName = #chocolate
+            ifTrue: [
+                Transcript show: (Descriptions eatDescriptions at: #chocolate); cr.
+                isOver := true.
+                mouth remove: obj.
+                ^ self
+            ].  
+
+        Transcript show: (Descriptions eatDescriptions at: #default); cr.
     ]
 
 ]

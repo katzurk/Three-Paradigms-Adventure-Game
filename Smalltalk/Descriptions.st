@@ -230,5 +230,37 @@ Your metal cage lies behind you.
  
         ^ locations.
     ]
+
+    Descriptions class >> eatDescriptions [
+
+    | food |
+
+    food := Dictionary new.
+
+    food at: #catnip put:
+        'Muffin eats the catnip.
+Everything spins...
+She runs around the barn knocking things over.
+The barn owner hears the noise and thinks there is an intruder.
+BANG!
+Muffin has been shot.'.
+
+    food at: #chocolate put:
+        'Muffin eats the chocolate...
+But chocolate is poisonous for cats!
+She feels very sick...'.
+
+
+    food at: #fish put:
+        'Muffin happily eats the fish.'.
+
+    food at: #rodent put:
+        'Muffin happily eats the rodent.'.
+
+    food at: #default put:
+        'You cannot eat that.'.
+
+    ^ food.
+]
 ]
 

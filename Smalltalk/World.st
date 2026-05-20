@@ -132,19 +132,6 @@ Object subclass: World [
         town addObject: (GameObject named: #dog).
         town addObject: (GameObject named: #rat).
 
-        fish := #('cod' 'mackerel' 'roach' 'herring').
-
-        rodents := #(
-            'hamster'
-            'brownMouse'
-            'tinyMouse'
-            'rat'
-            'squirrel'
-            'gerbil'
-        ).
-
-        special := #('chocolate' 'catnip').
-
         world at: #startCage put: startCage.
         world at: #forest put: forest.
         world at: #lowForest put: lowForest.
@@ -164,7 +151,20 @@ Object subclass: World [
         world at: #home put: home.
         
             
-        ^ world
+        ^ world.
+    ]
+
+    World class >> fish [
+        ^ #(#cod #mackerel #roach #herring).
+    ]
+
+    World class >> rodents [
+         ^ #(#hamster #brownMouse #tinyMouse #rat #squirrel #gerbil).
+    ]
+
+    World class >> special [
+         ^ #(#chocolate #catnip).
     ]
 ]
+
 
