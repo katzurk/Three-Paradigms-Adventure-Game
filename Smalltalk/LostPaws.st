@@ -1,49 +1,59 @@
 FileStream fileIn: 'Descriptions.st'.
 
 Object subclass: LostPaws [
-    | running location |
+    | isOver location |
 
-    LostPaws class >> start [
-        | game |
-        game := self new.
-        game run.
+    LostPaws class >> new [
+        | g |
+        g := super new.
+        g init.
+        ^g
+    ]
+
+    init [
+        isOver := false.
+        location := #startCage
+    ]
+
+    readDescription: target [
+        Transcript show: (Descriptions perform: target); cr.
+    ]
+
+    readCommand [
+        Transcript show: '> '.
+        ^ FileStream stdin nextLine
     ]
 
     run [
-        running := true.
-        location := #startCage.
-        Transcript show: Descriptions title; cr.
-        Transcript show: Descriptions instructions; cr.
-        Transcript show: Descriptions introduction; cr.
+        | cmd |
+        self readDescription: #title.
+        self readDescription: #introduction.
+        self readDescription: #instructions.
 
-        [ running ] whileTrue: [
-            | input |
+        [isOver] whileFalse: [
 
-            Transcript show: '> '.
+            cmd := self readCommand.
 
-            input := stdin nextLine asLowercase.
-
-            input = 'quit'
-                ifTrue: [
-                    running := false.
-                    Transcript show: 'Bye!'; cr.
-                ]
-                ifFalse: [
-                    self handleCommand: input.
-                ].
-        ].
+            self handleCommand: cmd.
+        ]
     ]
 
-    handleCommand: input [
+    handleCommand: cmd [
 
-        input = 'help'
+        cmd = 'help'
             ifTrue: [
                 Transcript show: Descriptions instructions; cr.
                 ^self
             ].
-        input = 'look'
+        cmd = 'look'
             ifTrue: [
                 Transcript show: (Descriptions locations at: location); cr.
+                ^self
+            ].
+        cmd = 'quit'
+            ifTrue: [
+                isOver := true.
+                Transcript show: 'Bye!'; cr.
                 ^self
             ].
 
@@ -54,4 +64,4 @@ Object subclass: LostPaws [
 
 ]
 
-LostPaws start.
+LostPaws new run.
