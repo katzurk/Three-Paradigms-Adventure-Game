@@ -4,7 +4,7 @@ FileStream fileIn: 'Location.st'.
 FileStream fileIn: 'World.st'.
 
 Object subclass: LostPaws [
-    | isOver location world hunger |
+    | isOver location world hunger mouth |
 
     LostPaws class >> new [
         | g |
@@ -18,6 +18,7 @@ Object subclass: LostPaws [
         location := #startCage.
         world := World build.
         hunger := 0.
+        mouth := OrderedCollection new.
     ]
 
     readDescription: target [
@@ -38,7 +39,12 @@ Object subclass: LostPaws [
             ].
     ]
 
+    showHunger [
+        Transcript show: '[hunger ', hunger asString, '/12]'; cr.
+    ]
+
     showLocation [
+        Transcript show: location; cr.
         Transcript show: (Descriptions locations at: location); cr.
     ]
 
@@ -57,7 +63,7 @@ Object subclass: LostPaws [
     ]
 
     handleCommand: cmd [
-        | parts dir |
+        | parts dir object|
 
         parts := cmd subStrings: ' '.
 
@@ -68,6 +74,7 @@ Object subclass: LostPaws [
             ].
         cmd = 'look'
             ifTrue: [
+                self showHunger.
                 self showLocation.
                 ^self
             ].
@@ -75,6 +82,12 @@ Object subclass: LostPaws [
                 ifTrue: [
                     dir := parts second asSymbol.
                 self move: dir.
+                ^ self
+            ].
+        (parts first = 'search')
+                ifTrue: [
+                    object := parts second asSymbol.
+                self search: object.
                 ^ self
             ].
         cmd = 'quit'
@@ -102,9 +115,41 @@ Object subclass: LostPaws [
                 ^ self
             ].
 
-        self.increaseHunger.
+        self increaseHunger.
         location := next.
+        self showHunger.
         self showLocation.
+    ]
+
+    search: objectName [
+        | loc obj |
+
+        loc := world at: location.
+
+        obj := loc objects detect: [ :o | o name = objectName ] ifNone: [ nil ].
+
+        obj isNil ifTrue: [
+            Transcript show: objectName asString, ' not found.'; cr.
+            ^ self
+        ].
+  
+        obj contains do: [ :each |
+            loc objects add: each
+        ].
+
+        Transcript show: 'Muffin searches the ', objectName asString, ' and finds '; cr.
+
+        obj contains isEmpty 
+            ifTrue: [
+                Transcript show: 'nothing else inside.'; cr.
+            ]
+            ifFalse: [
+                obj contains do: [ :each |
+                    Transcript show: '- ', each name asString; cr.
+                ].
+            ].
+
+        obj empty.
     ]
 
 ]

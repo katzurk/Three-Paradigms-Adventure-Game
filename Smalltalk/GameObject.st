@@ -18,6 +18,10 @@ Object subclass: GameObject [
         ^ contains
     ]
 
+    empty [
+        contains := OrderedCollection new.
+    ]
+
     addObject: anObject [
         contains add: anObject.
     ]
