@@ -1,4 +1,6 @@
 FileStream fileIn: 'Descriptions.st'.
+FileStream fileIn: 'GameObject.st'.
+FileStream fileIn: 'Location.st'.
 
 Object subclass: LostPaws [
     | isOver location |
@@ -30,7 +32,7 @@ Object subclass: LostPaws [
         self readDescription: #introduction.
         self readDescription: #instructions.
 
-        [isOver] whileFalse: [
+        [ isOver ] whileFalse: [
 
             cmd := self readCommand.
 
