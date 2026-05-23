@@ -41,6 +41,7 @@ Object subclass: LostPaws [
         hunger >= 12
             ifTrue: [
                 Transcript show: 'Muffin is too weak to take another step...' ; cr.
+                Transcript show: 'YOU LOSE!'; cr.
                 isOver := true.
             ].
     ]
@@ -227,6 +228,7 @@ Object subclass: LostPaws [
                 Transcript show: 'A huge eagle swoops down from above!'; cr.
                 Transcript show: 'Its talons grab Muffin before she can react.'; cr.
                 Transcript show: 'The ground fades away...'; cr.
+                Transcript show: 'YOU LOSE!'; cr.
                 isOver := true.
                 ^ self
             ].
@@ -251,6 +253,34 @@ Object subclass: LostPaws [
         self increaseHunger.
         isOver ifTrue: [ ^ self ].
         location := next.
+        location = #lake 
+            ifTrue: [
+                Transcript show: 'Muffin visits the lake.'; cr.
+                Transcript show: 'But the ground is slippery here!'; cr.
+                Transcript show: 'She falls into the water. Muffin can''t swim and drowns.'; cr.
+                Transcript show: 'YOU LOSE!'; cr.
+                isOver := true.
+                ^ self
+            ].
+        location = #car 
+            ifTrue: [
+                Transcript show: 'Muffin sneaks behind the barn into a parking lot.'; cr.
+                Transcript show: 'Suddenly a car starts moving!'; cr.
+                Transcript show: 'She is disoriented and runs directly under the wheels...'; cr.
+                Transcript show: 'CRUNCH.'; cr.
+                Transcript show: 'YOU LOSE!'; cr.
+                isOver := true.
+                ^ self
+            ].
+        location = #home 
+            ifTrue: [
+                Transcript show: 'Muffin recognizes the smell of her house!'; cr.
+                Transcript show: 'She waddles inside and jumps onto the sofa.'; cr.
+                Transcript show: 'Home at last.'; cr.
+                Transcript show: 'YOU WIN!'; cr.
+                isOver := true.
+                ^ self
+            ].
         self showHunger.
         self showLocation.
     ]
@@ -391,6 +421,7 @@ Object subclass: LostPaws [
         objectName = #catnip
             ifTrue: [
                 Transcript show: (Descriptions eatDescriptions at: #catnip); cr.
+                Transcript show: 'YOU LOSE!'; cr.
                 isOver := true.
                 mouth remove: obj.
                 ^ self
@@ -399,6 +430,7 @@ Object subclass: LostPaws [
         objectName = #chocolate
             ifTrue: [
                 Transcript show: (Descriptions eatDescriptions at: #chocolate); cr.
+                Transcript show: 'YOU LOSE!'; cr.
                 isOver := true.
                 mouth remove: obj.
                 ^ self
