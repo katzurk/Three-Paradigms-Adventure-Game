@@ -4,7 +4,8 @@ FileStream fileIn: 'Location.st'.
 FileStream fileIn: 'World.st'.
 
 Object subclass: LostPaws [
-    | isOver location world hunger mouth |
+    | isOver location world hunger mouth 
+    solveShelterPuzzle |
 
     LostPaws class >> new [
         | g |
@@ -19,6 +20,7 @@ Object subclass: LostPaws [
         world := World build.
         hunger := 0.
         mouth := OrderedCollection new.
+        solveShelterPuzzle := true.
     ]
 
     readDescription: target [
@@ -322,7 +324,7 @@ Object subclass: LostPaws [
             ^ self
         ].
 
-        obj := loc objects detect: [ :o | o name = baseName ] ifNone: [ nil ].
+        base := loc objects detect: [ :o | o name = baseName ] ifNone: [ nil ].
 
         base isNil ifTrue: [
             Transcript show: 'The second item is not here.'; cr.
@@ -333,9 +335,9 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show "You need to build the frame near the wheatField"; cr.
-                    self
-                ]
+                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    ^ self
+                ].
                 mouth remove: obj.
                 loc objects remove: base.
 
@@ -349,9 +351,9 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show "You need to build the frame near the wheatField"; cr.
-                    self
-                ]
+                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    ^ self
+                ].
                 mouth remove: obj.
                 loc objects remove: base.
 
@@ -365,9 +367,9 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show "You need to build the frame near the wheatField"; cr.
-                    self
-                ]
+                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    ^ self
+                ].
                 mouth remove: obj.
                 loc objects remove: base.
 
@@ -392,9 +394,9 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #bridge)
                 ifFalse: [
-                    Transcript show "You need to build the tower near the bridge"; cr.
-                    self
-                ]
+                    Transcript show: 'You need to build the tower near the bridge'; cr.
+                    ^ self
+                ].
                 mouth remove: obj.
                 loc objects remove: base.
 
@@ -408,9 +410,9 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #bridge)
                 ifFalse: [
-                    Transcript show "You need to build the stairs near the bridge"; cr.
-                    self
-                ]
+                    Transcript show: 'You need to build the stairs near the bridge'; cr.
+                    ^ self
+                ].
                 mouth remove: obj.
                 loc objects remove: base.
 
@@ -424,7 +426,58 @@ Object subclass: LostPaws [
         Transcript show:
             'Those things cannot be attached together.'; cr.
     ]
+    arrange: symbols [
+        | loc word |
+        word := String streamContents: [ :s |symbols do: [ :x | s nextPutAll: x asString. ].].
+        loc := world at: location.
+        (location = #rockyRoad and: [ symbols size = 7 ])
+            ifTrue: [
+                (word = 'shelter')
+                    ifTrue: [
+                        Transcript show: 'The stones glow faintly...'; cr.
+                        Transcript show: 'SHELTER.'; cr.
+                        Transcript show: 'Muffin suddenly understands!'; cr.
+                        Transcript show: 'The animal shelter must be south of here!'; cr.
+                        Transcript show: 'I don''t want to live in a cage!'; cr.
+                        Transcript show: 'Something shiny appears between the stones... a shell!'; cr.
+                        solveShelterPuzzle := true.
+                        loc addObject: (GameObject named: #shell).
+                    ]
+                    ifFalse: [
+                        Transcript show: 'The stones do not form a meaningful word.'; cr.
+                    ].
+                ^ self
+            ].
+        (location = #waterfall and: [ symbols size = 4 ])
+            ifTrue: [
+                | needed isAll pipe |
 
+                needed := #(#brick #whiteRock #coolPebble #shell).
+
+                isAll := needed allSatisfy: [ :req | loc objects anySatisfy: [ :o | o name = req ]].
+
+                isAll ifFalse: [
+                    Transcript show: 'You do not have all the stones needed to build the totem.'; cr.
+                ].
+                (word = 'bwcs')
+                    ifTrue: [
+                        Transcript show: 'Muffin carefully stacks the stones into a small totem.'; cr.
+                        Transcript show: 'Brick at the bottom, then white rock, cool pebble and shell.'; cr.
+                        Transcript show: 'The rushing waterfall sounds pleasant and she feels safe.'; cr.
+                        Transcript show: 'Something floats toward the shore... a metal pipe washes up!'; cr.
+                        pipe := GameObject named: #pipe.
+                        pipe addObject: (GameObject named: #herring).
+                        loc addObject: pipe.
+                    ]
+                    ifFalse: [
+                        'That''s not the right order or items for the totem.'
+                    ].
+                ^ self
+            ].
+
+        Transcript show:
+            'That arrangement makes no sense here.'; cr.
+    ].
 ]
 
 LostPaws new run.

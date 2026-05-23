@@ -116,7 +116,7 @@ Object subclass: World [
         hat := GameObject named: #hat.
         hat addObject: (GameObject named: #gerbil).
         rock addObject: hat.
-        meadow addObject: (hat).
+        meadow addObject: (rock).
         
         hay := GameObject named: #hay.
         hay addObject: (GameObject named: #brownMouse).
