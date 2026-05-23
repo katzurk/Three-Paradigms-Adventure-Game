@@ -5,7 +5,8 @@ FileStream fileIn: 'World.st'.
 
 Object subclass: LostPaws [
     | isOver location world hunger mouth 
-    solveShelterPuzzle |
+    eagleDistracted scarecrowBuilt stairsBuilt
+    dogDistracted|
 
     LostPaws class >> new [
         | g |
@@ -20,7 +21,10 @@ Object subclass: LostPaws [
         world := World build.
         hunger := 0.
         mouth := OrderedCollection new.
-        solveShelterPuzzle := true.
+        eagleDistracted := false.
+        scarecrowBuilt := false.
+        stairsBuilt := false.
+        dogDistracted := false.
     ]
 
     readDescription: target [
@@ -195,11 +199,52 @@ Object subclass: LostPaws [
 
         loc := world at: location.
 
+        ((#(#wheatField #cabbageField #town) includes: location) 
+            and: [ direction = #n ]) ifTrue:[
+                Transcript show: 'There is a highway up ahead.'; cr.
+                Transcript show: 'Muffin is too scared to go this way.'; cr.
+                ^ self
+            ].
+
         next := loc pathAt: direction.
 
         next isNil
             ifTrue: [
                 Transcript show: 'You can''t go that way.'; cr.
+                ^ self
+            ].
+
+        (location = #town and: [ dogDistracted not and: [ direction = #s ] ])
+            ifTrue: [
+                Transcript show: 'A big dog blocks your way to the south and growls.'; cr.
+                Transcript show: 'Maybe you could give him something to eat...'; cr.
+                ^ self
+            ].
+
+        (location = #town and: [ eagleDistracted not and: [ direction = #s ] ])
+            ifTrue: [
+                Transcript show: 'As Muffin walks forward...'; cr.
+                Transcript show: 'A huge eagle swoops down from above!'; cr.
+                Transcript show: 'Its talons grab Muffin before she can react.'; cr.
+                Transcript show: 'The ground fades away...'; cr.
+                isOver := true.
+                ^ self
+            ].
+
+        (location = #wheatField and: [ scarecrowBuilt not and: [ direction = #w ] ])
+            ifTrue: [
+                Transcript show: 'As Muffin enters the cabbage field...'; cr.
+                Transcript show: 'A flock of angry crows attacks!'; cr.
+                Transcript show: 'CAW! CAW!'; cr.
+                Transcript show: 'They chase Muffin back to the wheat field.'; cr.
+                ^ self
+            ].
+
+        (location = #bridge and: [ stairsBuilt not and: [ direction = #w ] ])
+            ifTrue: [
+                Transcript show: 'A tall stone gate, flanked by two castle towers, blocks the entrance to the town.'; cr.
+                Transcript show: 'Muffin could jump over... if she was taller.'; cr.
+                Transcript show: 'Maybe she could build something to climb on.'; cr.
                 ^ self
             ].
 
@@ -424,6 +469,7 @@ Object subclass: LostPaws [
                 loc objects remove: base.
 
                 loc addObject: (GameObject named: #scarecrow).
+                scarecrowBuilt := true.
 
                 Transcript show: 'You place the hat on top.'; cr.
                 Transcript show: 'A scary scarecrow stands between the fields!'; cr.
@@ -467,6 +513,7 @@ Object subclass: LostPaws [
                 loc objects remove: base.
 
                 loc addObject: (GameObject named: #stairs).
+                stairsBuilt := true.
 
                 Transcript show: 'You add the stool to the tower.'; cr.
                 Transcript show: 'Now Muffin can climb it like stairs!'; cr.
