@@ -114,39 +114,67 @@ Object subclass: LostPaws [
             ].
         (parts first = 'move')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: move [n/w/s/e]'; cr.
+                    ^ self
+                ].
                 dir := parts second asSymbol.
             self move: dir.
             ^ self
             ].
         (parts first = 'search')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: search [a]'; cr.
+                    ^ self
+                ].
                 object := parts second asSymbol.
                 self search: object.
                 ^ self
             ].
         (parts first = 'take')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: take [a]'; cr.
+                    ^ self
+                ].
                 self take: parts second asSymbol.
                 ^ self
             ].
         (parts first = 'drop')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: drop [a]'; cr.
+                    ^ self
+                ].
                 self drop: parts second asSymbol.
                 ^ self
             ].
         (parts first = 'eat')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: eat [a]'; cr.
+                    ^ self
+                ].
                 self eat: parts second asSymbol.
                 ^ self
             ].
         (parts first = 'attach')
             ifTrue: [
+                parts size < 4 ifTrue: [
+                    Transcript show: 'Usage: attach [a] to [b]'; cr.
+                    ^ self
+                ].
                 self attach: (parts second asSymbol)
                     to: (parts fourth asSymbol).
                 ^ self
             ].
         (parts first = 'arrange')
             ifTrue: [
+                parts size < 2 ifTrue: [
+                    Transcript show: 'Usage: arrange [a, b, c...]'; cr.
+                    ^ self
+                ].
                 self arrange: (parts allButFirst collect: [ :x | x asSymbol ]).
                 ^ self
             ].
@@ -176,6 +204,7 @@ Object subclass: LostPaws [
             ].
 
         self increaseHunger.
+        isOver ifTrue: [ ^ self ].
         location := next.
         self showHunger.
         self showLocation.
@@ -239,7 +268,7 @@ Object subclass: LostPaws [
         obj := objs detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'There is no ', objectName, ' here.'; cr.
+            Transcript show: 'You do not see that here.'; cr.
             ^ self
         ].
 
@@ -267,7 +296,7 @@ Object subclass: LostPaws [
         objs remove: obj.
         mouth add: obj.
 
-        Transcript show: 'Taken: ', objectName; cr.
+        Transcript show: 'You pick up the ', objectName, '.'; cr.
     ]
 
     drop: objectName [
