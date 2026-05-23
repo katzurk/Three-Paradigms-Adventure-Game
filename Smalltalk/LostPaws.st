@@ -207,7 +207,7 @@ Object subclass: LostPaws [
         ].
   
         obj contains do: [ :each |
-            loc objects add: each
+            loc addObject: each
         ].
 
         Transcript show: 'Muffin searches the ', objectName asString, ' and finds '; cr.
@@ -229,6 +229,11 @@ Object subclass: LostPaws [
         | loc objs obj |
 
         loc := world at: location.
+
+        (objectName = #river and: [location = #river]) ifTrue: [
+            Transcript show: 'The river is way too big for Muffin to pick up.'; cr.
+            ^ self
+        ].
         objs := loc objects.
 
         obj := objs detect: [ :o | o name = objectName ] ifNone: [ nil ].
@@ -239,7 +244,23 @@ Object subclass: LostPaws [
         ].
 
         mouth size >= 3 ifTrue: [
-            Transcript show: 'Muffin''s mouth is full!'; cr.
+            Transcript show: 'Muffin tries to pick up the ', objectName asString, '.'; cr.
+            Transcript show: 'But her tiny cat mouth is already full.'; cr.
+            ^ self
+        ].
+
+        objectName = #whiteRock ifTrue: [
+            obj contains do: [ :each | loc addObject: each ].
+            obj empty.
+        ].
+
+        objectName = #dog ifTrue: [
+            Transcript show: 'The dog is far too big and angry for Muffin to pick up.'; cr.
+            ^ self
+        ].
+
+        objectName = #sofa ifTrue: [
+            Transcript show: 'The sofa is too heavy for Muffin to move.'; cr.
             ^ self
         ].
 
