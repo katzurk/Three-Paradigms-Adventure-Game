@@ -90,7 +90,7 @@ Object subclass: LostPaws [
     ]
 
     handleCommand: cmd [
-        | parts dir object|
+        | parts dir object |
 
         parts := cmd subStrings: ' '.
 
@@ -135,6 +135,17 @@ Object subclass: LostPaws [
         (parts first = 'eat')
             ifTrue: [
                 self eat: parts second asSymbol.
+                ^ self
+            ].
+        (parts first = 'attach')
+            ifTrue: [
+                self attach: (parts second asSymbol)
+                    to: (parts fourth asSymbol).
+                ^ self
+            ].
+        (parts first = 'arrange')
+            ifTrue: [
+                self arrange: (parts allButFirst collect: [ :x | x asSymbol ]).
                 ^ self
             ].
         cmd = 'quit'
@@ -297,6 +308,121 @@ Object subclass: LostPaws [
             ].  
 
         Transcript show: (Descriptions eatDescriptions at: #default); cr.
+    ]
+
+    attach: objectName to: baseName [
+        | loc obj base |
+
+        loc := world at: location.
+
+        obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
+
+        obj isNil ifTrue: [
+            Transcript show: 'You do not have that obj.'; cr.
+            ^ self
+        ].
+
+        obj := loc objects detect: [ :o | o name = baseName ] ifNone: [ nil ].
+
+        base isNil ifTrue: [
+            Transcript show: 'The second item is not here.'; cr.
+            ^ self
+        ].
+
+        (objectName = #bigStick and: [ baseName = #hay ])
+            ifTrue: [
+                (location = #wheatField)
+                ifFalse: [
+                    Transcript show "You need to build the frame near the wheatField"; cr.
+                    self
+                ]
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #frame).
+
+                Transcript show: 'You attach a stick into the hay bundle.'; cr.
+                Transcript show: 'It starts to look like a frame.'; cr.
+                ^ self
+            ].
+        (objectName = #smallStick and: [ baseName = #frame ])
+            ifTrue: [
+                (location = #wheatField)
+                ifFalse: [
+                    Transcript show "You need to build the frame near the wheatField"; cr.
+                    self
+                ]
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #headlessMan).
+
+                Transcript show: 'The scarecrow now has two arms..'; cr.
+                Transcript show: 'It looks like a headless man!'; cr.
+                ^ self
+            ].
+        (objectName = #hat and: [ baseName = #headlessMan ])
+            ifTrue: [
+                (location = #wheatField)
+                ifFalse: [
+                    Transcript show "You need to build the frame near the wheatField"; cr.
+                    self
+                ]
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #scarecrow).
+
+                Transcript show: 'You place the hat on top.'; cr.
+                Transcript show: 'A scary scarecrow stands between the fields!'; cr.
+                Transcript show: 'The crows fly away.'; cr.
+                ^ self
+            ].
+        (objectName = #pipe and: [ baseName = #brokenStool ])
+            ifTrue: [
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #stool).
+
+                Transcript show: 'You fix the broken stool using the pipe.'; cr.
+                ^ self
+            ].
+        (objectName = #cardboardBox and: [ baseName = #cage ])
+            ifTrue: [
+                (location = #bridge)
+                ifFalse: [
+                    Transcript show "You need to build the tower near the bridge"; cr.
+                    self
+                ]
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #tower).
+
+                Transcript show: 'You place the cardboard box on top of the cage.'; cr.
+                Transcript show: 'It forms a small tower.'; cr.
+                ^ self
+            ].
+        (objectName = #stool and: [ baseName = #tower ])
+            ifTrue: [
+                (location = #bridge)
+                ifFalse: [
+                    Transcript show "You need to build the stairs near the bridge"; cr.
+                    self
+                ]
+                mouth remove: obj.
+                loc objects remove: base.
+
+                loc addObject: (GameObject named: #stairs).
+
+                Transcript show: 'You add the stool to the tower.'; cr.
+                Transcript show: 'Now Muffin can climb it like stairs!'; cr.
+                ^ self
+            ].
+
+        Transcript show:
+            'Those things cannot be attached together.'; cr.
     ]
 
 ]
