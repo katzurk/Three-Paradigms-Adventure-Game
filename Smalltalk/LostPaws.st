@@ -464,7 +464,7 @@ Object subclass: LostPaws [
         obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'You do not have that obj.'; cr.
+            Transcript show: 'You do not have  that item.'; cr.
             ^ self
         ].
 
