@@ -386,6 +386,23 @@ Object subclass: LostPaws [
             ^ self
         ].
 
+        (location = #town and: [ objectName = #bone ])
+            ifTrue: [
+                Transcript show: 'The dog grabs the bone and runs away happily!'; cr.
+                dogDistracted := true.
+                mouth remove: obj.
+                ^ self
+            ].
+
+        ( (World fish includes: objectName)
+            and: [ location = #town ]) ifTrue:[
+                Transcript show: 'An eagle swoops down and grabs the fish!'; cr.
+                Transcript show: 'It flies away with its meal.'; cr.
+                eagleDistracted := true.
+                mouth remove: obj.
+                ^ self
+            ].
+
         mouth remove: obj.
         loc addObject: obj.
 
@@ -555,6 +572,7 @@ Object subclass: LostPaws [
         Transcript show:
             'Those things cannot be attached together.'; cr.
     ]
+
     arrange: symbols [
         | loc word |
         word := String streamContents: [ :s |symbols do: [ :x | s nextPutAll: x asString. ].].
@@ -569,7 +587,6 @@ Object subclass: LostPaws [
                         Transcript show: 'The animal shelter must be south of here!'; cr.
                         Transcript show: 'I don''t want to live in a cage!'; cr.
                         Transcript show: 'Something shiny appears between the stones... a shell!'; cr.
-                        solveShelterPuzzle := true.
                         loc addObject: (GameObject named: #shell).
                     ]
                     ifFalse: [
@@ -606,7 +623,7 @@ Object subclass: LostPaws [
 
         Transcript show:
             'That arrangement makes no sense here.'; cr.
-    ].
-]
+    ]
+].
 
 LostPaws new run.
