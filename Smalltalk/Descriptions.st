@@ -63,12 +63,12 @@ Tall grass waves around you.
 Your metal cage lies behind you.
         '.
         locations at: #forest put:
-        '      /\\        /\\      
+        '       /\\        /\\      
       /  \\      /  \\     
      /____\\    /____\\    
    /\\  ||   /\\   ||  /\\  
   /__\\ ||  /__\\  || /__\\ 
-   ||  ||   ||   ||  ||  
+    ||  ||   ||    ||  ||  
  A shady forest. Birds chirp in the trees.
  It smells like adventure... and maybe snacks.
  '.
@@ -85,7 +85,7 @@ Your metal cage lies behind you.
         locations at: #infiniteForest put:
         '  /\\  /\\  /\\  /\\  /\\
   /__\\/__\\/__\\/__\\/__\\ 
-   ||  ||  ||  ||  ||  
+    ||  ||  ||  ||  ||  
  Trees stretch endlessly in every direction.
  The forest looks exactly the same everywhere.
  Muffin is completely lost.
@@ -113,7 +113,7 @@ Your metal cage lies behind you.
  '.
     
         locations at: #meadow put:
-        '    _     _     _      
+        '     _     _     _      
     ( )   ( )   ( )   __ 
      |     |     |   (  )
     \\|/   \\|/   \\|/  (__)
@@ -157,8 +157,8 @@ Your metal cage lies behind you.
 
         locations at: #barn put:
         '      _______      
-      / _____ \\     
-     / /|_|_|\\ \\    
+    / _____ \\     
+   / /|_|_|\\ \\    
      |_|  _  |_|    
  vVvV|_| | | |_|vVvVv 
  An old wooden barn. It smells like mice.
@@ -170,16 +170,16 @@ Your metal cage lies behind you.
    |   _     _   |  
    |  |_| ^ |_|  |  
    |     |V|     |  
-   |    / m \\    |  
+   |    / m \    |  
  You arrive at a small town street.
  A big dog sits at the south of the road and barks at you. He doesn''t like cats, especially ones that look a bit familiar.
  '.
 
         locations at: #wheatField put:
         '   \\/  \\/  \\/  \\/  
-    \\/  \\/  \\/  \\/  
+  \\/  \\/  \\/  \\/  
    _|   |  _|   |   
-  (_)     (_)           
+  (_)     (_)         
  A huge wheat field sways in the wind.
  You see a bundle of hay here.
  To the west lies a cabbage field.
@@ -226,6 +226,17 @@ Your metal cage lies behind you.
   vvVvVVvVvvvVvvVvVvv 
  Your house!
  The warm sofa awaits.
+ '.
+
+        locations at: #shelter put:
+        '   _________       
+  |_|_|_|_|_|      
+  |_|_|_|_|_|       
+  |_|_|_|_|_|      
+You find an animal shelter.
+Some people grab you and put in a cage.
+Muffin curls up and is very sad.
+You will never find your way back home.
  '.
  
         ^ locations.

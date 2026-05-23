@@ -6,7 +6,7 @@ FileStream fileIn: 'World.st'.
 Object subclass: LostPaws [
     | isOver location world hunger mouth 
     eagleDistracted scarecrowBuilt stairsBuilt
-    dogDistracted|
+    dogDistracted shelterClueFound|
 
     LostPaws class >> new [
         | g |
@@ -206,7 +206,6 @@ Object subclass: LostPaws [
                 Transcript show: 'Muffin is too scared to go this way.'; cr.
                 ^ self
             ].
-
         next := loc pathAt: direction.
 
         next isNil
@@ -264,6 +263,7 @@ Object subclass: LostPaws [
             ].
         location = #car 
             ifTrue: [
+                self showLocation.
                 Transcript show: 'Muffin sneaks behind the barn into a parking lot.'; cr.
                 Transcript show: 'Suddenly a car starts moving!'; cr.
                 Transcript show: 'She is disoriented and runs directly under the wheels...'; cr.
@@ -274,6 +274,7 @@ Object subclass: LostPaws [
             ].
         location = #home 
             ifTrue: [
+                self showLocation.
                 Transcript show: 'Muffin recognizes the smell of her house!'; cr.
                 Transcript show: 'She waddles inside and jumps onto the sofa.'; cr.
                 Transcript show: 'Home at last.'; cr.
@@ -281,12 +282,20 @@ Object subclass: LostPaws [
                 isOver := true.
                 ^ self
             ].
+        location = #shelter
+            ifTrue: [
+                self showLocation.
+                Transcript show: 'YOU LOSE!'; cr.
+                isOver := true.
+                ^ self
+            ].
+
         self showHunger.
         self showLocation.
     ]
 
     search: objectName [
-        | loc obj |
+        | loc obj found |
         loc := world at: location.
         objectName = #river ifTrue: [
             location = #river
@@ -309,10 +318,7 @@ Object subclass: LostPaws [
             Transcript show: objectName asString, ' not found.'; cr.
             ^ self
         ].
-  
-        obj contains do: [ :each |
-            loc addObject: each
-        ].
+        found := obj contains first.
 
         Transcript show: 'Muffin searches the ', objectName asString, ' and finds '; cr.
 
@@ -321,12 +327,10 @@ Object subclass: LostPaws [
                 Transcript show: 'nothing else inside.'; cr.
             ]
             ifFalse: [
-                obj contains do: [ :each |
-                    Transcript show: '- ', each name asString; cr.
-                ].
+                loc addObject: found.
+                obj contains remove: found.
+                Transcript show: '- ', found name asString; cr.
             ].
-
-        obj empty.
     ]
 
     take: objectName [

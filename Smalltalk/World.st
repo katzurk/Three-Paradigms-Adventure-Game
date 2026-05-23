@@ -7,7 +7,7 @@ Object subclass: World [
         | world startCage forest lowForest infiniteForest 
         road rockyRoad meadow car river waterfall barn town 
         wheatField cabbageField bridge graveyard home
-        box cage branch rock hat hay brick fish rodents special|
+        box cage branch rock hat hay brick fish rodents special shelter|
 
         world := Dictionary new.
 
@@ -29,6 +29,7 @@ Object subclass: World [
         bridge := Location named: #bridge.
         graveyard := Location named: #graveyard.
         home := Location named: #home.
+        shelter := Location named: #shelter.
         
         "Paths"
         startCage addPath: #n to: #forest.
@@ -58,16 +59,19 @@ Object subclass: World [
         rockyRoad addPath: #n to: #road.
         rockyRoad addPath: #w to: #river.
         rockyRoad addPath: #e to: #meadow.
+        rockyRoad addPath: #s to: #shelter.
 
         meadow addPath: #n to: #startCage.
         meadow addPath: #w to: #rockyRoad.
         meadow addPath: #e to: #infiniteForest.
+        meadow addPath: #s to: #shelter.
 
         waterfall addPath: #e to: #road.
         waterfall addPath: #s to: #river.
 
         river addPath: #n to: #waterfall.
         river addPath: #e to: #rockyRoad.
+        river addPath: #s to: #shelter.
 
         wheatField addPath: #w to: #cabbageField.
         wheatField addPath: #s to: #barn.
@@ -149,6 +153,7 @@ Object subclass: World [
         world at: #bridge put: bridge.
         world at: #graveyard put: graveyard.
         world at: #home put: home.
+        world at: #shelter put: shelter.
         
             
         ^ world.
