@@ -96,45 +96,45 @@ Object subclass: World [
 
         "Objects"
         cage := GameObject named: #cage.
-        cage addObject: (GameObject named: #hamster).
+        cage addObject: (Rodent named: #hamster).
         startCage addObject: (cage).
 
         box := GameObject named: #cardboardBox.
-        box addObject: (GameObject named: #cod).
-        box addObject: (GameObject named: #mackerel).
-        box addObject: (GameObject named: #roach).
+        box addObject: (Fish named: #cod).
+        box addObject: (Fish named: #mackerel).
+        box addObject: (Fish named: #roach).
         forest addObject: (box).
         forest addObject: (GameObject named: #bigStick).
 
         branch := GameObject named: #branch.
-        branch addObject: (GameObject named: #squirrel).
+        branch addObject: (Rodent named: #squirrel).
         lowForest addObject: (branch).
         lowForest addObject: (GameObject named: #smallStick).
 
         road addObject: (GameObject named: #brokenStool).
-        road addObject: (GameObject named: #chocolate).
+        road addObject: (Poison named: #chocolate).
         road addObject: (GameObject named: #sofa).
 
 
         rock := GameObject named: #whiteRock.
         hat := GameObject named: #hat.
-        hat addObject: (GameObject named: #gerbil).
+        hat addObject: (Rodent named: #gerbil).
         rock addObject: hat.
         meadow addObject: (rock).
         
         hay := GameObject named: #hay.
-        hay addObject: (GameObject named: #brownMouse).
+        hay addObject: (Rodent named: #brownMouse).
         wheatField addObject: (hay).
 
         brick := GameObject named: #brick.
-        brick addObject: (GameObject named: #tinyMouse).
-        barn addObject: (GameObject named: #catnip).
+        brick addObject: (Rodent named: #tinyMouse).
+        barn addObject: (Poison named: #catnip).
         barn addObject: (brick).
 
         graveyard addObject: (GameObject named: #bone).
 
         town addObject: (GameObject named: #dog).
-        town addObject: (GameObject named: #rat).
+        town addObject: (Rodent named: #rat).
 
         world at: #startCage put: startCage.
         world at: #forest put: forest.
@@ -159,17 +159,6 @@ Object subclass: World [
         ^ world.
     ]
 
-    World class >> fish [
-        ^ #(#cod #mackerel #roach #herring).
-    ]
-
-    World class >> rodents [
-         ^ #(#hamster #brownMouse #tinyMouse #rat #squirrel #gerbil).
-    ]
-
-    World class >> special [
-         ^ #(#chocolate #catnip).
-    ]
 ]
 
 

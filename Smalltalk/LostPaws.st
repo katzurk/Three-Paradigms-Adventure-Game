@@ -45,13 +45,26 @@ Object subclass: LostPaws [
         hunger >= 12
             ifTrue: [
                 self printText: 'Muffin is too weak to take another step...' .
-                self printText: 'YOU LOSE!'.
-                isOver := true.
+                self loseGame.
             ].
+    ]
+
+    decreaseHunger: points [
+        hunger := hunger - points.
+        hunger < 0 ifTrue: [ hunger := 0 ].
+    ]
+
+    removeFromMouth: obj [
+        mouth remove: obj.
     ]
 
     showHunger [
         self printText: '[hunger ', hunger asString, '/12]'.
+    ]
+
+    loseGame [
+        isOver := true.
+        self printText: 'YOU LOSE!'.
     ]
 
     showMouth [
@@ -242,8 +255,7 @@ Object subclass: LostPaws [
                 self printText: 'A huge eagle swoops down from above!'.
                 self printText: 'Its talons grab Muffin before she can react.'.
                 self printText: 'The ground fades away...'.
-                self printText: 'YOU LOSE!'.
-                isOver := true.
+                self loseGame.
                 ^ self
             ].
 
@@ -272,8 +284,7 @@ Object subclass: LostPaws [
                 self printText: 'Muffin visits the lake.'.
                 self printText: 'But the ground is slippery here!'.
                 self printText: 'She falls into the water. Muffin can''t swim and drowns.'.
-                self printText: 'YOU LOSE!'.
-                isOver := true.
+                self loseGame.
                 ^ self
             ].
         location = #car 
@@ -283,8 +294,7 @@ Object subclass: LostPaws [
                 self printText: 'Suddenly a car starts moving!'.
                 self printText: 'She is disoriented and runs directly under the wheels...'.
                 self printText: 'CRUNCH.'.
-                self printText: 'YOU LOSE!'.
-                isOver := true.
+                self loseGame.
                 ^ self
             ].
         location = #home 
@@ -300,8 +310,7 @@ Object subclass: LostPaws [
         location = #shelter
             ifTrue: [
                 self showLocation.
-                self printText: 'YOU LOSE!'.
-                isOver := true.
+                self loseGame.
                 ^ self
             ].
 
@@ -438,41 +447,8 @@ Object subclass: LostPaws [
             ^ self
         ].
 
-        (World fish includes: objectName) ifTrue: [
-            hunger := hunger - 3.
-            hunger < 0 ifTrue: [ hunger := 0 ].
-            self printText: (Descriptions eatDescriptions at: #fish).
-            mouth remove: obj.
-            ^ self
-        ].
+        obj onEatBy: self.
 
-        (World rodents includes: objectName) ifTrue: [
-            hunger := hunger - 2.
-            hunger < 0 ifTrue: [ hunger := 0 ].
-            self printText: (Descriptions eatDescriptions at: #rodent).
-            mouth remove: obj.
-            ^ self
-        ].
-
-        objectName = #catnip
-            ifTrue: [
-                self printText: (Descriptions eatDescriptions at: #catnip).
-                self printText: 'YOU LOSE!'.
-                isOver := true.
-                mouth remove: obj.
-                ^ self
-            ].
-
-        objectName = #chocolate
-            ifTrue: [
-                self printText: (Descriptions eatDescriptions at: #chocolate).
-                self printText: 'YOU LOSE!'.
-                isOver := true.
-                mouth remove: obj.
-                ^ self
-            ].  
-
-        self printText: (Descriptions eatDescriptions at: #default).
     ]
 
     attach: objectName to: baseName [
