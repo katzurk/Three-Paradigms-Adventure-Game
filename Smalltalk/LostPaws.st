@@ -6,7 +6,7 @@ FileStream fileIn: 'World.st'.
 Object subclass: LostPaws [
     | isOver location world hunger mouth 
     eagleDistracted scarecrowBuilt stairsBuilt
-    dogDistracted shelterClueFound|
+    dogDistracted shelterClueFound logFile |
 
     LostPaws class >> new [
         | g |
@@ -25,42 +25,46 @@ Object subclass: LostPaws [
         scarecrowBuilt := false.
         stairsBuilt := false.
         dogDistracted := false.
+        logFile := FileStream open: 'game.log' mode: #write.
     ]
 
     readDescription: target [
-        Transcript show: (Descriptions perform: target); cr.
+        self printText: (Descriptions perform: target).
     ]
 
     readCommand [
+        | cmd |
         Transcript show: '> '.
-        ^ FileStream stdin nextLine
+        cmd := FileStream stdin nextLine.
+        logFile nextPutAll: '> ', cmd; nl.
+        ^ cmd
     ]
 
     increaseHunger [
         hunger := hunger + 1.
         hunger >= 12
             ifTrue: [
-                Transcript show: 'Muffin is too weak to take another step...' ; cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: 'Muffin is too weak to take another step...' .
+                self printText: 'YOU LOSE!'.
                 isOver := true.
             ].
     ]
 
     showHunger [
-        Transcript show: '[hunger ', hunger asString, '/12]'; cr.
+        self printText: '[hunger ', hunger asString, '/12]'.
     ]
 
     showMouth [
-        Transcript show: 'Muffin is carrying: '; cr.
+        self printText: 'Muffin is carrying: '.
         mouth isEmpty
             ifTrue: [
-                Transcript show: 'Nothing. Her mouth is empty.'; cr.
+                self printText: 'Nothing. Her mouth is empty.'.
             ]
             ifFalse: [
                 mouth do: [ :obj |
-                    Transcript show: '- ', obj name asString; cr.
+                    self printText: '- ', obj name asString.
                 ].
-                Transcript show: 'That is everything in her mouth.'; cr.
+                self printText: 'That is everything in her mouth.'.
             ].
 
     ]
@@ -70,16 +74,25 @@ Object subclass: LostPaws [
 
         loc := world at: location.
 
-        Transcript show: location; cr.
-        Transcript show: (Descriptions locations at: location); cr.
+        self printText: location.
+        self printText: (Descriptions locations at: location).
 
         loc objects isEmpty
         ifFalse: [
 
             loc objects do: [ :obj |
-                Transcript show: 'There is a ', obj name asString, ' here.'; cr.
+                self printText: 'There is a ', obj name asString, ' here.'.
             ].
         ].
+    ]
+
+    printText: text [
+        Transcript show: text; cr.
+        logFile nextPutAll: text; nl.
+    ]
+
+    closeLog [
+        logFile close.
     ]
 
     run [
@@ -93,9 +106,9 @@ Object subclass: LostPaws [
         [ isOver ] whileFalse: [
 
             cmd := self readCommand.
-
             self handleCommand: cmd.
-        ]
+        ].
+        self closeLog.
     ]
 
     handleCommand: cmd [
@@ -105,7 +118,7 @@ Object subclass: LostPaws [
 
         cmd = 'help'
             ifTrue: [
-                Transcript show: Descriptions instructions; cr.
+                self printText: Descriptions instructions.
                 ^self
             ].
         cmd = 'look'
@@ -122,7 +135,7 @@ Object subclass: LostPaws [
         (parts first = 'move')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: move [n/w/s/e]'; cr.
+                    self printText: 'Usage: move [n/w/s/e]'.
                     ^ self
                 ].
                 dir := parts second asSymbol.
@@ -132,7 +145,7 @@ Object subclass: LostPaws [
         (parts first = 'search')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: search [a]'; cr.
+                    self printText: 'Usage: search [a]'.
                     ^ self
                 ].
                 object := parts second asSymbol.
@@ -142,7 +155,7 @@ Object subclass: LostPaws [
         (parts first = 'take')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: take [a]'; cr.
+                    self printText: 'Usage: take [a]'.
                     ^ self
                 ].
                 self take: parts second asSymbol.
@@ -151,7 +164,7 @@ Object subclass: LostPaws [
         (parts first = 'drop')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: drop [a]'; cr.
+                    self printText: 'Usage: drop [a]'.
                     ^ self
                 ].
                 self drop: parts second asSymbol.
@@ -160,7 +173,7 @@ Object subclass: LostPaws [
         (parts first = 'eat')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: eat [a]'; cr.
+                    self printText: 'Usage: eat [a]'.
                     ^ self
                 ].
                 self eat: parts second asSymbol.
@@ -169,7 +182,7 @@ Object subclass: LostPaws [
         (parts first = 'attach')
             ifTrue: [
                 parts size < 4 ifTrue: [
-                    Transcript show: 'Usage: attach [a] to [b]'; cr.
+                    self printText: 'Usage: attach [a] to [b]'.
                     ^ self
                 ].
                 self attach: (parts second asSymbol)
@@ -179,7 +192,7 @@ Object subclass: LostPaws [
         (parts first = 'arrange')
             ifTrue: [
                 parts size < 2 ifTrue: [
-                    Transcript show: 'Usage: arrange [a, b, c...]'; cr.
+                    self printText: 'Usage: arrange [a, b, c...]'.
                     ^ self
                 ].
                 self arrange: (parts allButFirst collect: [ :x | x asSymbol ]).
@@ -188,7 +201,7 @@ Object subclass: LostPaws [
         cmd = 'quit'
             ifTrue: [
                 isOver := true.
-                Transcript show: 'Bye!'; cr.
+                self printText: 'Bye!'.
                 ^self
             ].
 
@@ -204,50 +217,50 @@ Object subclass: LostPaws [
 
         ((#(#wheatField #cabbageField #town) includes: location) 
             and: [ direction = #n ]) ifTrue:[
-                Transcript show: 'There is a highway up ahead.'; cr.
-                Transcript show: 'Muffin is too scared to go this way.'; cr.
+                self printText: 'There is a highway up ahead.'.
+                self printText: 'Muffin is too scared to go this way.'.
                 ^ self
             ].
         next := loc pathAt: direction.
 
         next isNil
             ifTrue: [
-                Transcript show: 'You can''t go that way.'; cr.
+                self printText: 'You can''t go that way.'.
                 ^ self
             ].
 
         (location = #town and: [ dogDistracted not and: [ direction = #s ] ])
             ifTrue: [
-                Transcript show: 'A big dog blocks your way to the south and growls.'; cr.
-                Transcript show: 'Maybe you could give him something to eat...'; cr.
+                self printText: 'A big dog blocks your way to the south and growls.'.
+                self printText: 'Maybe you could give him something to eat...'.
                 ^ self
             ].
 
         (location = #town and: [ eagleDistracted not and: [ direction = #s ] ])
             ifTrue: [
-                Transcript show: 'As Muffin walks forward...'; cr.
-                Transcript show: 'A huge eagle swoops down from above!'; cr.
-                Transcript show: 'Its talons grab Muffin before she can react.'; cr.
-                Transcript show: 'The ground fades away...'; cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: 'As Muffin walks forward...'.
+                self printText: 'A huge eagle swoops down from above!'.
+                self printText: 'Its talons grab Muffin before she can react.'.
+                self printText: 'The ground fades away...'.
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 ^ self
             ].
 
         (location = #wheatField and: [ scarecrowBuilt not and: [ direction = #w ] ])
             ifTrue: [
-                Transcript show: 'As Muffin enters the cabbage field...'; cr.
-                Transcript show: 'A flock of angry crows attacks!'; cr.
-                Transcript show: 'CAW! CAW!'; cr.
-                Transcript show: 'They chase Muffin back to the wheat field.'; cr.
+                self printText: 'As Muffin enters the cabbage field...'.
+                self printText: 'A flock of angry crows attacks!'.
+                self printText: 'CAW! CAW!'.
+                self printText: 'They chase Muffin back to the wheat field.'.
                 ^ self
             ].
 
         (location = #bridge and: [ stairsBuilt not and: [ direction = #w ] ])
             ifTrue: [
-                Transcript show: 'A tall stone gate, flanked by two castle towers, blocks the entrance to the town.'; cr.
-                Transcript show: 'Muffin could jump over... if she was taller.'; cr.
-                Transcript show: 'Maybe she could build something to climb on.'; cr.
+                self printText: 'A tall stone gate, flanked by two castle towers, blocks the entrance to the town.'.
+                self printText: 'Muffin could jump over... if she was taller.'.
+                self printText: 'Maybe she could build something to climb on.'.
                 ^ self
             ].
 
@@ -256,38 +269,38 @@ Object subclass: LostPaws [
         location := next.
         location = #lake 
             ifTrue: [
-                Transcript show: 'Muffin visits the lake.'; cr.
-                Transcript show: 'But the ground is slippery here!'; cr.
-                Transcript show: 'She falls into the water. Muffin can''t swim and drowns.'; cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: 'Muffin visits the lake.'.
+                self printText: 'But the ground is slippery here!'.
+                self printText: 'She falls into the water. Muffin can''t swim and drowns.'.
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 ^ self
             ].
         location = #car 
             ifTrue: [
                 self showLocation.
-                Transcript show: 'Muffin sneaks behind the barn into a parking lot.'; cr.
-                Transcript show: 'Suddenly a car starts moving!'; cr.
-                Transcript show: 'She is disoriented and runs directly under the wheels...'; cr.
-                Transcript show: 'CRUNCH.'; cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: 'Muffin sneaks behind the barn into a parking lot.'.
+                self printText: 'Suddenly a car starts moving!'.
+                self printText: 'She is disoriented and runs directly under the wheels...'.
+                self printText: 'CRUNCH.'.
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 ^ self
             ].
         location = #home 
             ifTrue: [
                 self showLocation.
-                Transcript show: 'Muffin recognizes the smell of her house!'; cr.
-                Transcript show: 'She waddles inside and jumps onto the sofa.'; cr.
-                Transcript show: 'Home at last.'; cr.
-                Transcript show: 'YOU WIN!'; cr.
+                self printText: 'Muffin recognizes the smell of her house!'.
+                self printText: 'She waddles inside and jumps onto the sofa.'.
+                self printText: 'Home at last.'.
+                self printText: 'YOU WIN!'.
                 isOver := true.
                 ^ self
             ].
         location = #shelter
             ifTrue: [
                 self showLocation.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 ^ self
             ].
@@ -302,13 +315,13 @@ Object subclass: LostPaws [
         objectName = #river ifTrue: [
             location = #river
                 ifTrue: [
-                    Transcript show: 'Muffin splashes the water with her paw.'; cr.
-                    Transcript show: 'She finds a shiny coolPebble!'; cr.
+                    self printText: 'Muffin splashes the water with her paw.'.
+                    self printText: 'She finds a shiny coolPebble!'.
                     obj := GameObject named: #coolPebble.
                     loc addObject: obj.
                 ]
                 ifFalse: [
-                    Transcript show: 'There is no river here.'; cr.
+                    self printText: 'There is no river here.'.
                 ].
 
             ^ self
@@ -317,21 +330,21 @@ Object subclass: LostPaws [
         obj := loc objects detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: objectName asString, ' not found.'; cr.
+            self printText: objectName asString, ' not found.'.
             ^ self
         ].
         found := obj contains first.
 
-        Transcript show: 'Muffin searches the ', objectName asString, ' and finds '; cr.
+        self printText: 'Muffin searches the ', objectName asString, ' and finds '.
 
         obj contains isEmpty 
             ifTrue: [
-                Transcript show: 'nothing else inside.'; cr.
+                self printText: 'nothing else inside.'.
             ]
             ifFalse: [
                 loc addObject: found.
                 obj contains remove: found.
-                Transcript show: '- ', found name asString; cr.
+                self printText: '- ', found name asString.
             ].
     ]
 
@@ -341,7 +354,7 @@ Object subclass: LostPaws [
         loc := world at: location.
 
         (objectName = #river and: [location = #river]) ifTrue: [
-            Transcript show: 'The river is way too big for Muffin to pick up.'; cr.
+            self printText: 'The river is way too big for Muffin to pick up.'.
             ^ self
         ].
         objs := loc objects.
@@ -349,13 +362,13 @@ Object subclass: LostPaws [
         obj := objs detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'You do not see that here.'; cr.
+            self printText: 'You do not see that here.'.
             ^ self
         ].
 
         mouth size >= 3 ifTrue: [
-            Transcript show: 'Muffin tries to pick up the ', objectName asString, '.'; cr.
-            Transcript show: 'But her tiny cat mouth is already full.'; cr.
+            self printText: 'Muffin tries to pick up the ', objectName asString, '.'.
+            self printText: 'But her tiny cat mouth is already full.'.
             ^ self
         ].
 
@@ -365,19 +378,19 @@ Object subclass: LostPaws [
         ].
 
         objectName = #dog ifTrue: [
-            Transcript show: 'The dog is far too big and angry for Muffin to pick up.'; cr.
+            self printText: 'The dog is far too big and angry for Muffin to pick up.'.
             ^ self
         ].
 
         objectName = #sofa ifTrue: [
-            Transcript show: 'The sofa is too heavy for Muffin to move.'; cr.
+            self printText: 'The sofa is too heavy for Muffin to move.'.
             ^ self
         ].
 
         objs remove: obj.
         mouth add: obj.
 
-        Transcript show: 'You pick up the ', objectName, '.'; cr.
+        self printText: 'You pick up the ', objectName, '.'.
     ]
 
     drop: objectName [
@@ -388,13 +401,13 @@ Object subclass: LostPaws [
         obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'You are not holding it.'; cr.
+            self printText: 'You are not holding it.'.
             ^ self
         ].
 
         (location = #town and: [ objectName = #bone ])
             ifTrue: [
-                Transcript show: 'The dog grabs the bone and runs away happily!'; cr.
+                self printText: 'The dog grabs the bone and runs away happily!'.
                 dogDistracted := true.
                 mouth remove: obj.
                 ^ self
@@ -402,8 +415,8 @@ Object subclass: LostPaws [
 
         ( (World fish includes: objectName)
             and: [ location = #town ]) ifTrue:[
-                Transcript show: 'An eagle swoops down and grabs the fish!'; cr.
-                Transcript show: 'It flies away with its meal.'; cr.
+                self printText: 'An eagle swoops down and grabs the fish!'.
+                self printText: 'It flies away with its meal.'.
                 eagleDistracted := true.
                 mouth remove: obj.
                 ^ self
@@ -412,7 +425,7 @@ Object subclass: LostPaws [
         mouth remove: obj.
         loc addObject: obj.
 
-        Transcript show: 'Dropped.'; cr.        
+        self printText: 'Dropped.'.        
     ]
 
     eat: objectName [
@@ -421,14 +434,14 @@ Object subclass: LostPaws [
         obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'You are not holding it.'; cr.
+            self printText: 'You are not holding it.'.
             ^ self
         ].
 
         (World fish includes: objectName) ifTrue: [
             hunger := hunger - 3.
             hunger < 0 ifTrue: [ hunger := 0 ].
-            Transcript show: (Descriptions eatDescriptions at: #fish); cr.
+            self printText: (Descriptions eatDescriptions at: #fish).
             mouth remove: obj.
             ^ self
         ].
@@ -436,15 +449,15 @@ Object subclass: LostPaws [
         (World rodents includes: objectName) ifTrue: [
             hunger := hunger - 2.
             hunger < 0 ifTrue: [ hunger := 0 ].
-            Transcript show: (Descriptions eatDescriptions at: #rodent); cr.
+            self printText: (Descriptions eatDescriptions at: #rodent).
             mouth remove: obj.
             ^ self
         ].
 
         objectName = #catnip
             ifTrue: [
-                Transcript show: (Descriptions eatDescriptions at: #catnip); cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: (Descriptions eatDescriptions at: #catnip).
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 mouth remove: obj.
                 ^ self
@@ -452,14 +465,14 @@ Object subclass: LostPaws [
 
         objectName = #chocolate
             ifTrue: [
-                Transcript show: (Descriptions eatDescriptions at: #chocolate); cr.
-                Transcript show: 'YOU LOSE!'; cr.
+                self printText: (Descriptions eatDescriptions at: #chocolate).
+                self printText: 'YOU LOSE!'.
                 isOver := true.
                 mouth remove: obj.
                 ^ self
             ].  
 
-        Transcript show: (Descriptions eatDescriptions at: #default); cr.
+        self printText: (Descriptions eatDescriptions at: #default).
     ]
 
     attach: objectName to: baseName [
@@ -470,14 +483,14 @@ Object subclass: LostPaws [
         obj := mouth detect: [ :o | o name = objectName ] ifNone: [ nil ].
 
         obj isNil ifTrue: [
-            Transcript show: 'You do not have  that item.'; cr.
+            self printText: 'You do not have  that item.'.
             ^ self
         ].
 
         base := loc objects detect: [ :o | o name = baseName ] ifNone: [ nil ].
 
         base isNil ifTrue: [
-            Transcript show: 'The second item is not here.'; cr.
+            self printText: 'The second item is not here.'.
             ^ self
         ].
 
@@ -485,7 +498,7 @@ Object subclass: LostPaws [
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    self printText: 'You need to build the frame near the wheatField'.
                     ^ self
                 ].
                 mouth remove: obj.
@@ -493,15 +506,15 @@ Object subclass: LostPaws [
 
                 loc addObject: (GameObject named: #frame).
 
-                Transcript show: 'You attach a stick into the hay bundle.'; cr.
-                Transcript show: 'It starts to look like a frame.'; cr.
+                self printText: 'You attach a stick into the hay bundle.'.
+                self printText: 'It starts to look like a frame.'.
                 ^ self
             ].
         (objectName = #smallStick and: [ baseName = #frame ])
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    self printText: 'You need to build the frame near the wheatField'.
                     ^ self
                 ].
                 mouth remove: obj.
@@ -509,15 +522,15 @@ Object subclass: LostPaws [
 
                 loc addObject: (GameObject named: #headlessMan).
 
-                Transcript show: 'The scarecrow now has two arms..'; cr.
-                Transcript show: 'It looks like a headless man!'; cr.
+                self printText: 'The scarecrow now has two arms..'.
+                self printText: 'It looks like a headless man!'.
                 ^ self
             ].
         (objectName = #hat and: [ baseName = #headlessMan ])
             ifTrue: [
                 (location = #wheatField)
                 ifFalse: [
-                    Transcript show: 'You need to build the frame near the wheatField'; cr.
+                    self printText: 'You need to build the frame near the wheatField'.
                     ^ self
                 ].
                 mouth remove: obj.
@@ -526,9 +539,9 @@ Object subclass: LostPaws [
                 loc addObject: (GameObject named: #scarecrow).
                 scarecrowBuilt := true.
 
-                Transcript show: 'You place the hat on top.'; cr.
-                Transcript show: 'A scary scarecrow stands between the fields!'; cr.
-                Transcript show: 'The crows fly away.'; cr.
+                self printText: 'You place the hat on top.'.
+                self printText: 'A scary scarecrow stands between the fields!'.
+                self printText: 'The crows fly away.'.
                 ^ self
             ].
         (objectName = #pipe and: [ baseName = #brokenStool ])
@@ -538,14 +551,14 @@ Object subclass: LostPaws [
 
                 loc addObject: (GameObject named: #stool).
 
-                Transcript show: 'You fix the broken stool using the pipe.'; cr.
+                self printText: 'You fix the broken stool using the pipe.'.
                 ^ self
             ].
         (objectName = #cardboardBox and: [ baseName = #cage ])
             ifTrue: [
                 (location = #bridge)
                 ifFalse: [
-                    Transcript show: 'You need to build the tower near the bridge'; cr.
+                    self printText: 'You need to build the tower near the bridge'.
                     ^ self
                 ].
                 mouth remove: obj.
@@ -553,15 +566,15 @@ Object subclass: LostPaws [
 
                 loc addObject: (GameObject named: #tower).
 
-                Transcript show: 'You place the cardboard box on top of the cage.'; cr.
-                Transcript show: 'It forms a small tower.'; cr.
+                self printText: 'You place the cardboard box on top of the cage.'.
+                self printText: 'It forms a small tower.'.
                 ^ self
             ].
         (objectName = #stool and: [ baseName = #tower ])
             ifTrue: [
                 (location = #bridge)
                 ifFalse: [
-                    Transcript show: 'You need to build the stairs near the bridge'; cr.
+                    self printText: 'You need to build the stairs near the bridge'.
                     ^ self
                 ].
                 mouth remove: obj.
@@ -570,13 +583,13 @@ Object subclass: LostPaws [
                 loc addObject: (GameObject named: #stairs).
                 stairsBuilt := true.
 
-                Transcript show: 'You add the stool to the tower.'; cr.
-                Transcript show: 'Now Muffin can climb it like stairs!'; cr.
+                self printText: 'You add the stool to the tower.'.
+                self printText: 'Now Muffin can climb it like stairs!'.
                 ^ self
             ].
 
-        Transcript show:
-            'Those things cannot be attached together.'; cr.
+        self printText:
+            'Those things cannot be attached together.'.
     ]
 
     arrange: symbols [
@@ -587,16 +600,16 @@ Object subclass: LostPaws [
             ifTrue: [
                 (word = 'shelter')
                     ifTrue: [
-                        Transcript show: 'The stones glow faintly...'; cr.
-                        Transcript show: 'SHELTER.'; cr.
-                        Transcript show: 'Muffin suddenly understands!'; cr.
-                        Transcript show: 'The animal shelter must be south of here!'; cr.
-                        Transcript show: 'I don''t want to live in a cage!'; cr.
-                        Transcript show: 'Something shiny appears between the stones... a shell!'; cr.
+                        self printText: 'The stones glow faintly...'.
+                        self printText: 'SHELTER.'.
+                        self printText: 'Muffin suddenly understands!'.
+                        self printText: 'The animal shelter must be south of here!'.
+                        self printText: 'I don''t want to live in a cage!'.
+                        self printText: 'Something shiny appears between the stones... a shell!'.
                         loc addObject: (GameObject named: #shell).
                     ]
                     ifFalse: [
-                        Transcript show: 'The stones do not form a meaningful word.'; cr.
+                        self printText: 'The stones do not form a meaningful word.'.
                     ].
                 ^ self
             ].
@@ -609,14 +622,14 @@ Object subclass: LostPaws [
                 isAll := needed allSatisfy: [ :req | loc objects anySatisfy: [ :o | o name = req ]].
 
                 isAll ifFalse: [
-                    Transcript show: 'You do not have all the stones needed to build the totem.'; cr.
+                    self printText: 'You do not have all the stones needed to build the totem.'.
                 ].
                 (word = 'bwcs')
                     ifTrue: [
-                        Transcript show: 'Muffin carefully stacks the stones into a small totem.'; cr.
-                        Transcript show: 'Brick at the bottom, then white rock, cool pebble and shell.'; cr.
-                        Transcript show: 'The rushing waterfall sounds pleasant and she feels safe.'; cr.
-                        Transcript show: 'Something floats toward the shore... a metal pipe washes up!'; cr.
+                        self printText: 'Muffin carefully stacks the stones into a small totem.'.
+                        self printText: 'Brick at the bottom, then white rock, cool pebble and shell.'.
+                        self printText: 'The rushing waterfall sounds pleasant and she feels safe.'.
+                        self printText: 'Something floats toward the shore... a metal pipe washes up!'.
                         pipe := GameObject named: #pipe.
                         pipe addObject: (GameObject named: #herring).
                         loc addObject: pipe.
@@ -627,8 +640,8 @@ Object subclass: LostPaws [
                 ^ self
             ].
 
-        Transcript show:
-            'That arrangement makes no sense here.'; cr.
+        self printText:
+            'That arrangement makes no sense here.'.
     ]
 ].
 
