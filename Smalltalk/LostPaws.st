@@ -381,25 +381,15 @@ Object subclass: LostPaws [
             ^ self
         ].
 
-        objectName = #whiteRock ifTrue: [
-            obj contains do: [ :each | loc addObject: each ].
-            obj empty.
+        (obj canBeTaken) ifTrue: [
+            objectName = #whiteRock ifTrue: [
+                obj contains do: [ :each | loc addObject: each ].
+                obj empty.
+            ].
+            objs remove: obj.
+            mouth add: obj.
         ].
-
-        objectName = #dog ifTrue: [
-            self printText: 'The dog is far too big and angry for Muffin to pick up.'.
-            ^ self
-        ].
-
-        objectName = #sofa ifTrue: [
-            self printText: 'The sofa is too heavy for Muffin to move.'.
-            ^ self
-        ].
-
-        objs remove: obj.
-        mouth add: obj.
-
-        self printText: 'You pick up the ', objectName, '.'.
+        obj onTakeBy: self.
     ]
 
     drop: objectName [
@@ -422,7 +412,7 @@ Object subclass: LostPaws [
                 ^ self
             ].
 
-        ( (World fish includes: objectName)
+        ( (obj isKindOf: Fish)
             and: [ location = #town ]) ifTrue:[
                 self printText: 'An eagle swoops down and grabs the fish!'.
                 self printText: 'It flies away with its meal.'.
@@ -607,7 +597,7 @@ Object subclass: LostPaws [
                         self printText: 'The rushing waterfall sounds pleasant and she feels safe.'.
                         self printText: 'Something floats toward the shore... a metal pipe washes up!'.
                         pipe := GameObject named: #pipe.
-                        pipe addObject: (GameObject named: #herring).
+                        pipe addObject: (Rodent named: #herring).
                         loc addObject: pipe.
                     ]
                     ifFalse: [

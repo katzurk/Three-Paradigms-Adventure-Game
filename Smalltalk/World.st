@@ -113,7 +113,7 @@ Object subclass: World [
 
         road addObject: (GameObject named: #brokenStool).
         road addObject: (Poison named: #chocolate).
-        road addObject: (GameObject named: #sofa).
+        road addObject: (HeavyObject named: #sofa).
 
 
         rock := GameObject named: #whiteRock.
@@ -133,7 +133,7 @@ Object subclass: World [
 
         graveyard addObject: (GameObject named: #bone).
 
-        town addObject: (GameObject named: #dog).
+        town addObject: (HeavyObject named: #dog).
         town addObject: (Rodent named: #rat).
 
         world at: #startCage put: startCage.

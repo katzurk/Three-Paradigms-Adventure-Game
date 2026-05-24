@@ -273,5 +273,20 @@ She feels very sick...'.
 
     ^ food.
 ]
+
+    Descriptions class >> takeDescriptions [
+
+    | obj |
+
+    obj := Dictionary new.
+
+    obj at: #dog put:
+        'The dog is far too big and angry for Muffin to pick up.'.
+
+    obj at: #sofa put:
+        'The sofa is too heavy for Muffin to move.'.
+
+    ^ obj.
+]
 ]
 

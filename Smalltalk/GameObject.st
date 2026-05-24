@@ -26,12 +26,21 @@ Object subclass: GameObject [
         contains add: anObject.
     ]
 
+    canBeTaken [
+        ^ true
+    ]
+
     isFood [
         ^ false
     ]
 
     hungerValue [
         ^ 0
+    ]
+
+    onTakeBy: game [
+        game printText: ('You pick up the ', (self name asString), '.').
+        ^ true
     ]
 
     onEatBy: game [
@@ -79,5 +88,15 @@ Food subclass: Poison [
     onEatBy: game [
         game printText: (Descriptions eatDescriptions at: (self name)).
         game loseGame.
+    ]
+]
+
+GameObject subclass: HeavyObject [
+    canBeTaken [
+        ^ false
+    ]
+
+    onTakeBy: game [
+        game printText: (Descriptions takeDescriptions at: (self name)).
     ]
 ]
