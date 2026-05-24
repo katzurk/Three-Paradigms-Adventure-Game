@@ -87,6 +87,8 @@ Object subclass: LostPaws [
         self readDescription: #title.
         self readDescription: #introduction.
         self readDescription: #instructions.
+        self showHunger.
+        self showLocation.
 
         [ isOver ] whileFalse: [
 
