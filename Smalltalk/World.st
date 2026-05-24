@@ -2,14 +2,22 @@ FileStream fileIn: 'GameObject.st'.
 FileStream fileIn: 'Location.st'.
 
 Object subclass: World [
+    | locations |
     World class >> build [
+        | world |
+        world := self new.
+        world init.
+        ^ world
+    ]
 
-        | world startCage forest lowForest infiniteForest 
+    init [
+
+        | startCage forest lowForest infiniteForest 
         road rockyRoad meadow car river waterfall barn town 
         wheatField cabbageField bridge graveyard home
         box cage branch rock hat hay brick fish rodents special shelter|
 
-        world := Dictionary new.
+        locations := Dictionary new.
 
         "All locations"
         startCage := Location named: #startCage.
@@ -136,27 +144,30 @@ Object subclass: World [
         town addObject: (HeavyObject named: #dog).
         town addObject: (Rodent named: #rat).
 
-        world at: #startCage put: startCage.
-        world at: #forest put: forest.
-        world at: #lowForest put: lowForest.
-        world at: #infiniteForest put: infiniteForest.
-        world at: #road put: road.
-        world at: #rockyRoad put: rockyRoad.
-        world at: #meadow put: meadow.
-        world at: #car put: car.
-        world at: #river put: river.
-        world at: #waterfall put: waterfall.
-        world at: #barn put: barn.
-        world at: #town put: town.
-        world at: #wheatField put: wheatField.
-        world at: #cabbageField put: cabbageField.
-        world at: #bridge put: bridge.
-        world at: #graveyard put: graveyard.
-        world at: #home put: home.
-        world at: #shelter put: shelter.
+        locations at: #startCage put: startCage.
+        locations at: #forest put: forest.
+        locations at: #lowForest put: lowForest.
+        locations at: #infiniteForest put: infiniteForest.
+        locations at: #road put: road.
+        locations at: #rockyRoad put: rockyRoad.
+        locations at: #meadow put: meadow.
+        locations at: #car put: car.
+        locations at: #river put: river.
+        locations at: #waterfall put: waterfall.
+        locations at: #barn put: barn.
+        locations at: #town put: town.
+        locations at: #wheatField put: wheatField.
+        locations at: #cabbageField put: cabbageField.
+        locations at: #bridge put: bridge.
+        locations at: #graveyard put: graveyard.
+        locations at: #home put: home.
+        locations at: #shelter put: shelter.
         
-            
-        ^ world.
+        ^ locations.
+    ]
+
+    at: key [
+        ^ locations at: key
     ]
 
 ]
