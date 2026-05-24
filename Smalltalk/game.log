@@ -1,0 +1,252 @@
+============================================================
+    _                 _  _____                         
+    | |               | | |  __ \\                        
+    | |      ___  ___ | |_| |__) |__ __      __ ___     
+    | |     / _ \\/ __|| __|  ___/ _ `\\ \\ /\\ / // __|    
+    | |____| (_) \\__ \\| |_| |  | (_| |\\ V  V / \\__ \\    
+    |______|\\___/|___/ \\__|_|   \\__,_| \\_/\\_/  |___/    
+============================================================
+            THE JOURNEY BEGINS - find your way home           
+============================================================
+                        |\\__/,|   (`\\
+                        _.|o o  |_   ) )
+                    -(((---(((--------
+============================================================
+
+        
+============================================================
+You are Muffin, a fat and very lazy house cat.
+You were lying in the warm sun, happily baking like a loaf of bread.
+
+Suddenly, someone picked you up.
+Before you could even complain, you were placed inside a metal cage.
+After many hours, the truck door swung open...
+Your cage rolled out into the tall grass by the road.
+The truck disappeared. You are free, but can you find your way home?
+
+==== QUEST: Return back home 
+        
+---- Commands:
+move [n, s, e, w]    -- move
+take item            -- pick up item
+drop item            -- drop item  
+search object        -- search container
+eat item             -- eat something
+attach a to b        -- attach object a to object b
+arrange a b c ...    -- arrange objects in order
+look                 -- look around
+show mouth           -- show everything Muffin is carrying
+help                 -- see these instructions
+quit                 -- end the game
+        
+[hunger 0/12]
+startCage
+     ___      
+    |[_]|_  "  
+vvVvVvVvVvVvv
+Tall grass waves around you.
+Your metal cage lies behind you.
+        
+There is a cage here.
+> search cage
+Muffin searches the cage and finds 
+- hamster
+> move s
+[hunger 1/12]
+meadow
+     _     _     _      
+    ( )   ( )   ( )   __ 
+     |     |     |   (  )
+    \\|/   \\|/   \\|/  (__)
+ A quiet meadow full of pretty flowers.
+ Something shiny lies under a white_rock.
+ 
+There is a whiteRock here.
+> take whiteRock
+You pick up the whiteRock.
+> move w
+[hunger 2/12]
+rockyRoad
+  __________   
+  .o .  o .  o   
+  ===  ===  === 
+  o .  .  o . .  
+ A rough rocky road full of stones.
+ Seven carved stones lie on the ground.
+ Letters on them read: h, l, e, t, s, r, e
+ Maybe they can form a word...
+ 
+> arrange s h e l t e r
+The stones glow faintly...
+SHELTER.
+Muffin suddenly understands!
+The animal shelter must be south of here!
+I don't want to live in a cage!
+Something shiny appears between the stones... a shell!
+> take shell
+You pick up the shell.
+> move w
+[hunger 3/12]
+river
+  ~ ~ ~ ~ ~ ~ ~ ~  
+    <><    <><      
+    ~ ~ ~ ~ ~ ~ ~   
+   ~ ~ ~ ~ ~ ~ ~ ~  
+ A fast flowing river blocks your path to the west.
+ You can see fish swimming in the water.
+ The current looks very strong.
+ 
+> search river
+Muffin splashes the water with her paw.
+She finds a shiny coolPebble!
+> take coolPebble
+You pick up the coolPebble.
+> move n
+[hunger 4/12]
+waterfall
+     | | | |       
+      | | | |       
+      | | | |       
+   _~~_~~_~~_~~_    
+  (_____________)   
+ A beautiful waterfall blocks your path to the west-north.
+ This might be a peaceful place to arrange something and rest in its shade.
+ The smooth stones by the water look perfect for stacking.
+ Muffin notices that some are large and heavy, while others are small and light.
+ Three stones and a shell together could make a small totem if placed carefully.
+ Perhaps they should stand from the strongest base to the lightest top.
+ If only she could remember the first sounds of their names...
+ 
+> drop coolPebble
+Dropped.
+> drop shell
+Dropped.
+> drop whiteRock
+Dropped.
+> move e
+[hunger 5/12]
+road
+   __________   
+                
+  ===  ===  === 
+              
+ A dusty road where the truck drove away.
+ You see tire tracks leading north.
+ Some trash is laying on the side of the road.
+ 
+There is a brokenStool here.
+There is a chocolate here.
+There is a sofa here.
+> take sofa
+The sofa is too heavy for Muffin to move.
+> move n
+[hunger 6/12]
+barn
+      _______      
+    / _____ \\     
+   / /|_|_|\\ \\    
+     |_|  _  |_|    
+ vVvV|_| | | |_|vVvVv 
+ An old wooden barn. It smells like mice.
+ Sadly, they are all hiding.
+ 
+There is a catnip here.
+There is a brick here.
+> search brick
+Muffin searches the brick and finds 
+- tinyMouse
+> take tinyMouse
+You pick up the tinyMouse.
+> eat tinyMouse
+Muffin happily eats the rodent.
+> take brick
+You pick up the brick.
+> move s
+[hunger 5/12]
+road
+   __________   
+                
+  ===  ===  === 
+              
+ A dusty road where the truck drove away.
+ You see tire tracks leading north.
+ Some trash is laying on the side of the road.
+ 
+There is a brokenStool here.
+There is a chocolate here.
+There is a sofa here.
+> move w
+[hunger 6/12]
+waterfall
+     | | | |       
+      | | | |       
+      | | | |       
+   _~~_~~_~~_~~_    
+  (_____________)   
+ A beautiful waterfall blocks your path to the west-north.
+ This might be a peaceful place to arrange something and rest in its shade.
+ The smooth stones by the water look perfect for stacking.
+ Muffin notices that some are large and heavy, while others are small and light.
+ Three stones and a shell together could make a small totem if placed carefully.
+ Perhaps they should stand from the strongest base to the lightest top.
+ If only she could remember the first sounds of their names...
+ 
+There is a coolPebble here.
+There is a shell here.
+There is a whiteRock here.
+> drop brick
+Dropped.
+> arrange b w c s
+Muffin carefully stacks the stones into a small totem.
+Brick at the bottom, then white rock, cool pebble and shell.
+The rushing waterfall sounds pleasant and she feels safe.
+Something floats toward the shore... a metal pipe washes up!
+> search pipe
+Muffin searches the pipe and finds 
+- herring
+> take herring
+You pick up the herring.
+> eat herring
+Muffin happily eats the fish.
+> take pipe
+You pick up the pipe.
+> move e
+[hunger 4/12]
+road
+   __________   
+                
+  ===  ===  === 
+              
+ A dusty road where the truck drove away.
+ You see tire tracks leading north.
+ Some trash is laying on the side of the road.
+ 
+There is a brokenStool here.
+There is a chocolate here.
+There is a sofa here.
+> attach pipe brokenStool
+Usage: attach [a] to [b]
+> attach pipe to brokenStool
+You fix the broken stool using the pipe.
+> move n
+[hunger 5/12]
+barn
+      _______      
+    / _____ \\     
+   / /|_|_|\\ \\    
+     |_|  _  |_|    
+ vVvV|_| | | |_|vVvVv 
+ An old wooden barn. It smells like mice.
+ Sadly, they are all hiding.
+ 
+There is a catnip here.
+> take catnip
+You pick up the catnip.
+> eat catnip
+Muffin eats the catnip.
+Everything spins...
+She runs around the barn knocking things over.
+The barn owner hears the noise and thinks there is an intruder.
+BANG!
+Muffin has been shot.
+YOU LOSE!

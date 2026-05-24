@@ -2,14 +2,22 @@ FileStream fileIn: 'GameObject.st'.
 FileStream fileIn: 'Location.st'.
 
 Object subclass: World [
+    | locations |
     World class >> build [
+        | world |
+        world := self new.
+        world init.
+        ^ world
+    ]
 
-        | world startCage forest lowForest infiniteForest 
+    init [
+
+        | startCage forest lowForest infiniteForest 
         road rockyRoad meadow car river waterfall barn town 
         wheatField cabbageField bridge graveyard home
         box cage branch rock hat hay brick fish rodents special shelter|
 
-        world := Dictionary new.
+        locations := Dictionary new.
 
         "All locations"
         startCage := Location named: #startCage.
@@ -96,80 +104,72 @@ Object subclass: World [
 
         "Objects"
         cage := GameObject named: #cage.
-        cage addObject: (GameObject named: #hamster).
+        cage addObject: (Rodent named: #hamster).
         startCage addObject: (cage).
 
         box := GameObject named: #cardboardBox.
-        box addObject: (GameObject named: #cod).
-        box addObject: (GameObject named: #mackerel).
-        box addObject: (GameObject named: #roach).
+        box addObject: (Fish named: #cod).
+        box addObject: (Fish named: #mackerel).
+        box addObject: (Fish named: #roach).
         forest addObject: (box).
         forest addObject: (GameObject named: #bigStick).
 
         branch := GameObject named: #branch.
-        branch addObject: (GameObject named: #squirrel).
+        branch addObject: (Rodent named: #squirrel).
         lowForest addObject: (branch).
         lowForest addObject: (GameObject named: #smallStick).
 
         road addObject: (GameObject named: #brokenStool).
-        road addObject: (GameObject named: #chocolate).
-        road addObject: (GameObject named: #sofa).
+        road addObject: (Poison named: #chocolate).
+        road addObject: (HeavyObject named: #sofa).
 
 
         rock := GameObject named: #whiteRock.
         hat := GameObject named: #hat.
-        hat addObject: (GameObject named: #gerbil).
+        hat addObject: (Rodent named: #gerbil).
         rock addObject: hat.
         meadow addObject: (rock).
         
         hay := GameObject named: #hay.
-        hay addObject: (GameObject named: #brownMouse).
+        hay addObject: (Rodent named: #brownMouse).
         wheatField addObject: (hay).
 
         brick := GameObject named: #brick.
-        brick addObject: (GameObject named: #tinyMouse).
-        barn addObject: (GameObject named: #catnip).
+        brick addObject: (Rodent named: #tinyMouse).
+        barn addObject: (Poison named: #catnip).
         barn addObject: (brick).
 
         graveyard addObject: (GameObject named: #bone).
 
-        town addObject: (GameObject named: #dog).
-        town addObject: (GameObject named: #rat).
+        town addObject: (HeavyObject named: #dog).
+        town addObject: (Rodent named: #rat).
 
-        world at: #startCage put: startCage.
-        world at: #forest put: forest.
-        world at: #lowForest put: lowForest.
-        world at: #infiniteForest put: infiniteForest.
-        world at: #road put: road.
-        world at: #rockyRoad put: rockyRoad.
-        world at: #meadow put: meadow.
-        world at: #car put: car.
-        world at: #river put: river.
-        world at: #waterfall put: waterfall.
-        world at: #barn put: barn.
-        world at: #town put: town.
-        world at: #wheatField put: wheatField.
-        world at: #cabbageField put: cabbageField.
-        world at: #bridge put: bridge.
-        world at: #graveyard put: graveyard.
-        world at: #home put: home.
-        world at: #shelter put: shelter.
+        locations at: #startCage put: startCage.
+        locations at: #forest put: forest.
+        locations at: #lowForest put: lowForest.
+        locations at: #infiniteForest put: infiniteForest.
+        locations at: #road put: road.
+        locations at: #rockyRoad put: rockyRoad.
+        locations at: #meadow put: meadow.
+        locations at: #car put: car.
+        locations at: #river put: river.
+        locations at: #waterfall put: waterfall.
+        locations at: #barn put: barn.
+        locations at: #town put: town.
+        locations at: #wheatField put: wheatField.
+        locations at: #cabbageField put: cabbageField.
+        locations at: #bridge put: bridge.
+        locations at: #graveyard put: graveyard.
+        locations at: #home put: home.
+        locations at: #shelter put: shelter.
         
-            
-        ^ world.
+        ^ locations.
     ]
 
-    World class >> fish [
-        ^ #(#cod #mackerel #roach #herring).
+    at: key [
+        ^ locations at: key
     ]
 
-    World class >> rodents [
-         ^ #(#hamster #brownMouse #tinyMouse #rat #squirrel #gerbil).
-    ]
-
-    World class >> special [
-         ^ #(#chocolate #catnip).
-    ]
 ]
 
 
