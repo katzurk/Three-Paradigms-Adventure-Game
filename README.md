@@ -8,6 +8,9 @@ Weronika Maślana
 Katarzyna Kanicka
 Hanna Zarzycka
 
+## Smalltalk version
+smalltalk-3.2.5
+
 ## Topic of the story:
 
 Muffin, a fat and very lazy house cat, was lying in the warm sun, happily baking like a loaf of bread.
